@@ -1,0 +1,180 @@
+<section class="container-fluid performance-graphs">
+	<h2 class="article-title">Performance Graphs</h2>	
+	<div class="row">
+		<div class="clearfix col-12">
+			<div class="box box-default pl-5 pr-5 pt-5 pb-4" role="tabpanel">
+				<form #f="ngForm" (ngSubmit)="onSubmit()">
+					<div class="row">
+						<div class="col-md-4">
+
+							<label for="select-business">Business Unit</label>
+							<!-- <span *ngIf=" f.submitted && selectBusiness.errors && selectBusiness.errors.required " class="ml-4 text-danger">*required</span> -->
+							<select (change)="onBusinessSelected($event.target.value)" id="select-business" class="form-control" name="select-business" [(ngModel)]="selectBusiness" ngModel>
+								<!-- <option value="" selected>Select Business</option> -->
+								<option [ngValue]="business.bu_name" *ngFor="let business of businessAccessDetails?.bu">{{ business.bu_name }}</option>
+							</select>
+						</div>
+						<div class="col-md-1"></div>
+						
+						<div class="col-md-3">
+
+							<label for="select-servicetype">Service Type</label>
+							<!-- <span *ngIf=" f.submitted && selectServiceType.errors && selectServiceType.errors.required " class="ml-4 text-danger">*required</span> -->
+							<select [disabled]="serviceTypeDisabled" (change)="onServiceTypeSelected($event.target.value)" value="All" id="select-servicetype" class="form-control" name="select-servicetype" #selectServiceType ngModel>
+								<option value="" selected>All</option>
+								<option value="{{ serviceType }}" *ngFor="let serviceType of formFilters?.serviceTypes">{{ serviceType }}</option>
+							</select>
+						</div>
+
+						<div class="col-md-3">
+
+							<label for="select-cpcode">CP Code</label>
+							<!-- <span *ngIf=" f.submitted && selectCPCode.errors && selectCPCode.errors.required " class="ml-4 text-danger">*required</span> -->
+							<select [disabled]="cpCodeDisabled" value="All" id="select-cpcode" class="form-control" name="select-cpcode" #selectCPCode ngModel>
+								<option value="" selected>All</option>
+								<option value="{{ cpCode.cp_code }}" *ngFor="let cpCode of cpCodes">{{ cpCode.cp_code_name }}</option>
+							</select>
+						</div>
+					</div>	
+					<div class="row mt-4">
+						<div class="col-md-4">
+							<label for="select-fromdate">From Date</label>
+							<div class="input-group">
+								<input disabled class="form-control" id="select-fromdate" name="select-fromdate" [(ngModel)]="myFromDateDisplay" />
+								<span class="input-group-btn">
+									<button class="btn btn-outline-secondary" type="button" (click)="onToggleFromPicker()">
+										<i class="fa fa-calendar" aria-hidden="true"></i>
+									</button>
+								</span>
+							</div>
+							<datetime-popup [value]="myFromDate" (valueChange)="onFromDateChange($event)"
+							[(showPopup)]="showFromPicker"
+							[showDate]="showDate"
+							[showTime]="showTime"></datetime-popup>
+						</div>
+						<div class="col-md-4">
+							<label for="select-todate">To Date</label>
+							<div class="input-group">
+								<input disabled class="form-control" id="select-todate" name="select-todate" [(ngModel)]="myToDateDisplay" />
+								<span class="input-group-btn">
+									<button class="btn btn-outline-secondary" type="button" (click)="onToggleToPicker()">
+										<i class="fa fa-calendar" aria-hidden="true"></i>
+									</button>
+								</span>
+							</div>
+							<datetime-popup [value]="myToDate" (valueChange)="onToDateChange($event)"
+							[(showPopup)]="showToPicker"
+							[showDate]="showDate"
+							[showTime]="showTime"></datetime-popup>
+						</div>
+					</div>
+					<div class="row mt-5">
+						<div class="col-md-12">
+							<button class="btn btn-primary btn-block btn-md waves-effect waves-effect waves-effect waves-effect"  type="submit" >View Graphs</button>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-md-12 text-center">
+							<div *ngIf="viewGraphsErrorMessage != ''" class="text-danger">{{ viewGraphsErrorMessage }}</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div id="performanceGraphsContainer" class="box box-default pl-4 pr-4 pt-5 pb-4" role="tabpanel" *ngIf="showGraphs">
+
+				<div class="row">
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Total Requests</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getTotalRequests()" [callResize]="callResize" [loadingError]="loadingError.totalRequests" [loading]="loading.totalRequests" [graphData]="serverMonitoringData.totalRequests"></stack-line-graph>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Average Request Time</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getAvgRequestTime()" [callResize]="callResize" [loadingError]="loadingError.avgRequestTime" [loading]="loading.avgRequestTime" [graphData]="serverMonitoringData.avgRequestTime"></stack-line-graph>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				
+				<div class="row mt-3">
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Edge Bandwidth</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getEdgeBandwidth()" [callResize]="callResize" [loadingError]="loadingError.edgeBandwidth" [loading]="loading.edgeBandwidth" [graphData]="serverMonitoringData.edgeBandwidth"></stack-line-graph>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Origin Bandwidth</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getOriginBandwidth()" [callResize]="callResize" [loadingError]="loadingError.originBandwidth" [loading]="loading.originBandwidth" [graphData]="serverMonitoringData.originBandwidth"></stack-line-graph>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="row mt-3">
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">OS Distribution</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getPlatformDistribution()" [callResize]="callResize" [loadingError]="loadingError.osDistribution" [loading]="loading.osDistribution" [graphData]="serverMonitoringData.osDistribution"></stack-line-graph>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Device Distribution</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getPlatformDistribution()" [callResize]="callResize" [loadingError]="loadingError.deviceDistribution" [loading]="loading.deviceDistribution" [graphData]="serverMonitoringData.deviceDistribution"></stack-line-graph>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				
+				<div class="row mt-3">
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Error Distribution</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getPercentErrors()" [callResize]="callResize" [loadingError]="loadingError.percentErrors" [loading]="loading.percentErrors" [graphData]="serverMonitoringData.percentErrors"></stack-line-graph>
+							</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Total Bytes</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getTotalBytes()" [callResize]="callResize" [loadingError]="loadingError.totalBytes" [loading]="loading.totalBytes" [graphData]="serverMonitoringData.totalBytes"></stack-line-graph>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col-xl-6">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Manifest Average Request Time</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getManifestAvgRequestTime()" [callResize]="callResize" [loadingError]="loadingError.manifestAvgRequestTime" [loading]="loading.manifestAvgRequestTime" [graphData]="serverMonitoringData.manifestAvgRequestTime"></stack-line-graph>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section>

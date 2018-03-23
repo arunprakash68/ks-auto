@@ -1,0 +1,113 @@
+<div class="box box-default mb-0">
+  <div class="row">
+    <p *ngIf="loading" class="col-xl-2 ml-auto mr-auto">
+      <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+    </p>
+  </div>  
+  <div class="row pt-0">
+    <div class="col-12 pr-0">
+      <div class="row">
+        <div class="col-xl-4 mt-4" *ngIf="showPagination()">
+          <span style="font-size: 14px;font-weight: bold;">Showing {{ pagination.pageItemIndex + 1 }}-{{ pagination.pageItemIndex + billings?.result.length }} of {{ pagination.collectionSize }}</span>
+        </div>
+        <div class="col-xl-8">
+          <div class="mt-1 pull-right" *ngIf="showPagination()">
+            <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+            </ngb-pagination>
+          </div>
+        </div>  
+      </div>
+
+
+    </div>
+    <table class="table table-hover table-striped table-responsive" *ngIf="!loading">
+      <tr>
+        <th class="" scope="col">#</th>
+        <th class="" scope="col">Business</th>
+        <th class="" scope="col">Details</th>
+        <th class="" scope="col">Infra</th>
+        <th class="" scope="col">Capex</th>
+        <th class="" scope="col">Opex</th>
+        <th class="" scope="col">Total Cost</th>
+        <th></th>
+      </tr>
+      
+      <tr [ngClass]="{'static-row': !billing.dynamicRow, 'dyn-row': billing.dynamicRow}" *ngFor=" let billing of finalBillings?.result;let i = index; ">
+        <td *ngIf="!billing.dynamicRow">{{ pagination.pageItemIndex + i / 2 + 1 }}.</td>
+        <td *ngIf="!billing.dynamicRow">{{ billing.BU }}</td>
+        <td *ngIf="!billing.dynamicRow"><small style="color: #5F9EA0;">{{ getBUDetails(billing) }}</small></td>
+        <td *ngIf="!billing.dynamicRow">{{ billing.total_vmcost | number }}</td>
+        <td *ngIf="!billing.dynamicRow">{{ billing.total_capex_cost | number }}</td>
+        <td *ngIf="!billing.dynamicRow">{{ billing.total_opex_cost | number }}</td>
+        <td *ngIf="!billing.dynamicRow">{{ (getFLoat(billing.total_vmcost) + getFLoat(billing.total_capex_cost) + getFLoat(billing.total_opex_cost)) | number }}</td>
+        <td *ngIf="!billing.dynamicRow">
+          <button dynAccordion [collapseToggle]="'costDetails'+(i + 1)" (click)="triggerBillDetails(i + 1, billing)" id="buBillingDetails" [ngClass]="{'fa-plus':!finalBillings.result[i + 1].expandDetails,'fa-minus':finalBillings.result[i + 1].expandDetails}" class="btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" ><span class="ml-2">Details</span></button>
+        </td>
+        <td style="padding: 0px !important;border: 0 !important;"  *ngIf=" billing.dynamicRow "  colspan="8">
+          <div style="display: none;" id="costDetails{{ i }}">
+            <div class="row pt-3 pb-3">
+              <div class="col-xl-12">
+                <div class="row">
+                  <div class="col-xl-12">
+                    <tabset  class="card" style="width: 100%;" [justified]="true">  
+
+                      <tab (select)="getBillDetails(i, finalBillings.result[i - 1].BU, dcZone)" *ngFor="let dcZone of billing.zone_list"  [heading]="dcZone.INSTANCE_NAME">
+                        <div class="row col-xl-12">
+                          <p *ngIf="billDetailsLoading[i][dcZone.DIID]" class="ml-auto mr-auto">
+                            <img width="100" src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                          </p>
+                        </div>
+                        <table *ngIf="!billDetailsLoading[i][dcZone.DIID]" style="background-color: #fff;font-size: 12px;" class="table table-hover table-striped table-responsive">
+                          <thead>
+                            <tr style="background-color: #fff;">
+                              <!-- <th>#</th> -->
+                              <th></th>
+                              <th>Type</th>
+                              <th>Count</th>
+                              <th>Infra</th>
+                              <th>Capex</th>
+                              <th>Opex</th>
+                              <th>Total Cost</th>
+                            </tr>
+                          </thead>
+
+                          <tbody>
+                            <tr [ngClass]="getBgClassForServerType(item)" *ngFor=" let item of billDetails[i][dcZone.DIID]; let j = index; ">
+                              <!-- <th scope="row">Cloud</th> -->
+                              <!-- <td>{{ j + 1 }}.</td> -->
+                              <td></td>
+                              <td>{{ item.type }} <b>{{ item.typeOfServer }}</b></td>
+                              <td>{{ item.count }}</td>
+                              <td>{{ item.cost | number }}</td>
+                              <td>{{ item.capex | number }}</td>
+                              <td>{{ item.opex | number }}</td>
+                              <td>{{ item.totalcost | number }}</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div class="col-xl-12 text-center" *ngIf="showNoBillDetailsMsg(i, dcZone)">No records found</div>
+                        <div class="col-xl-12 text-center text-danger" *ngIf="billDetailsError[i][dcZone.DIID]">Something went wrong. Please try again.
+                         &nbsp;<a href="javascript:void(0)" (click)="getBillDetails(i, finalBillings.result[i - 1].BU, dcZone)"><fa class="" name="refresh"></fa> Reload</a></div>  
+                       </tab>
+
+                     </tabset>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </td>
+       </tr>
+     </table>
+     <div class="col-xl-12 text-center" *ngIf="showNoBillingMsg()">No businesses found</div>
+     <div class="col-xl-12 text-center text-danger" *ngIf="billingCallError">Something went wrong. Please try again.
+       &nbsp;<a href="javascript:void(0)" (click)="getBilling()"><fa class="" name="refresh"></fa> Reload</a></div>
+       <div class="col-12 pr-0">
+        <div class="mt-2 pull-right" *ngIf="showPagination()">
+          <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+          </ngb-pagination>
+        </div>
+      </div>
+
+    </div>
+  </div>

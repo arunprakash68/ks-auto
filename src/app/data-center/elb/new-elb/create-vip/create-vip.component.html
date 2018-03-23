@@ -1,0 +1,99 @@
+<!-- domain-name -->
+<div class="row mg-top-2">
+	<div class="col-xl-4">
+		<label for="domain-name">Enter Domain Name</label>
+		<input (change)="updateFormData()" class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" id="domain-name" name="domain-name" [(ngModel)]="formData.domain_name" placeholder="Domain Name" type="text" ng-reflect-name="domain-name">
+	</div>
+</div>
+
+<!-- protocol/port -->
+<div class="row mg-top-2" *ngIf="currentLB">
+	<div class="col-xl-2">
+		<label for="select-protocol">Select Protocol</label>
+		<div *ngFor="let protocol of objectKeys(currentLB.types);let i = index">
+			<md-checkbox 
+				(click)="onProtocolChange(protocol)" 
+				class="uppercase" 
+				[color]="'primary'"
+				[value]="protocol"
+				[(ngModel)]="lbProtocol[i][protocol]">
+				{{protocol}}
+				<span *ngIf="!!currentLB.types[protocol]">({{currentLB.types[protocol]}})</span>
+			</md-checkbox>
+		</div>
+	</div>
+	<div class="col-xl-2" *ngIf="currentLB.typeText == 'tcp'">
+		<label for="vip-port">Port</label>
+		<input 
+			(change)="updateFormData()" 
+			class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" 
+			id="vip-port" name="vip-port" 
+			[(ngModel)]="formData.tcpPort" 
+			[placeholder]="Port" 
+			type="number" min=1 max=65535 
+			ng-reflect-name="vip-port">
+	</div>
+	<!-- enable redirection on http -->
+	<div class="col-xl-3" *ngIf="formData.protocol.indexOf('http') > -1 && formData.loadBalancerType == 'application'">
+		<div class="mb-2">HTTP -> HTTPS Redirection</div>
+		<mat-slide-toggle  
+			(change)="onRedirectionChange()"
+			class="switch-toggle"
+			[color]="'primary'"
+			[checked]="formData.redirection"
+			[(ngModel)]="formData.redirection">
+      	</mat-slide-toggle>
+	</div>
+
+	<!-- ssl cert list on https -->
+	<div *ngIf="loading.sslcert && formData.protocol.indexOf('https') > -1 && formData.loadBalancerType == 'application'" class="col-xl-4">
+		<p  class="col-xl-4 ml-auto mr-auto">
+			<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+		</p>
+	</div>
+	<div *ngIf="loadingError.sslcert && formData.protocol.indexOf('https') > -1 && formData.loadBalancerType == 'application'" class="col-xl-4 text-danger">
+		Unable to load certificates
+		<a href="javascript:void(0)" (click)="getSSLCertificatesList()">
+			<fa class="" name="refresh"></fa> Reload</a>
+	</div>
+    <div  class="col-xl-4" *ngIf="!loading.sslcert && !loadingError.sslcert && formData.protocol.indexOf('https') > -1 && formData.loadBalancerType == 'application'">
+        <label for="sslcert">Select SSL Certificates</label>
+        <select *ngIf="!profiles" [disabled]="sslCertList && sslCertList.length == 0" (change)="updateFormData()" [(ngModel)]="formData.sslcert" class="server-filter-form-input form-control" name="sslcert" ngModel>
+            <option *ngFor="let ssl of sslCertList" value="{{ ssl.certkey }}">{{ ssl.certkey }}</option>
+		</select>
+		<select *ngIf="profiles" [disabled]="sslCertList && sslCertList.length == 0" (change)="updateFormData()" [(ngModel)]="formData.sslcert" class="server-filter-form-input form-control" name="sslcert" ngModel>
+            <option *ngFor="let ssl of sslCertList" value="{{ ssl }}">{{ ssl }}</option>
+        </select>
+    </div>
+</div>
+
+
+<!-- environment -->
+<div class="row mg-top-2">
+	<div class="col-xl-12">
+		<div class="mb-2">Environment</div>
+		<md-button-toggle-group (change)="updateFormData()" [(ngModel)]="formData.monitoringvalue" name="monitoring" ngModel>
+			<md-button-toggle *ngFor="let env of monitoringEnvList" value="{{env.value}}"><b>{{env.title}}</b></md-button-toggle>
+		</md-button-toggle-group>
+	</div> 
+</div>
+
+<!-- scheme -->
+<div class="row mg-top-2">
+	<div class="col-xl-4">
+		<div class="mb-2">Scheme</div>
+		<md-button-toggle-group (change)="updateFormData()" [(ngModel)]="formData.scheme" name="scheme" ngModel>
+			<md-button-toggle *ngFor="let scheme of schemeList" value="{{scheme.value}}" > <b>{{scheme.title}}</b></md-button-toggle>
+		</md-button-toggle-group>
+	</div>
+	<div class="col-xl-3" *ngIf="formData.scheme == 'internet-facing' && objectKeys(currentLB.types).indexOf('tcp') == -1">
+		<div class="mb-2">Enable Site Shield</div>
+		<md-slide-toggle  
+			(change)="updateFormData()"
+			class="switch-toggle"
+			[color]="'primary'"
+			[checked]="formData.siteshield"
+			[(ngModel)]="formData.siteshield">
+      	</md-slide-toggle>
+	</div>
+</div>

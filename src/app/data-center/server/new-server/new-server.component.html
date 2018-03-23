@@ -1,0 +1,256 @@
+ <section class="container-fluid new-server">
+  <h2 class="article-title">Request New Server</h2>
+  <div class="row">
+    <div class="clearfix col-12">
+    	<div class="box box-default pl-5 pr-4 pt-5 pb-4">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+          <div class="row">
+           <div class="col-xl-12">
+            <h3><span>Basic Details</span></h3>
+            <br>
+            <div class="row mt-3">
+              <div *ngIf="loading.bu" class="col-xl-4">
+                <p  class="col-xl-4 ml-auto mr-auto">
+                  <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                </p>
+              </div>
+              <div *ngIf="loadingError.bu" class="col-xl-4 text-danger">
+                Unable to load projects. <a href="javascript:void(0)" (click)="getBusinessAccessDetails()">
+                  <fa class="" name="refresh"></fa> Reload</a>
+                </div>
+                <div class="col-xl-4" *ngIf="!loading.bu && !loadingError.bu">
+                  <label for="select-project">Select Business Unit</label>
+
+                  <select  [(ngModel)]="formData.bu" (change)="onBusinessChange()"  class="server-filter-form-input form-control" name="select-business" ngModel>
+                    <!-- <option selected>Select Project</option> -->
+                    <option value="{{ business.bu_name }}" *ngFor="let business of businessAccessDetails?.bu">{{ business.bu_name }}</option>
+                  </select>
+                </div>
+                <div class="col-xl-4" *ngIf="!loading.bu && !loadingError.bu">
+                  <label for="select-project">Select Project</label>
+                  <select (change)="onProjectChange()"  [(ngModel)]="formData.project" class="server-filter-form-input form-control" name="select-project" ngModel>
+                    <!-- <option selected>Select Project</option> -->
+                    <option value="{{ project.project }}" *ngFor="let project of projects[formData.bu]">{{ project.project }}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- <div class="row mt-5">
+           <div class="col-xl-12 dc-region">
+            <h3><span>Choose a Datacenter Region</span></h3>
+            <br>
+            <div *ngIf="loading.location" class="row">
+              <div  class="col-xl-4">
+                <p  class="col-xl-4 ml-auto mr-auto">
+                  <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                </p>
+              </div>
+            </div>
+            <div *ngIf="loadingError.location" class="row">
+              <div class="col-xl-4 text-danger">
+                Unable to load datacenters. <a href="javascript:void(0)" (click)="getDatacenters()">
+                  <fa class="" name="refresh"></fa> Reload</a>
+                </div>
+              </div>
+
+              <md-button-toggle-group *ngIf=" !loading.location && !loadingError.location "  [(ngModel)]="formData.location" (change)="onDCChange($event)" class="d-flex flex-row justify-content-start flex-wrap" name="dc" ngModel>
+                <md-button-toggle class="mb-4 mr-4" value="{{ dc.ID }}" *ngFor="let dc of datacenters">
+                 <img-text-box class="p-2" [imgSource]="'http://keystoneold.timesinternet.in//assets/img/city_img/' + dc.image" name="select-dc" [imgTitle]="dc.city">
+               </img-text-box>
+             </md-button-toggle>
+           </md-button-toggle-group>
+
+         </div>
+
+       </div> -->
+
+       <div class="row mt-5"></div>
+       <div *ngIf="formData.bu && formData.project" class="row mt-5">
+         <div class="col-xl-12 dc-region">
+          <h3><span>Choose a Datacenter Zone</span></h3>
+          <br>
+          <div *ngIf="loading.dcZone" class="row">
+            <div  class="col-xl-4">
+              <p  class="col-xl-4 ml-auto mr-auto">
+                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+              </p>
+            </div>
+          </div>
+          <div *ngIf="loadingError.dcZone" class="row">
+            <div class="col-xl-4 text-danger">
+              Unable to load datacenter zones. <a href="javascript:void(0)" (click)="getDCZones()">
+                <fa class="" name="refresh"></fa> Reload</a>
+              </div>
+            </div>
+
+            <md-button-toggle-group *ngIf=" !loading.dcZone && !loadingError.dcZone "  [(ngModel)]="formData.dcZone" (change)="onDCZoneChange($event)" class="d-flex flex-row justify-content-start flex-wrap img-button-toggle" name="dc" ngModel>
+              <md-button-toggle class="mb-4 mr-4" [value]="dcZone" *ngFor="let dcZone of datacenterZones?.result;trackBy: trackDCZone">
+               <img-text-box [imgSource]="'http://keystoneold.timesinternet.in//assets/img/city_img/' + dcZone.image"  [imgTitle]="dcZone.zone_name">
+             </img-text-box>
+           </md-button-toggle>
+         </md-button-toggle-group>
+
+       </div>
+
+     </div>
+
+     <div *ngIf="!loadingError.dcZone && !loading.dcZone" class="row mt-5">
+       <div class="col-12 os-type">
+        <h3><span>Choose OS Type</span></h3>
+        <br>
+
+        <div *ngIf="loading.ostype" class="row">
+          <div  class="col-xl-4">
+            <p  class="col-xl-4 ml-auto mr-auto">
+              <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+            </p>
+          </div>
+        </div>
+        <div *ngIf="loadingError.ostype" class="row">
+          <div class="col-xl-4 text-danger">
+            Unable to load OS types. <a href="javascript:void(0)" (click)="getOSList()">
+              <fa class="" name="refresh"></fa> Reload</a>
+            </div>
+          </div>
+
+          <md-button-toggle-group *ngIf=" !loading.ostype && !loadingError.ostype " [(ngModel)]="formData.ostype" (change)="onOSChange($event)" class="d-flex flex-row justify-content-start flex-wrap img-button-toggle" name="osType" ngModel>
+            <md-button-toggle class="mb-4 mr-4" value="{{ osType.OS }}" *ngFor="let osType of osTypes">
+              <img-text-box [imgSource]="'http://keystoneold.timesinternet.in//assets/img/os-images/' + osType.image" [imgTitle]="osType.OS">
+            </img-text-box>
+          </md-button-toggle>
+        </md-button-toggle-group>
+      </div>
+
+    </div>
+
+    <div *ngIf="!loadingError.dcZone && !loading.dcZone" class="row mt-5">
+     <div class="col-12 os-image">
+      <h3><span>Choose an Image</span></h3>
+      <br>
+
+      <div *ngIf="loading.osImage" class="row">
+        <div  class="col-xl-4">
+          <p  class="col-xl-4 ml-auto mr-auto">
+            <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+          </p>
+        </div>
+      </div>
+      <div *ngIf="loadingError.osImage" class="row">
+        <div class="col-xl-4 text-danger">
+          Unable to load OS Images. <a href="javascript:void(0)" (click)="getOSImagesList()">
+            <fa class="" name="refresh"></fa> Reload</a>
+          </div>
+        </div>
+
+        <md-button-toggle-group *ngIf=" !loading.osImage && !loadingError.osImage " [(ngModel)]="formData.osImage" class="d-flex flex-row justify-content-start flex-wrap img-button-toggle" name="osImage" ngModel>
+          <md-button-toggle class="mb-4 mr-4" value="{{ osImage.template }}" *ngFor="let osImage of osImages">
+            <img-text-box [imgSource]="'http://keystoneold.timesinternet.in//assets/img/tepmlate/' + osImage.image" [imgTitle]="osImage.template">
+          </img-text-box>
+        </md-button-toggle>
+      </md-button-toggle-group>
+    </div>
+
+  </div>
+
+  <div *ngIf="!loadingError.dcZone && !loading.dcZone" class="row mt-5">
+   <div class="vm-type col-12">
+    <h3><span>Choose VM Type</span></h3>
+    <br><br>
+
+    <div *ngIf="loading.vmtype" class="row">
+      <div  class="col-xl-4">
+        <p  class="col-xl-4 ml-auto mr-auto">
+          <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+        </p>
+      </div>
+    </div>
+    <div *ngIf="loadingError.vmtype" class="row">
+      <div class="col-xl-4 text-danger">
+        Unable to load VM types. <a href="javascript:void(0)" (click)="getVMTypesList()">
+          <fa class="" name="refresh"></fa> Reload</a>
+        </div>
+      </div>
+
+      <md-button-toggle-group *ngIf=" !loading.vmtype && !loadingError.vmtype " [(ngModel)]="formData.vmtype"  class="d-flex flex-row justify-content-start flex-wrap" name="vmType" ngModel>
+        <md-button-toggle class="mb-4 mr-4" [value]="vmType" *ngFor="let vmType of vmTypes;trackBy: trackVMType">
+         <vm-type-info  [vmTypeInfo]="vmType">
+         </vm-type-info>   
+       </md-button-toggle>
+     </md-button-toggle-group>
+   </div>
+
+ </div>
+
+ <div *ngIf="(formData.bu && formData.project && (!loadingError.dcZone && !loading.dcZone))" class="row mt-5">
+   <div class="col-12 new-server-adv-config">
+    <h3><span>Advanced Configuration</span></h3>
+    <br><br>
+    <div class="row">
+      <div class="col-4">
+        <div class="mb-2">Network</div>
+        <div id="network">
+          <md-button-toggle-group [(ngModel)]="formData.networkvalue" name="network" ngModel>
+            <md-button-toggle value="1"><b>PUBLIC</b></md-button-toggle>
+            <md-button-toggle value="2"><b>PRIVATE</b></md-button-toggle>
+          </md-button-toggle-group>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="mb-2">Environment</div>
+        <div id="monitoring">
+          <md-button-toggle-group [(ngModel)]="formData.monitoringvalue" name="monitoring" ngModel>
+            <md-button-toggle value="Production"><b>prod</b></md-button-toggle>
+            <md-button-toggle value="PreProd"><b>pre prod</b></md-button-toggle>
+            <md-button-toggle value="Staging"><b>staging</b></md-button-toggle>
+            <md-button-toggle value="QA"><b>qa</b></md-button-toggle>
+            <md-button-toggle value="DR"><b>dr</b></md-button-toggle>
+          </md-button-toggle-group>
+        </div>
+      </div> 
+    </div>
+  </div>
+
+</div>
+
+<div class="row mt-5"></div>
+<div class="row mt-5">
+  <div class="col-xl-12">
+    <button [disabled]="!(formData.bu && formData.project && (!loadingError.dcZone && !loading.dcZone))" type="submit" class="btn-lg btn-block btn btn-primary waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >
+      <i *ngIf="submitLoading" class='fa fa-spinner fa-spin '></i> Create New Server
+    </button>
+    <div *ngIf="submitError" class="text-danger ml-2 mt-3">Something went wrong. Please try again</div>
+  </div>
+  <!-- <div class="col-xl-12" *ngIf="newServerData && newServerData.data[0]">
+    <div class="row mt-4">
+      <div class="col-xl-12 text-success"><strong class="font18">New server successfully created</strong></div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-xl-12">Status: {{ newServerData.data[0].Status }}</div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-xl-12">IP Address: {{ newServerData.data[0].IP }}</div>
+    </div>
+  </div> -->
+</div>
+</form>
+<div class="row" *ngIf="newServerData && newServerData.data[0]">
+  <div class="col-xl-12">
+    <div class="row mt-4">
+      <div class="col-xl-12 text-success"><strong class="font18">New server successfully created</strong></div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-xl-12">Status: {{ newServerData.data[0].Status }}</div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-xl-12"><span>IP Address: </span><a [routerLink]="['/app/data-center/server']" [queryParams]="{search_value: newServerData.data[0].IP}" href="javascript:void(0);" >{{ newServerData.data[0].IP }}</a></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+
+</section>

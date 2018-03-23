@@ -1,0 +1,113 @@
+<div class="box box-default">
+	<div class="clearfix" role="tabpanel">
+		<div class="row pl-4 pr-4">
+			<div class="col-xl-12 mt-5 ml-auto mr-auto">
+				<div class="pull-right">
+					<md-button-toggle-group (change)="checkTimeRange($event)" value="0.5" #group="mdButtonToggleGroup">
+						<md-button-toggle value="0.5">
+							30 Min
+						</md-button-toggle>
+						<md-button-toggle value="1">
+							60 Min
+						</md-button-toggle>
+						<md-button-toggle value="3">
+							3 Hrs
+						</md-button-toggle>
+						<md-button-toggle value="6">
+							6 Hrs
+						</md-button-toggle>
+						<md-button-toggle value="12">
+							12 Hrs
+						</md-button-toggle>
+						<md-button-toggle value="24">
+							24 Hrs
+						</md-button-toggle>
+					</md-button-toggle-group>
+				</div>
+			</div>
+		</div>	
+		<div class="row mt-4 pl-4 pr-4">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">CPU</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getCPUData()"  [callResize]="callResize" [loadingError]="loadingError.cpu" [loading]="loading.cpu" [graphData]="serverStats.cpu"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row mt-3 pl-4 pr-4">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">MEMORY</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMemoryData()" [callResize]="callResize" [loadingError]="loadingError.mem"  [loading]="loading.mem" [graphData]="serverStats.mem"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row mt-3 pl-4 pr-4">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">DISK</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getDiskData()" [callResize]="callResize" [loadingError]="loadingError.disk" [loading]="loading.disk" [graphData]="serverStats.disk"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row mt-3 pl-4 pr-4">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">SWAP</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getSwapData()" [callResize]="callResize" [loadingError]="loadingError.swap" [loading]="loading.swap" [graphData]="serverStats.swap"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row mt-3 pl-4 pr-4">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">LOAD</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getSystemData()" [callResize]="callResize" [loadingError]="loadingError.system" [loading]="loading.system" [graphData]="serverStats.system"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row mt-3 pl-4 pr-4">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">MYSQL</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLData()" [callResize]="callResize" [loadingError]="loadingError.mysql" [loading]="loading.mysql" [graphData]="serverStats.mysql"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="row mt-3 pl-4 pr-4">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">MYSQL Schema</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLSchemaData()" [callResize]="callResize" [loadingError]="loadingError.mysql_info_schema" [loading]="loading.mysql_info_schema" [graphData]="serverStats.mysql_info_schema"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

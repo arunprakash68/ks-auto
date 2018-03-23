@@ -1,0 +1,37 @@
+<div class="box box-default">
+	<div class="clearfix" role="tabpanel">
+		<div class="row"></div>
+		<div class="row mt-4">
+			<div class="col-xl-6">
+				<span style="font-size: 14px;font-weight: bold;" class="pl-4" *ngIf="tabtype == 'top10'">Top 10 urls are present for back dates only.</span>
+			</div>
+			<!-- <div class="col-xl-6" *ngIf="tabtype == 'log'">
+				<span  class="pull-right" title="CSV" style="font-size: 14px;font-weight: bold;" class="pl-4" >CSV</span>
+			</div> -->
+			<div class="col-xl-6">
+
+				<span class="pull-right" title="Logs Filter">
+					<a href="javascript:;" (click)="toggleLogsFilter()" [attr.aria-expanded]="!isFilterCollapsed">
+						<img src="http://keystoneold.timesinternet.in/assets/img/filter.png" class="mr-4 server-filter-icon" height="40" width="40">
+					</a>
+				</span>
+				<span class="pull-right" title="CSV" style="font-size: 14px;font-weight: bold;padding-right:10px;" *ngIf="tabtype == 'log'">
+					<button [disabled]="loading" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="getLogsCsvData()">
+							<i *ngIf="loading" class='fa fa-spinner fa-spin '></i> Export</button>
+				</span>
+			</div>
+		</div>
+		<logs-filter-form [tabselected]="tabselected" [serverLogs]="serverLogs" [businessFilters]="businessFilters" [graphDataZoom]="graphDataZoom"
+		 [perfFilterOptions]="perfFilterOptions" [businessAccessDetails]="businessAccessDetails" (triggerFilterCollapse)="triggerFilterCollapse($event)"
+		 [ngbCollapse]="!isFilterCollapsed" (searchOptions)="updateSearchOptions($event)" [tabtype]="tabtype"></logs-filter-form>
+		<div class="row mt-3">
+			<div class="col-xl-12" *ngIf="tabtype == 'log'">
+				<server-logs-list [tabselected]="tabselected" (serverLogsOut)="updateServerLogs($event)" [updatedSearchOptions]="searchOptions"
+				 [graphDataZoom]="perfFilterOptions" (logsSearchOptions)="updatedLogsSearchOptions($event)"></server-logs-list>
+			</div>
+			<div class="col-xl-12" *ngIf="tabtype == 'top10'">
+				<app-top10-urls [tabselected]="tabselected" [perfFilterOptions]="formOptions"></app-top10-urls>
+			</div>
+		</div>
+	</div>
+</div>

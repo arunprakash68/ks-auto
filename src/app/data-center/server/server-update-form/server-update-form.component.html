@@ -1,0 +1,51 @@
+<div class="row form-group mt-4">
+	<div class="col-xl-12 pl-4">
+		<form (ngSubmit)="onSubmit()">
+			
+			<div class="row">
+				<div class="col-xl-2">
+					<label for="select-project">IP</label>
+					<div>{{ serverData?.ip }}</div>
+				</div>
+				<div class="col-xl-2">
+					<label for="select-business">Business Unit</label>
+					<select [(ngModel)]="formData.bu" (change)="onBusinessChange()" class="server-filter-form-input form-control" name="select-business" ngModel>
+						<!-- <option value="" selected>Select Business</option> -->
+						<option value="{{ business.bu_name }}" *ngFor="let business of businessAccessDetails?.bu">{{ business.bu_name }}</option>
+					</select>
+				</div>
+				<div class="col-xl-3">
+					<label for="select-project">Project</label>
+					<select [(ngModel)]="formData.projectname" class="server-filter-form-input form-control" name="select-project" ngModel>
+						<!-- <option value="" selected>Select Project</option> -->
+						<option value="{{ project.project }}" *ngFor="let project of projects[formData.bu]">{{ project.project }}</option>
+					</select>
+				</div>
+				
+				<div class="col-xl-5">
+					<div class="mb-2">Environment</div>
+					<div>
+						<md-button-toggle-group [(ngModel)]="formData.env"  name="environment" ngModel>
+							<md-button-toggle value="Production"><b>prod</b></md-button-toggle>
+							<md-button-toggle class="ml-2" value="PreProd"><b>pre prod</b></md-button-toggle>
+							<md-button-toggle class="ml-2" value="Staging"><b>staging</b></md-button-toggle>
+							<md-button-toggle class="ml-2" value="QA"><b>qa</b></md-button-toggle>
+							<md-button-toggle class="ml-2" value="DR"><b>dr</b></md-button-toggle>
+						</md-button-toggle-group>
+					</div>
+				</div>	
+			</div>
+			<div class="row mt-5">
+				<div class="col-xl-12">
+					<button type="submit" style="width: 15%;" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >
+						<i *ngIf="submitLoading" class='fa fa-spinner fa-spin '></i> Submit
+					</button>
+					<span *ngIf="submitError" class="text-danger ml-2">Something went wrong. Please try again</span>
+				</div>
+				<!-- <div class="col-xl-4"></div>
+				<div class="col-xl-4"></div> -->
+			</div>
+			
+		</form>
+	</div>
+</div>

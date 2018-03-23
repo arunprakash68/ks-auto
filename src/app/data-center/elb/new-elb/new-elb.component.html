@@ -1,0 +1,126 @@
+<section class="container-fluid new-server new-elb">
+	<h2 class="article-title">Request New ELB</h2>
+  	<div class="row">
+		<div class="clearfix col-12">
+			<div class="box box-default card-box">
+				<!-- form -->
+				<form #f="ngForm">
+
+					<!-- business/project -->
+					<div class="row">
+						<div class="col-xl-12">
+							<h3><span>Basic Details</span></h3>
+						</div>
+						<div *ngIf="loading.bu" class="col-xl-4 mg-top-2">
+							<p  class="col-xl-4 ml-auto mr-auto">
+								<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+							</p>
+						</div>
+						<div *ngIf="loadingError.bu" class="col-xl-4 text-danger mg-top-2">
+							Unable to load projects. 
+							<a href="javascript:void(0)" (click)="getBusinessAccessDetails()">
+								<fa class="" name="refresh"></fa> Reload</a>
+						</div>
+						<div class="col-xl-4 mg-top-2" *ngIf="!loading.bu && !loadingError.bu">
+							<label for="select-project">Select Business Unit</label>
+					
+							<select  [(ngModel)]="formData.bu" (change)="onBusinessChange()"  class="server-filter-form-input form-control" name="select-business" ngModel>
+								<option value="{{ business.bu_name }}" *ngFor="let business of businessAccessDetails?.bu">{{ business.bu_name }}</option>
+							</select>
+						</div>
+						<div class="col-xl-4 mg-top-2" *ngIf="!loading.bu && !loadingError.bu">
+							<label for="select-project">Select Project</label>
+							<select (change)="onProjectChange()"  [(ngModel)]="formData.project" class="server-filter-form-input form-control" name="select-project" ngModel>
+								<option value="{{ project.project }}" *ngFor="let project of projects[formData.bu]">{{ project.project }}</option>
+							</select>
+						</div>
+					</div>
+
+
+					<!-- Select Zone -->
+					<div class="row mg-top-2">
+						<div class="col-xl-12">
+							<h3><span>Select Zone</span></h3>
+						</div>
+						<div *ngIf="loading.loc" class="col-xl-4 mg-top-2">
+							<p  class="col-xl-4 ml-auto mr-auto">
+								<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+							</p>
+						</div>
+						<div *ngIf="loadingError.loc" class="col-xl-4 text-danger mg-top-2">
+							Unable to load locations. 
+							<a href="javascript:void(0)" (click)="getLocationZoneList()">
+								<fa class="" name="refresh"></fa> Reload</a>
+						</div>
+						<div class="col-xl-12">
+							<md-button-toggle-group *ngIf=" !loading.loc && !loadingError.loc "  [(ngModel)]="formData.locZone" (change)="onZoneChange($event)" class="d-flex flex-row justify-content-start flex-wrap img-button-toggle" name="dc" ngModel>
+								<md-button-toggle class="mb-4 mr-4" [value]="zone" *ngFor="let zone of locationList" [disabled]="zone.zone == 'TIL-CHN-2A'" >
+									<img-text-box [imgSource]="'http://keystoneold.timesinternet.in//assets/img/city_img/'+ locImgMap[zone.location]"  [imgTitle]="zone.zone">
+								</img-text-box>
+								</md-button-toggle>
+							</md-button-toggle-group>
+						</div>
+					</div>
+
+
+					<!-- load balancer type -->
+					<div class="row mg-top-2">
+						<div class="col-xl-12">
+							<h3><span>Load Balancer Type</span></h3>
+							<md-button-toggle-group class="img-button-toggle" [(ngModel)]="formData.loadBalancerType" name="load_balancer" ngModel>
+								<md-button-toggle [value]="balancer" *ngFor="let balancer of objectKeys(loadBalancerList)">
+									<img-text-box [isText]=true [textString]="loadBalancerList[balancer].typeText"  [imgTitle]="balancer">
+									</img-text-box>
+								</md-button-toggle>
+							</md-button-toggle-group>
+						</div>
+					</div>
+
+					<!-- create Vip -->
+					<div class="row mg-top-2">
+						<div class="col-xl-12">
+							<h3><span>VIP Details</span></h3>
+							<create-vip [formData]="formData" [currentLB]="loadBalancerList[formData.loadBalancerType]" [currentLocZone]="currentLocZone" (sendFormData)=updateFormData($event)></create-vip>
+						</div>
+					</div>
+
+					<!-- create Pool -->
+					<div class="row mg-top-2">
+						<div class="col-xl-12">
+							<h3><span>Pool Details</span></h3>
+							<create-pool [formData]="formData" [currentBuProject]="currentBuProject" [currentLocZone]="currentLocZone" (sendFormData)=updateFormData($event)></create-pool>	
+						</div>
+					</div>
+
+					<!-- create Monitor -->
+					<div class="row mg-top-2">
+						<div class="col-xl-12">
+							<h3><span>Monitor Details</span></h3>
+							<create-monitor [formData]="formData" (sendFormData)=updateFormData($event)></create-monitor>
+						</div>
+					</div>
+
+					<!-- create/attach -  monitor/pool/vip -->
+					<div class="row mt-5">
+						<!-- create -->
+						<div class="col-xl-3" *ngIf="attachedData.isPoolAttached && attachedData.isMonAttached">
+							<h3><span>Created LB</span></h3>
+							<p class="mg-top-2">IP Address : 
+								<a [routerLink]="['/app/data-center/elb']" href="javascript:void(0);">{{newVipData.vipip}}</a>
+							</p>
+						</div>
+						<div class="col-xl-6" *ngIf="!attachedData.isPoolAttached && !attachedData.isMonAttached">
+								<button (click)="onCreate();" [disabled]="spin" type="submit"  class="btn-lg btn-block btn btn-primary waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >
+									<i *ngIf="spin" class='fa fa-spinner fa-spin '></i> 
+									Create
+								</button>
+						</div>
+						<div class="col-xl-6">
+							<div *ngIf="submitError && submitError.error" class="text-danger ml-2 mt-3">{{submitError.message}}</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

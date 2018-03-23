@@ -1,0 +1,126 @@
+<!-- <section class="container-fluid performance-graphs">
+	<h2 class="article-title">Performance Graphs</h2>	
+	<div class="row">
+		<div class="clearfix col-12">
+			<div class="box box-default pl-5 pr-5 pt-5 pb-4" role="tabpanel">
+				<form #f="ngForm" (ngSubmit)="onSubmit(f)">
+					<div class="row">
+						<div class="col-md-3">
+
+							<label for="select-business">Business Unit</label>
+							<span *ngIf=" f.submitted && selectBusiness.errors && selectBusiness.errors.required " class="ml-4 text-danger">*required</span>
+							<select required value="Select Business" id="select-business" class="form-control" name="select-business" #selectBusiness="ngModel" ngModel>
+								<option value="" selected>Select Business</option>
+								<option value="{{ business }}" *ngFor="let business of businessAccessDetails?.bu">{{ business }}</option>
+							</select>
+						</div>
+						<div class="col-md-1"></div>
+						<div class="col-md-4">
+							<label for="select-fromdate">From Date</label>
+							<div class="input-group">
+								<input disabled class="form-control" id="select-fromdate" name="select-fromdate" [(ngModel)]="myFromDateDisplay" />
+								<span class="input-group-btn">
+									<button class="btn btn-outline-secondary" type="button" (click)="onToggleFromPicker()">
+										<i class="fa fa-calendar" aria-hidden="true"></i>
+									</button>
+								</span>
+							</div>
+							<datetime-popup [value]="myFromDate" (valueChange)="onFromDateChange($event)"
+							[(showPopup)]="showFromPicker"
+							[showDate]="showDate"
+							[showTime]="showTime"></datetime-popup>
+						</div>
+						<div class="col-md-4">
+							<label for="select-todate">To Date</label>
+							<div class="input-group">
+								<input disabled class="form-control" id="select-todate" name="select-todate" [(ngModel)]="myToDateDisplay" />
+								<span class="input-group-btn">
+									<button class="btn btn-outline-secondary" type="button" (click)="onToggleToPicker()">
+										<i class="fa fa-calendar" aria-hidden="true"></i>
+									</button>
+								</span>
+							</div>
+							<datetime-popup [value]="myToDate" (valueChange)="onToDateChange($event)"
+							[(showPopup)]="showToPicker"
+							[showDate]="showDate"
+							[showTime]="showTime"></datetime-popup>
+							<!-- <datetime-popup ></datetime-popup> -->
+						</div>
+					</div>	
+					<div class="row mt-5">
+						<div class="col-md-12">
+							<button class="btn btn-primary btn-block btn-md waves-effect waves-effect waves-effect waves-effect"  type="submit" >View Graphs</button>
+						</div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-md-12 text-center">
+							<div *ngIf="viewGraphsErrorMessage != ''" class="text-danger">{{ viewGraphsErrorMessage }}</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="box box-default pl-4 pr-4 pt-5 pb-4" role="tabpanel" *ngIf="showGraphs">
+				<div class="row" id="avgRequestTimeContainer">
+					<div class="col-xl-12">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Average Request Time</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getAvgRequestTime()" [callResize]="callResize" [loadingError]="loadingError.avgRequestTime" [loading]="loading.avgRequestTime" [graphData]="serverMonitoringData.avgRequestTime"></stack-line-graph>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col-xl-12">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Manifest Average Request Time</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getManifestAvgRequestTime()" [callResize]="callResize" [loadingError]="loadingError.manifestAvgRequestTime" [loading]="loading.manifestAvgRequestTime" [graphData]="serverMonitoringData.manifestAvgRequestTime"></stack-line-graph>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col-xl-12">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Average Bitrate</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getAvgBitrate()" [callResize]="callResize" [loadingError]="loadingError.avgBitrate" [loading]="loading.avgBitrate" [graphData]="serverMonitoringData.avgBitrate"></stack-line-graph>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col-xl-12">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Platform Distribution</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getPlatformDistribution()" [callResize]="callResize" [loadingError]="loadingError.platformDistribution" [loading]="loading.platformDistribution" [graphData]="serverMonitoringData.platformDistribution"></stack-line-graph>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="row mt-3">
+					<div class="col-xl-12">
+						<div class="pt-0 ml-auto mr-auto box box-default">
+							<div class="box-header graph-title">Error Distribution</div>
+							<div class="box-body pl-2 pr-0">
+								<stack-line-graph (reloadGraphData)="getPercentErrors()" [callResize]="callResize" [loadingError]="loadingError.percentErrors" [loading]="loading.percentErrors" [graphData]="serverMonitoringData.percentErrors"></stack-line-graph>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</section> -->

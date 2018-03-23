@@ -1,0 +1,94 @@
+<div id="serverFilterCollapse">
+  <div class="form-group row server-filter-container card ml-auto mr-auto" >
+    <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-xl-4">
+            <label for="select-project">Project</label>
+            <select id="select-project" class="server-filter-form-input form-control" name="select-project" ngModel>
+              <option value="" selected>Select Project</option>
+              <option value="{{ project.project }}" *ngFor="let project of businessAccessDetails?.projects">{{ project.project }}</option>
+            </select>
+          </div>
+          <div class="col-xl-4">
+            <label for="select-business">Business Unit</label>
+            <select id="select-business" class="server-filter-form-input form-control" name="select-business" ngModel>
+              <option value="" selected>Select Business</option>
+              <option value="{{ business }}" *ngFor="let business of businessAccessDetails?.bu">{{ business }}</option>
+            </select>
+          </div>
+          <div class="col-xl-4">
+            <label for="search-text">Search</label>
+            <input type="text" id="search-text" placeholder="Search query" class="server-filter-form-input form-control" name="search-text" ngModel>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row mt-5">
+          <div class="col-xl-6">
+            <div class="mb-2">Environment</div>
+            <div id="environment">
+              <md-button-toggle-group name="environment" ngModel>
+                <md-button-toggle value="2"><b>PROD</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="1"><b>NON PROD</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="1"><b>DR</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="1"><b>PRE PROD</b></md-button-toggle>
+              </md-button-toggle-group>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <div class="mb-2">Health</div>
+            <div id="health">
+              <md-button-toggle-group name="health" ngModel>
+                <md-button-toggle value="2"><b>BAD</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="1"><b>ALERT</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="3"><b>GOOD</b></md-button-toggle>
+              </md-button-toggle-group>
+            </div>
+          </div>
+          <!-- <div class="col-4">
+            <label for="select-location">Location</label>
+            <select id="select-location" class="server-filter-form-input form-control" name="select-location" ngModel>
+              <option value="" selected>Select Location</option>
+              <option value="{{ dataCenter.ID }}" *ngFor="let dataCenter of dataCenters">{{ dataCenter.city }}</option>
+            </select>
+          </div> -->
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row mt-5">
+          <div class="col-xl-6">
+            <label for="select-members">Members</label>
+            <select id="select-members" class="server-filter-form-input form-control" name="select-members" ngModel>
+              <option value="" selected>Select</option>
+              <!-- <option value="{{ dataCenter.ID }}" *ngFor="let dataCenter of dataCenters">{{ dataCenter.city }}</option> -->
+            </select>
+          </div>
+          <div class="col-xl-6">
+            <div class="mb-2">Port</div>
+            <div id="port">
+              <md-button-toggle-group name="port" ngModel>
+                <md-button-toggle value="2"><b>80</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="1"><b>443</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="3"><b>OTHER</b></md-button-toggle>
+              </md-button-toggle-group>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row mt-5">
+          <div class="col-xl-4"></div>
+          <div class="col-xl-4"></div>
+          <div class="col-xl-4">
+            <div class="pull-right">
+            <button type="submit" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >Apply Filter</button>
+            <button id="server-filter-cancel" class="ml-3 btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="serverFilterCollapse" >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>  
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<section class="container-fluid with-maxwidth chapter">
+	<article class="article">
+		<h2 class="article-title">My Servers</h2>
+		<div class="box box-default table-box mdl-shadow--2dp">
+			<md-table #table [dataSource] = "dataSource">
+				<ng-container cdkColumnDef="os">
+					<md-header-cell *cdkHeaderCellRef>OS</md-header-cell>
+					<md-cell *cdkCellDef="let row">{{ row.os }}</md-cell>
+				</ng-container>		
+				<ng-container cdkColumnDef="hostName">
+					<md-header-cell *cdkHeaderCellRef>Hostname</md-header-cell>
+					<md-cell *cdkCellDef="let row">{{ row.hostName }}</md-cell>
+				</ng-container>		
+				<ng-container cdkColumnDef="ip">
+					<md-header-cell *cdkHeaderCellRef>IP</md-header-cell>
+					<md-cell *cdkCellDef="let row">{{ row.ip }}</md-cell>
+				</ng-container>		
+				<ng-container cdkColumnDef="cpu">
+					<md-header-cell *cdkHeaderCellRef>CPU/MEM</md-header-cell>
+					<md-cell *cdkCellDef="let row">{{ row.cpu }}</md-cell>
+				</ng-container>		
+				<ng-container cdkColumnDef="location">
+					<md-header-cell *cdkHeaderCellRef>Location</md-header-cell>
+					<md-cell *cdkCellDef="let row">{{ row.location }}</md-cell>
+				</ng-container>		
+				<ng-container cdkColumnDef="tags">
+					<md-header-cell *cdkHeaderCellRef>Tags</md-header-cell>
+					<md-cell *cdkCellDef="let row">{{ row.tags }}</md-cell>
+				</ng-container>		
+				<ng-container cdkColumnDef="status">
+					<md-header-cell *cdkHeaderCellRef>Status</md-header-cell>
+					<md-cell *cdkCellDef="let row">{{ row.status }}</md-cell>
+				</ng-container>		
+
+				<md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
+				<md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
+
+				<!-- <md-paginator #paginator
+							  [length]=""
+							  [pageIndex]="0"
+							  [pageSize]="25"
+							  [pageSizeOptions]="[5, 10, 25, 100]">
+					
+				</md-paginator> -->
+
+			</md-table>
+		</div>
+	</article>
+</section>

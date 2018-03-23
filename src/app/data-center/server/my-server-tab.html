@@ -1,0 +1,111 @@
+<div class="box box-default server-tab-content">
+            <div class="" id="my-server" role="tabpanel">
+        <!-- <p style="text-align:center; display: none;" id="loaderimg">
+          <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" style="width: 22%;margin-bottom: -11px;">
+        </p> -->
+        <div class="row pt-4 pb-5">
+          <div class="col-6"><button class="ml-3 btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" onclick="window.location.href='/createserver'">New Server</button></div>
+          <div class="col-6">
+            <span class="pull-right">
+              <a href="javascript:;" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="serverFilterCollapse" >
+                <img src="http://keystoneold.timesinternet.in/assets/img/filter.png" class="mr-4 server-filter-icon" height="40" width="40">
+              </a>
+            </span>
+          </div>
+        </div>
+        
+        <div [ngbCollapse]="!isCollapsed" id="serverFilterCollapse">
+          <div class="form-group row server-filter-container card ml-auto mr-auto" >
+            <form>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-md-4">
+                    <label for="select-project">Project</label>
+                    <select id="select-project" class="server-filter-form-input form-control">
+                      <option selected>Select Project</option>
+                      <option value="1">One</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="select-business-project">Business Unit</label>
+                    <select id="select-business-project" class="server-filter-form-input form-control">
+                      <option selected>Select Business</option>
+                      <option value="1">One</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label for="search-text">Search</label>
+                    <input type="text" id="search-text" placeholder="Search query" class="server-filter-form-input form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row mt-5">
+                  <div class="col-4">
+                    <div class="mb-2">Environment</div>
+                    <div id="environment">
+                      <md-button-toggle-group>
+                        <md-button-toggle value="prod"><b>PROD</b></md-button-toggle>
+                        <md-button-toggle class="ml-3" value="nonprod"><b>NON PROD</b></md-button-toggle>
+                      </md-button-toggle-group>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mb-2">Health</div>
+                    <div id="health">
+                      <md-button-toggle-group>
+                        <md-button-toggle value="down"><b>UP</b></md-button-toggle>
+                        <md-button-toggle class="ml-3" value="down"><b>DOWN</b></md-button-toggle>
+                      </md-button-toggle-group>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <label for="select-location">Location</label>
+                    <select id="select-location" class="server-filter-form-input form-control">
+                      <option selected>Select Location</option>
+                      <option value="1">One</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row mt-5">
+                  <div class="col-4"></div>
+                  <div class="col-4"></div>
+                  <div class="col-4">
+                    <button class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" onclick="window.location.href='/createserver'">Apply Filter</button>
+                    <button id="server-filter-cancel" class="ml-3 btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="serverFilterCollapse" >Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </form>  
+          </div>
+        </div>
+        <table class="table table-hover table-striped table-responsive">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>OS</th>
+              <th>Hostname</th>
+              <th>IP</th>
+              <th>CPU/MEM</th>
+              <th>Location</th>
+              <th>Status</th>
+              <th>Stats</th>
+              <th>Alerts</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor=" let server of servers; let i = index; ">
+              <td>{{ i + 1 }}</td>
+              <td>{{ server.OS }}</td>
+              <td>{{ server.hostname }}</td>
+              <td>{{ server.ip }}</td>
+              <td>{{ server.cpu }}</td>
+              <td>{{ server.location }}</td>
+              <td>{{ server.vm_status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>

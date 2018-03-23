@@ -1,0 +1,95 @@
+<div class="box box-default mb-0">
+  <div class="row">
+    <p *ngIf="loading" id="loaderimg" class="col-xl-2 ml-auto mr-auto mt-4">
+      <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+    </p>
+  </div>  
+  <div class="row pl-5 pr-5">
+    <div class="col-xl-6 mt-4" *ngIf="showPagination()">
+        <span style="font-size: 14px;font-weight: bold;">Showing {{ (pagination.pageItemIndex + 1) | number }}-{{ (pagination.pageItemIndex + serverLogs?.items.length) | number }} of {{ pagination.collectionSize | number }} ( Total : {{ pagination.totalSize | number }} )</span>
+      </div>
+    <div class="col-xl-6 pr-0">
+      <div class="mt-1 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+        </ngb-pagination>
+      </div>
+    </div>
+    <table class="table table-hover table-responsive" *ngIf="!loading">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date Time</th>
+          <th>CP Code</th>
+          <th>Status</th>
+          <th>City</th>
+          <th>Country</th>
+          <th>URI</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr [ngClass]="{'static-row': !log.dynamicRow, 'dyn-row': log.dynamicRow}" *ngFor=" let log of serverLogs?.items; let i = index; ">
+          <td *ngIf="!log.dynamicRow">{{ pagination.pageItemIndex + (i + 1+1)/2 }}.</td>
+          <td *ngIf="!log.dynamicRow">{{ log.date }} {{ log.time }}</td>
+          <td *ngIf="!log.dynamicRow" title="{{ log.domain }}">{{ log.cp_code }}</td>
+          <td *ngIf="!log.dynamicRow"> <span [ngClass]="getErrorCodeStatusClass(log.status)">{{ log.status }}</span></td>
+          <td *ngIf="!log.dynamicRow">{{ log.city }}</td>
+          <td *ngIf="!log.dynamicRow">{{ log.country }}</td>
+          <td *ngIf="!log.dynamicRow" title="{{ log.uri }}">{{ log.uri | truncate:50 }} </td> 
+          <td *ngIf="!log.dynamicRow"> 
+            <button dynAccordion [collapseToggle]="'Details'+(i + 1)" [ngClass]="{'fa-plus':!log.expandDetails,'fa-minus':serverLogs.items[i + 1].expandDetails}" (click)="triggerlog(i + 1, log)" class=" btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+              <span class="ml-2">Details</span>
+            </button>
+        </td>
+        
+        <td *ngIf="log.dynamicRow" style="padding: 0px !important;border: 0 !important;"   colspan="8">
+            <div style="display: none;" id="Details{{ i }}">
+              <div class="row pt-0 pb-0">
+                <div class="col-xl-12">
+                  <div class="row">
+                    <div class="col-xl-12">
+                      <div class="card row col-xl-12 pr-0 pl-0">
+                          <table  style="background-color: #fff;font-size: 12px;" class="table table-hover table-responsive">
+                              <thead>
+                              <th>Srcip</th>
+                              <th>Referer</th>
+                              <th>User Agent</th>
+                              <th>Cache Status</th>
+                              <th>ISP</th>
+                              <th>Browser</th>
+                              <th>OS</th>
+                              <th>Device</th>
+                              </thead>
+                              <tr>
+                                <td>{{ log.srcip }}</td>
+                                <td title="{{ log.referer }}">{{ log.referer | truncate:40 }}</td>
+                                <td>{{ log.user_agent | truncate:40 }}</td>
+                                <td>{{ log.cache_status }}</td>
+                                <td>{{ log.asn }}</td>
+                                <td>{{ log.browser }}</td>
+                                <td>{{ log.os }}</td>
+                                <td>{{ log.device }}</td>
+                              </tr>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="col-xl-12 text-center" *ngIf="showNoLogsMsg()">No logs found</div>
+    <div class="col-xl-12 text-center text-danger" *ngIf="logsCallError">Something went wrong. Please try again.
+     &nbsp;<a href="javascript:void(0)" (click)="getServerLogs()"><fa class="" name="refresh"></fa> Reload</a></div>
+     <div class="col-12 pr-0">
+      <div class="mt-2 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+        </ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+</div>

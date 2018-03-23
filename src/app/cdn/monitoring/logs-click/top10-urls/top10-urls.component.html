@@ -1,0 +1,48 @@
+<div class="box box-default">
+	<div class="clearfix" role="tabpanel">
+		<div class="row">
+			<div class="col-xl-12">
+				<div class="box box-default mb-0">
+					
+					<form> 
+						<tabset>
+						<tab *ngFor="let tabz of tabsList"
+							[heading]="tabz.template"
+							[active]="tabz.active"
+							(select)="tabz.active = true;getTop10Urls(tabz.template)"
+							(deselect)="tabz.active = false"
+							[disabled]="false">
+							<p *ngIf="loading" id="loaderimg" class="col-xl-2 ml-auto mr-auto mt-4">
+								<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+							</p>
+							<div class="col-xl-12 text-center text-danger" *ngIf="logsCallError">Something went wrong. Please try again.
+								&nbsp;<a href="javascript:void(0)" (click)="getTop10Urls(tabz.template)"><fa class="" name="refresh"></fa> Reload</a>
+							</div>
+							<table class="table table-hover table-striped table-responsive" *ngIf="!loading">
+								<thead>
+									<tr>
+										<th style="width: 10%" class="text-center">#</th>
+										<th style="width: 80%">URI</th>
+										<th style="width: 10%">Count</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let row of this.options[tabz.template]?.topurls; let i = index; ">
+										<td class="text-center">{{ i+1 | number }}</td>
+										<td>{{row[0] | truncate:145}}</td>
+										<td>{{row[1]}}</td>
+									</tr>
+									
+								</tbody>
+							</table>
+							<div class="col-xl-12 text-center" *ngIf="showNoUrlsMsg">No Urls found</div>
+						</tab>
+						</tabset>
+					</form>
+        		</div>
+        
+			</div>
+		</div>
+	</div>
+</div>
+

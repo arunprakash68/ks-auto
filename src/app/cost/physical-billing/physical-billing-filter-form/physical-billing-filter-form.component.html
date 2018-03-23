@@ -1,0 +1,65 @@
+<div id="serverFilterCollapse">
+  <div class="form-group row server-filter-container card ml-auto mr-auto pb-0" >
+    <form #f="ngForm" (ngSubmit)="onSubmit()">
+      <div class="col-12">
+        <div class="row">
+
+          <div class="col-md-4">
+            <label for="select-location">Location</label>
+            <select [(ngModel)]="formData.dc" (change)="onDCChange()" class="server-filter-form-input form-control" name="select-location">
+              <option value="" selected>All</option>
+              <option value="{{ dc.ID }}" *ngFor="let dc of dataCenters">{{ dc.city }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="select-zone">Zones</label>
+            <select [(ngModel)]="formData.dcZone" class="server-filter-form-input form-control" name="select-zone" ngModel>
+              <option value="" selected>All</option>
+              <option value="unallocated">Unallocated</option>
+              <option value="{{ dcZone.ID }}" *ngFor="let dcZone of dcZones[formData.dc]">{{ dcZone.INSTANCE_NAME }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="select-di">DI Type</label>
+            <select [(ngModel)]="formData.diType" class="server-filter-form-input form-control" name="select-di" ngModel>
+              <option value="" selected>All</option>
+              <option value="{{ diType.ID }}" *ngFor="let diType of diTypes?.result">{{ diType.DITYPE }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-xl-4">
+            <label for="select-model-type">Model Type</label>
+            <select (change)="formData.MODEL = ''" [(ngModel)]="formData.ASSET_TYPE_ID" class="server-filter-form-input form-control" name="select-model-type" ngModel>
+              <option value="">All</option>
+              <option [value]="modelType.ID" *ngFor="let modelType of assetModelTypes">{{ modelType.ASSET_TYPE }}</option>
+            </select>
+          </div>
+
+          <div class="col-xl-4">
+            <label for="select-model">Model</label>
+            <select [(ngModel)]="formData.MODEL" class="server-filter-form-input form-control" name="select-model">
+              <option value="">All</option>
+              <ng-container *ngFor="let model of assetModels;">
+                <option *ngIf="model.ASSET_TYPE_ID == formData.ASSET_TYPE_ID"  [value]="model.ID" >{{ model.ASSET_MODEL }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="row mt-5">
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <div class="pull-right">
+              <button type="submit" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >Apply Filter</button>
+              <button id="physical-billing-filter-cancel" type="button" class="ml-3 btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="triggerCollapse()" [attr.aria-expanded]="!isCollapsed" aria-controls="serverFilterCollapse" >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>  
+  </div>
+</div>

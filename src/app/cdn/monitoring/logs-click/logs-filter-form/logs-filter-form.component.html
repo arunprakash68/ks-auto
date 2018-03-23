@@ -1,0 +1,121 @@
+<div>
+	<div class="form-group row logs-filter-form card ml-auto mr-auto pb-0" >
+		<div class="col-xl-12">
+			<form #f="ngForm" >
+				<div class="row">
+					<div class="col-xl-4">
+
+						<label for="select-business">Business Unit</label>
+						<select (change)="onBusinessSelected()" class="form-control" name="select-business" [(ngModel)]="formData.business" ngModel>
+							<!-- <option value="" selected>Select Business</option> -->
+							<option [ngValue]="business" *ngFor="let business of businessAccessDetails">{{ business }}</option>
+						</select>
+					</div>
+					<div class="col-xl-1"></div>
+					<div class="col-xl-3">
+
+						<label for="select-servicetype">Service Type</label>
+						<select (change)="onServiceTypeSelected()" class="form-control" name="select-servicetype" [(ngModel)] = "formData.serviceType" ngModel>
+							<option value="" selected>All</option>
+							<option value="{{ serviceType }}" *ngFor="let serviceType of businessFiltersOut?.serviceTypes">{{ serviceType }}</option>
+						</select>
+					</div>
+
+					<div class="col-xl-3">
+
+						<label for="select-cpcode">CP Code</label>
+						<select [disabled]="cpCodeDisabled" class="form-control" name="select-cpcode" [(ngModel)]="formData.cpCode" ngModel>
+							<option value="" selected>All</option>
+							<option value="{{ cpCode.cp_code }}" *ngFor="let cpCode of cpCodes">{{ cpCode.cp_code_name }}</option>
+						</select>
+					</div>
+				</div>
+				<div *ngIf="tabtype == 'log'" class="row mt-4">
+					<div class="col-xl-4">
+						<label for="select-statuscodegroup">Status Code Group</label>
+						<select (change)="onStatusCodeGroupSelected()" class="form-control" name="select-statuscodegroup" [(ngModel)] = "formData.statusCodeGroup" ngModel>
+							<option value="" selected>All</option>
+							<option value="{{ statusCodeGroup }}" *ngFor="let statusCodeGroup of filters?.statusCodeGroups">{{ statusCodeGroup }}</option>
+						</select>
+					</div>
+
+					<div class="col-xl-4">
+
+						<label for="select-statuscode">Status Code</label>
+						<select [disabled]="statusCodeDisabled" value="All" class="form-control" name="select-statuscode" [(ngModel)]="formData.statusCode" ngModel>
+							<option value="" selected>All</option>
+							<option value="{{ statusCode }}" *ngFor="let statusCode of filters?.statusCodes[formData.statusCodeGroup]">{{ statusCode }}</option>
+						</select>
+					</div>
+
+					<div class="col-xl-4">
+						<label for="select-http-method">HTTP Method</label>
+						<select class="form-control" name="select-http-method" [(ngModel)] = "formData.httpMethod" ngModel>
+							<option value="" selected>All</option>
+							<option value="{{ method }}" *ngFor="let method of filters?.httpMethods">{{ method }}</option>
+						</select>
+					</div>
+				</div>
+				<div *ngIf="tabtype == 'log'">
+				<div class="row mt-4" *ngFor="let filterRow of filters.genericFilterRows;let i = index; trackBy:trackByIndex">
+					<div class="col-xl-4">
+						<label for="filterkey-{{ formData.filterKeys[i] }}">Filter Key</label>
+						<select name="filterkey-{{ formData.filterKeys[i] }}{{ i }}" class="form-control" [(ngModel)]="formData.filterKeys[i]">
+							<option value="">Select Filter</option>
+							<option value="{{ filterKey.key }}" *ngFor="let filterKey of filters.genericKeys;">{{ filterKey.name }}</option>
+						</select>	
+					</div>
+					<div class="col-xl-0">
+						<div class="row mt-4"></div>
+						<div class="row mt-3">
+							<div class="col-xl-12">=</div>
+						</div>
+					</div>
+					<div class="col-xl-6">
+						<label>Filter Value</label>
+						<input class="form-control" type="text" [(ngModel)]="formData[formData.filterKeys[i]]" name="filtervalue-{{ formData.filterKeys[i] }}{{ i }}">
+					</div>
+					<div class="col-xl-1" >
+						<div class="row mt-4"></div>
+						<div class="row mt-3">
+							<div class="col-xl-6" *ngIf="i + 1 == filters.genericFilterRows.length"><strong class="font22 link-color pointer" (click)="addGenericFilterKeyRow()">+</strong></div>
+							<div class="col-xl-6" *ngIf="!(i + 1 == filters.genericFilterRows.length && i == 0)"><strong class="font22 link-color pointer" (click)="deleteGenericFilterKeyRow(i)">-</strong></div>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="row mt-4">
+					<div class="col-xl-4">
+						<label for="select-fromdate">From Date</label>
+
+						<ngx-datetime-picker [(selectedDateTime)]="formData.myFromDate" [disableInput]="true" ></ngx-datetime-picker>
+
+					</div>
+					<div class="col-xl-4">
+						<label for="select-todate">To Date</label>
+
+						<ngx-datetime-picker [(selectedDateTime)]="formData.myToDate" [disableInput]="true" ></ngx-datetime-picker>
+
+					</div>
+				</div>
+				
+				<div class="row mt-5">
+					<div class="col-xl-4"></div>
+					<div class="col-xl-4"></div>
+					<div class="col-xl-4">
+						<div class="pull-right">
+							<button *ngIf="tabtype == 'log'" type="submit" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" (click)="onSubmit(tabtype)">View Logs</button>
+							<button *ngIf="tabtype == 'top10'" type="submit" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" (click)="onSubmit(tabtype)">View Top Urls</button>
+							<button id="logs-filter-cancel" type="button" class="ml-1 btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="triggerCollapse()">Cancel</button>
+						</div>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col-xl-12 text-center">
+						<div *ngIf="viewLogsErrorMessage != ''" class="text-danger">{{ viewLogsErrorMessage }}</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

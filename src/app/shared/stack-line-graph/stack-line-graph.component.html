@@ -1,0 +1,9 @@
+<p *ngIf="loading" class="col-2 ml-auto mr-auto">
+	<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+</p>
+<div class="col-xl-12 text-center text-danger" *ngIf="loadingError">Something went wrong. Please try again.
+     &nbsp;<a href="javascript:void(0)" (click)="triggerReload()"><fa class="" name="refresh"></fa> Reload</a></div>
+<div class="col-xl-12 text-center" *ngIf=" !loadingError && loadingNoData ">No data</div>     
+<div style="width: 100%;height:210px;" [ngStyle]="{'display':displayGraph()?'block':'none'}" (mousedown)="handleMouseDown($event)" (mouseup)="handleMouseUp($event)" (dataZoom)="dataZoomHandler($event)" myECharts [callResize]="callResize" [EChartsOptions]="stackLine">
+	
+</div>

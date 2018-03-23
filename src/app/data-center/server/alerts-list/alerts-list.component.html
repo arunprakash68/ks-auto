@@ -1,0 +1,57 @@
+<div class="box box-default mb-0">
+  <div class="row">
+    <p *ngIf="loading" id="loaderimg" class="col-xl-2 ml-auto mr-auto">
+      <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+    </p>
+  </div>  
+  <div class="row pt-5 pl-5 pr-5">
+    <div class="col-12 pr-0">
+      <div class="mt-1 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+        </ngb-pagination>
+      </div>
+    </div>
+    <table class="table table-hover table-striped table-responsive" *ngIf="!loading">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Timestamp</th>
+          <th>Metric</th>
+          <th>Status</th>
+          <th>Threshold</th>
+          <th>Value</th>
+          <th>Ack</th>
+          <th>Classification</th>
+          <th>Ticket#</th>
+          <th>Stats</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor=" let alert of serverAlerts?.alertdata; let i = index; ">
+          <td>{{ pageItemIndex + i + 1 }}</td>
+          <td>{{ alert.alert_time + '000' | date:'d/M/yyyy, HH:mm' }}</td>
+          <td>{{ alert.metric }}</td>
+          <td [innerHTML]=" config.status[alert.status.toLowerCase()] ? config.status[alert.status.toLowerCase()] : config.status['no data'] "></td>
+          <td>{{ alert.thrshval }}</td>
+          <td>{{ alert.curval }} </td>
+          <td>{{ alert.ack }}</td>
+          <td [innerHTML]=" config.classification[alert.classification.toLowerCase()] ? config.classification[alert.classification.toLowerCase()] : config.classification['no data'] "></td>
+          <td>{{ alert.tktno }}</td>
+          <td>
+            <button id="serverStatsButton" [ngClass]="{'pointer':false}" [disabled]="true" (click)="openDynamicStatsTab(server)" type="button" title="" class="btn btn-default fa fa-area-chart waves-effect waves-effect"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="col-xl-12 text-center" *ngIf="showNoAlertsMsg()">No alerts found</div>
+    <div class="col-xl-12 text-center text-danger" *ngIf="alertsCallError">Something went wrong. Please try again.
+     &nbsp;<a href="javascript:void(0)" (click)="getServerAlerts()"><fa class="" name="refresh"></fa> Reload</a></div>
+     <div class="col-12 pr-0">
+      <div class="mt-2 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+        </ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+</div>

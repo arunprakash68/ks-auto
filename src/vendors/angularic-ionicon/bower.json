@@ -1,0 +1,26 @@
+{
+  "name": "angularic-ionicon",
+  "version": "1.1.1",
+  "authors": [
+    "Nanang Mahdaen El Agung <nanang@mahdaen.name>"
+  ],
+  "description": "Angular Icon - Ionicon",
+  "main": [
+    "angularic-ionicon.js",
+    "angularic-ionicon.css"
+  ],
+  "keywords": [
+    "angular",
+    "icon",
+    "ionicon"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/cobolab/ionicon",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

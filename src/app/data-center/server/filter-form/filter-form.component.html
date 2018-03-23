@@ -1,0 +1,102 @@
+<div id="serverFilterCollapse">
+  <div class="form-group row server-filter-container card ml-auto mr-auto pb-0" >
+    <form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
+      <div class="col-12">
+        <div class="row">
+          
+          <div class="col-md-4">
+            <label for="select-business">Business Unit</label>
+            <select id="select-business" [(ngModel)]="formData.bu" (change)="onBusinessChange()" class="server-filter-form-input form-control" name="select-business">
+              <option value="" selected>All</option>
+              <option value="{{ business.bu_name }}" *ngFor="let business of businessAccessDetails?.bu">{{ business.bu_name }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="select-project">Project</label>
+            <select id="select-project" [(ngModel)]="formData.project" class="server-filter-form-input form-control" name="select-project" ngModel>
+              <option value="" selected>All</option>
+              <option value="{{ project.project }}" *ngFor="let project of projects[formData.bu]">{{ project.project }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="search-text">Search</label>
+            <input type="text" [(ngModel)]="formData.searchtext" id="search-text" placeholder="Search query" class="server-filter-form-input form-control" name="search-text" ngModel>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        
+        <div class="row mt-5">
+          <div class="col-4">
+            <div class="mb-2">Health</div>
+            <div id="health">
+              <md-button-toggle-group [(ngModel)]="formData.health" name="health" ngModel>
+                <md-button-toggle value="1"><b>UP</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="2"><b>DOWN</b></md-button-toggle>
+              </md-button-toggle-group>
+            </div>
+          </div>
+          <div class="col-4">
+
+            <div class="mb-2">Location</div>
+            <div>
+              <md-button-toggle-group [(ngModel)]="formData.location" name="location" ngModel>
+                <md-button-toggle [ngClass]="{'ml-3': i > 0}" *ngFor=" let dataCenter of dataCenters; let i = index; " value="{{dataCenter.ID}}"><b>{{ dataCenter.city }}</b></md-button-toggle>
+              </md-button-toggle-group>
+            </div>
+
+            <!-- <label for="select-location">Location</label>
+            <select class="server-filter-form-input form-control" name="select-location" ngModel>
+              <option value="" selected>Select Location</option>
+              <option value="{{ dataCenter.ID }}" *ngFor="let dataCenter of dataCenters">{{ dataCenter.city }}</option>
+            </select> -->
+
+          </div>
+          <div class="col-4">
+
+            <div class="mb-2">Type</div>
+            <div>
+              <md-button-toggle-group [(ngModel)]="formData.servertype" name="servertype" ngModel>
+                <md-button-toggle value="VM"><b>VM</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="Physical"><b>Physical</b></md-button-toggle>
+              </md-button-toggle-group>
+            </div>
+
+            <!-- <label for="select-type">Type</label>
+            <select class="server-filter-form-input form-control" name="select-type" ngModel>
+              <option value="" selected>Select Type</option>
+              <option value="VM" >VM</option>
+              <option value="Server" >Server</option>
+            </select> -->
+          </div>
+        </div>
+        <div class="row mt-5">
+          <div class="col-6">
+            <div class="mb-2">Environment</div>
+            <div id="environment">
+              <md-button-toggle-group [(ngModel)]="formData.env" name="environment" ngModel>
+                <md-button-toggle value="Production"><b>prod</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="PreProd"><b>pre prod</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="Staging"><b>staging</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="QA"><b>qa</b></md-button-toggle>
+                <md-button-toggle class="ml-3" value="DR"><b>dr</b></md-button-toggle>
+              </md-button-toggle-group>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row mt-5">
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+          <div class="col-4">
+            <div class="pull-right">
+            <button type="submit" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >Apply Filter</button>
+            <button id="server-filter-cancel" type="button" class="ml-3 btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="triggerCollapse()" [attr.aria-expanded]="!isCollapsed" aria-controls="serverFilterCollapse" >Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>  
+  </div>
+</div>

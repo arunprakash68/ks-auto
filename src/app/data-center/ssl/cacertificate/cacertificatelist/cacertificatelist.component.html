@@ -1,0 +1,39 @@
+
+    <div class="row">
+        <p *ngIf="loading" class="col-md-2 ml-auto mr-auto">
+          <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+        </p>
+      </div>
+      <div class="row">
+          <div class="col-xl-12 text-center text-danger" *ngIf="certCallError">Something went wrong. Please try again.
+              &nbsp;<a href="javascript:void(0)" (click)="getsslcert()"><fa class="" name="refresh"></fa> Reload</a>
+          </div> 
+      </div>  
+      <div class="row pt-0">
+        
+        <div class="col-xl-4 mt-4" >
+            <span *ngIf="!loading" style="font-size: 14px;font-weight: bold;">Showing 1-{{cacertlist.length}} of {{totalResult}}</span>
+          </div>
+        </div>
+        <div class="row pt-0 mt-4">
+        <table class="table table-hover table-striped table-responsive" *ngIf="!loading">
+          <tr>
+            <th class="" scope="col">#</th>
+            <th class="" scope="col">Name</th>
+            <th class="" scope="col">Common Name</th>
+            <th class="" scope="col">Issuer Name</th>
+            <th class="" scope="col">Days to Expire</th>
+            <th class="" scope="col">Status</th>
+          </tr>
+          <tr *ngFor=" let cacert of cacertlist; let i = index; ">
+            <td>{{ i+1 | number }}</td>
+            <td>{{cacert.certkey | truncate:25}}</td>
+            <td>{{cacert.commonname | truncate:25}}</td>
+            <td>{{cacert.issuer | truncate:50}}</td>
+            <td>{{cacert.daystoexpiration}}</td>
+            <td>{{cacert.status}}</td>
+          </tr>
+        </table>
+        <div class="col-xl-12 text-center" *ngIf="showNoCertMsg">No Certificates found</div>
+    </div>
+  

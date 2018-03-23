@@ -1,0 +1,57 @@
+ <section class="container-fluid cost-billing">
+  <h2 class="article-title"></h2>
+
+  <div class="row">
+    <div class="clearfix col-12">
+      <tabset>
+        <tab heading="My Billing" [active]="staticBillingTab.active" (select)="staticBillingTab.active = true" (deselect)="staticBillingTab.active = false">
+          <div class="box box-default billing-tab-content">
+            <div role="tabpanel">
+              <!-- <div class="row pt-4 pb-3">
+                <div class="col-xl-12 pl-4"><button class="ml-3 btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" onclick="window.location.href='#/app/data-center/server/new'">New Server</button>
+                  <a href="javascript:void(0)" class="ml-4" (click)="toggleSummaryView()">Full List View</a>
+                </div>
+                
+              </div> -->
+              <div class="row">
+                <!-- <div class="col-xl-1"></div> -->
+                <div class="col-xl-2 mt-4 pl-5">
+                  <!-- <label class="">Select month</label> -->
+                  <select (change)="dateChange()" class="form-control" [(ngModel)]="formData.month">
+                    <option *ngFor="let month of dateSelector?.yearMonths[formData.year]" [value]="month.value">{{ month.name }}</option>
+                  </select>
+                </div>
+                <div class="col-xl-2 mt-4 pl-0 ml-0">
+                  <!-- <label class="ml-3">Select year</label> -->
+                  <select (change)="yearChange()" class="form-control w-50" [(ngModel)]="formData.year">
+                    <option *ngFor="let year of dateSelector?.years" [value]="year">{{ year }}</option>
+                  </select>
+                </div>
+                <!-- <div class="col-xl-5 mt-3">
+                  <span class="pull-right">
+                    <a href="javascript:void(0);" (click)=" isCollapsed = !isCollapsed " [attr.aria-expanded]="!isCollapsed" aria-controls="serverFilterCollapse" >
+                      <img src="http://keystoneold.timesinternet.in/assets/img/filter.png" class="mr-4 server-filter-icon" height="40" width="40">
+                    </a>
+                  </span>
+                </div> -->
+                <div class="col-xl-12">
+                  <infra-billing-filter-form (triggerFilterCollapse)="triggerFilterCollapse($event)" [updatedSearchOptions]="searchOptions" [ngbCollapse]="!isCollapsed" [isCollapsed]="isCollapsed" (searchOptions)="updateSearchOptions($event)"></infra-billing-filter-form>
+                </div>
+              </div>
+              <div class="row mt-2"></div>
+              <div class="row mt-0 pl-5 pr-5">
+                <div class="col-xl-12 mt-2">
+                  <infra-billing-list [billingParamsIn]="searchOptions"></infra-billing-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+      </tabset>
+      
+    </div>
+  </div>
+
+  
+
+</section>

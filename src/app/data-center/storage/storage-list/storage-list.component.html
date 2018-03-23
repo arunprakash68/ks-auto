@@ -1,0 +1,75 @@
+
+  <div class="row">
+    <p *ngIf="loading" id="loaderimg" class="col-xl-2 ml-auto mr-auto">
+      <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+    </p>
+  </div>  
+  <div class="row">
+    <div class="col-12 pr-0">
+      <div class="row">
+        <div class="col-xl-4 mt-4" *ngIf="showPagination()">
+        <span style="font-size: 14px;font-weight: bold;">Showing {{ pageItemIndex + 1 }}-{{ pageItemIndex + storages?.rdmdata.length }} of {{ collectionSize }}</span>
+      </div>
+      <div class="col-xl-8">
+      <div class="mt-1 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+        </ngb-pagination>
+      </div>
+      </div>
+      </div>
+    </div>
+    <table class="table table-hover table-striped table-responsive" *ngIf="!loading">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>Project</th>
+          <th>Host</th>
+          <th>IP</th>
+          <th>Location</th>
+          <th>Size</th>
+          <th>Utlilization</th>
+          <th>Status</th>
+          <th>Stats/Alerts</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="storages && (storages.status != 0)">
+        <tr *ngFor=" let storage of storages?.rdmdata; let i = index; ">
+          <td>{{ pageItemIndex + i + 1 }}</td>
+          <td>
+            <img style="max-height: 30px;max-width: 30px;" title="{{ storage.storage_type }}" (error)="errorHandler($event)" src="{{ config.typeImagePath }}/{{ storage.storage_img }}">&nbsp;
+            <!-- <img height="30" width="30" (error)="errorHandler($event)" title="{{ server.vmtype }}" src="{{ config.vmTypeImagePath }}/{{ server.vmtype_image }}"> -->
+          </td>
+          <td title="{{ storage.project }}" width="10%">{{ storage.project | truncate: 5 }}</td>
+          <td>{{ storage.hostname }}</td>
+          <td>{{ storage.private_ip }}</td>
+          <td>
+            <div [innerHTML]="config.location[storage.location.toLowerCase()]"></div>
+          </td>
+          <td>{{ storage.size_gb }}</td>
+          <td title="{{storage.utilization}}%">
+            <progressbar value="{{storage.utilization}}"></progressbar>
+          </td>
+          <td>
+            <div>
+              <label class="label-monitor-status">{{ config.tags.monitorStatus[storage.vm_status] }}</label>
+            </div>
+          </td>
+          <td>
+            <button id="storageStatsButton" [ngClass]="{'pointer':storage.vm_status != '2'}" [disabled]="storage.vm_status == '2'" (click)="openDynamicStatsTab(storage)" type="button" title="" class="btn btn-default fa fa-area-chart waves-effect waves-effect"></button>
+            <button type="button" id="storageAlertsButton" [ngClass]="{'pointer':storage.vm_status != '2'}" [disabled]="storage.vm_status == '2'" (click)="openDynamicAlertsTab(storage)" class="btn btn-default fa fa-bar-chart waves-effect waves-effect" ></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="col-xl-12 text-center" *ngIf="showNoServersMsg()">No storages found</div>
+    <div class="col-xl-12 text-center text-danger" *ngIf="storageCallError">Something went wrong. Please try again.
+      &nbsp;<a href="javascript:void(0)" (click)="getMyStorages()"><fa class="" name="refresh"></fa> Reload</a></div>
+
+      <div class="col-12 pr-0">
+      <div class="mt-2 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+        </ngb-pagination>
+      </div>
+    </div>
+    </div>

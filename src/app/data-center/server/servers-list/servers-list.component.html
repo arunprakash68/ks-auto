@@ -1,0 +1,118 @@
+
+<div class="row">
+  <p *ngIf="loading" id="loaderimg" class="col-xl-2 ml-auto mr-auto">
+    <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+  </p>
+</div>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="modal fade" bsModal #serverUpdateModal="bs-modal" [config]="{backdrop: 'static'}"
+    tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #303F9F;color: #fff;">
+          <h4 class="modal-title pull-left">Update Server Data</h4>
+          <button type="button" class="close pull-right mb-5" aria-label="Close" (click)="serverUpdateModal.hide()">
+            <span style="background-color: #303F9F;color: #fff;" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <server-update-form (reloadServerList)="reloadServerList(serverUpdateModal)" [serverData]="serverToEdit"></server-update-form>
+        </div>
+      </div>
+    </div>
+  </div>     
+</div>
+</div>
+
+<div class="row">
+  <div class="col-12 pr-0">
+    <div class="row">
+      <div class="col-xl-4 mt-4" *ngIf="showPagination()">
+        <span style="font-size: 14px;font-weight: bold;">Showing {{ pageItemIndex + 1 }}-{{ pageItemIndex + servers?.vmdata.length }} of {{ collectionSize }}</span>
+      </div>
+      <div class="col-xl-8">
+        <div class="mt-1 pull-right" *ngIf="showPagination()">
+          <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  <table class="table table-hover table-responsive" *ngIf="!loading">
+
+    <thead>
+
+      <tr>
+        <th>#</th>
+        <th>OS</th>
+        <th>Hostname</th>
+        <th>IP</th>
+        <th>Type</th>
+        <th>CPU/MEM</th>
+        <th>Location</th>
+        <th>Tags</th>
+        <th>Status</th>
+        <th>Stats/Alerts</th>
+        <!-- <th>Edit</th> -->
+
+        <!-- <th width="5%">#</th>
+        <th width="10%">OS</th>
+        <th width="15%">Hostname</th>
+        <th width="10%">IP</th>
+        <th width="10%">CPU/MEM</th>
+        <th width="10%">Location</th>
+        <th width="10%">Tags</th>
+        <th width="5%">Status</th>
+        <th width="10%">Stats/Alerts</th>
+        <th width="5%">Edit</th> -->
+      </tr>
+    </thead>
+    <tbody *ngIf="servers && servers.status">
+
+      <tr *ngFor=" let server of servers?.vmdata; let i = index; ">
+        <td>{{ pageItemIndex + i + 1 }}</td>
+        <td>
+          <span>
+            <img style="max-height: 30px;max-width: 30px;" title="{{ server.OS }}" (error)="errorHandler($event)" src="{{ config.osImagePath }}/{{ server.os_image }}">&nbsp;
+          </span>
+          <span>
+            <img style="max-width: 30px;max-height: 30px;" (error)="errorHandler($event)" title="{{ server.vmtype }}" src="{{ config.vmTypeImagePath }}/{{ server.vmtype_image }}">
+          </span>
+        </td>
+        <td title="{{server.hostname}}">{{ server.hostname | truncate:12 }}</td>
+        <td>{{ server.ip }}</td>
+        <td>{{ server.server_type }}</td>
+        <td>{{ server.cpu }}/{{ server.memory }}</td>
+        <td>
+          <div [innerHTML]="config.location[server.location]"></div>
+        </td>
+        <td>
+          <label class="label-monitor-status-{{ config.tags.vmStatusDisplayClass[!!server.vm_status ? server.vm_status.toLowerCase() : 'nostatus'] }}" title="{{ config.tags.vmStatusDisplay[!!server.vm_status ? server.vm_status.toLowerCase() : 'nostatus'] }}">{{ config.tags.vmStatusDisplay[!!server.vm_status ? server.vm_status.toLowerCase() : 'nostatus'] | truncate:3 }}</label>
+          <label class="label-project" title="{{ server.project }}">{{ server.project_scode | truncate:3 }}</label>
+        </td>
+        <!-- <td [innerHTML]="config.status['up']"></td> -->
+        <td>
+          <progressbar  title="{{server.progress}}%" [value]="server.progress" [max]="100"></progressbar>  
+        </td>
+        <td>
+          <button id="serverStatsButton" [ngClass]="{'pointer':server.monitor_status != '2'}" [disabled]="server.monitor_status == '2'" (click)="openDynamicStatsTab(server)" type="button" title="" class="btn btn-default fa fa-area-chart waves-effect waves-effect"></button>
+          <button type="button" id="serverAlertsButton" [ngClass]="{'pointer':server.monitor_status != '2'}" [disabled]="server.monitor_status == '2'" (click)="openDynamicAlertsTab(server)" class="btn btn-default fa fa-bar-chart waves-effect waves-effect" ></button>
+        </td>
+        <!-- <td>
+          <button id="serverEditButton" (click)="editServerData(serverUpdateModal, server)" type="button" title="Edit" class="pointer btn btn-default fa fa-pencil waves-effect waves-effect"></button>
+        </td> -->
+      </tr>
+    </tbody>
+  </table>
+  <div class="col-xl-12 text-center" *ngIf="showNoServersMsg()">No servers found</div>
+  <div class="col-xl-12 text-center text-danger" *ngIf="serverCallError">Something went wrong. Please try again.
+    &nbsp;<a href="javascript:void(0)" (click)="getMyServers()"><fa class="" name="refresh"></fa> Reload</a></div>
+
+    <div class="col-12 pr-0">
+      <div class="mt-2 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>

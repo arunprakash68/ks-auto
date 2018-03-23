@@ -1,0 +1,20 @@
+<!-- <div class="row">
+	<div class="col-xl-4">
+		<label for="monitorname">Enter Monitor Name</label>
+		<input (change)="updateFormData()" [(ngModel)]="formData.monitorname" class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" id="monitorname" name="monitorname" placeholder="Monitor Name" type="text" >           
+	</div>
+	<div class="col-xl-4">
+		<label for="description">Enter Description</label>
+		<input (change)="updateFormData()" [(ngModel)]="formData.description" class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" id="description" name="description" placeholder="Description" type="text" >           
+	</div>
+</div> -->
+<div class="row mg-top-2">
+	<div class="col-xl-4">
+		<label for="send_string">Enter Send String</label>
+		<input (change)="updateFormData()" [(ngModel)]="formData.send_string" class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" id="send_string" name="send_string" placeholder="GET /cde/check.htm" type="text" >           
+</div>
+<div class="col-xl-4">
+		<label for="recv_string">Enter Expected Receiving Code</label>
+		<input (change)="updateFormData()" [(ngModel)]="formData.recv_string" class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" id="recv_string" name="recv_string" placeholder="200" type="number" >           
+	</div>
+</div>

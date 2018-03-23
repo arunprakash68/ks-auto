@@ -1,0 +1,89 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "angularic-ionicon",
+        "scope": null,
+        "escapedName": "angularic-ionicon",
+        "name": "angularic-ionicon",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "C:\\Projects\\auto-frontend"
+    ]
+  ],
+  "_from": "angularic-ionicon@latest",
+  "_id": "angularic-ionicon@1.1.1",
+  "_inCache": true,
+  "_location": "/angularic-ionicon",
+  "_nodeVersion": "7.4.0",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/angularic-ionicon-1.1.1.tgz_1486403827669_0.7861712169833481"
+  },
+  "_npmUser": {
+    "name": "mahdaen",
+    "email": "mahdaen@gmail.com"
+  },
+  "_npmVersion": "4.0.5",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "angularic-ionicon",
+    "scope": null,
+    "escapedName": "angularic-ionicon",
+    "name": "angularic-ionicon",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/angularic-ionicon/-/angularic-ionicon-1.1.1.tgz",
+  "_shasum": "6fe22ebf4c5736d1d6576f1bc21ec18ea84745eb",
+  "_shrinkwrap": null,
+  "_spec": "angularic-ionicon",
+  "_where": "C:\\Projects\\auto-frontend",
+  "author": {
+    "name": "Nanang Mahdaen El Agung",
+    "email": "nanang@mahdaen.name"
+  },
+  "bugs": {
+    "url": "https://github.com/cobolab/ionicon/issues"
+  },
+  "dependencies": {},
+  "description": "Angular Icon - Ionicons",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "6fe22ebf4c5736d1d6576f1bc21ec18ea84745eb",
+    "tarball": "https://registry.npmjs.org/angularic-ionicon/-/angularic-ionicon-1.1.1.tgz"
+  },
+  "gitHead": "737b254186f1a82216af9c271ece472dca123cfe",
+  "homepage": "https://github.com/cobolab/ionicon",
+  "keywords": [
+    "angular",
+    "icon",
+    "ionicon"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "mahdaen",
+      "email": "mahdaen@yahoo.co.id"
+    }
+  ],
+  "name": "angularic-ionicon",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cobolab/ionicon.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.1.1"
+}

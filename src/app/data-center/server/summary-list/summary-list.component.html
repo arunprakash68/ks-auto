@@ -1,0 +1,132 @@
+<div class="box box-default mb-0">
+  <div class="row">
+    <p *ngIf="loading" id="loaderimg" class="col-xl-2 ml-auto mr-auto">
+      <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+    </p>
+  </div>  
+  <div class="row pt-0">
+    <div class="col-12 pr-0">
+      <div class="row">
+        <div class="col-xl-4 mt-4" *ngIf="showPagination()">
+          <span style="font-size: 14px;font-weight: bold;">Showing {{ pagination.pageItemIndex + 1 }}-{{ pagination.pageItemIndex + serverSummary?.summary.length }} of {{ pagination.collectionSize }}</span>
+        </div>
+        <div class="col-xl-8">
+          <div class="mt-1 pull-right" *ngIf="showPagination()">
+            <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+            </ngb-pagination>
+          </div>
+        </div>  
+      </div>
+
+
+    </div>
+    <table class="table table-hover table-responsive" *ngIf="!loading">
+      <tr>
+        <th  colspan="1" class="" scope="col">#</th>
+        <th  colspan="1" class="" scope="col">Project</th>
+        <th>Admin</th>
+        <!-- <th style="text-align: center;" colspan="1" class="bg-prod" scope="col">Prod</th>
+        <th style="text-align: center;" colspan="1" class="bg-preprod" scope="col">Pre Prod</th>
+        <th style="text-align: center;" colspan="1" class="bg-qa" scope="col">QA</th>
+        <th style="text-align: center;" colspan="1" class="bg-dr" scope="col">DR</th>
+        <th style="text-align: center;" colspan="1" class="bg-staging" scope="col">Staging</th> -->
+        <th style="text-align: center;" colspan="1"  scope="col">Prod</th>
+        <th style="text-align: center;" colspan="1"  scope="col">Pre Prod</th>
+        <th style="text-align: center;" colspan="1"  scope="col">QA</th>
+        <th style="text-align: center;" colspan="1"  scope="col">DR</th>
+        <th style="text-align: center;" colspan="1"  scope="col">Staging</th>
+        <th style="text-align: center;" colspan="1" class="" scope="col">Total</th>
+      </tr>
+      <tr *ngFor=" let summary of serverSummary?.summary;let i = index; ">
+        <td rowspan="1">{{ pagination.pageItemIndex + i + 1 }}.</td>
+        <td rowspan="1">
+          <a href="javascript:void(0)" (click)="showDetailedView({business: summary.BU})">
+          <span>{{ summary.BU }}:/</span></a><a href="javascript:void(0)" (click)="showDetailedView({business: summary.BU, project: summary.PROJECT})"><span> {{ summary.PROJECT }}</span></a>
+          <!-- <span>{{ summary.PROJECT }} ({{ summary.BU }})</span><br> -->
+          <!-- <span style="color: grey; font-size: 12px;">{{ summary.BU }}</span> -->
+        </td>
+        <td>
+          <span>{{ summary.SYSSPOC }}</span><br>
+          <span style="color: grey; font-size: 12px;">XXXXXXXXXX</span>
+        </td>
+        <td style="text-align: center;" colspan="1">
+          <span *ngIf="summary.APPPROD_COUNT + summary.DBPROD_COUNT == 0" class="bold font18">{{ checkZeroValue(summary.APPPROD_COUNT + summary.DBPROD_COUNT) }}</span>
+          <a *ngIf="summary.APPPROD_COUNT + summary.DBPROD_COUNT > 0" href="javascript:void(0)" (click)="showDetailedView({business: summary.BU, project: summary.PROJECT,env: 'Production'})" ><span class="bold font18">{{ checkZeroValue(summary.APPPROD_COUNT + summary.DBPROD_COUNT) }}</span></a>
+          <br>
+          <span style="border-top: 1px solid rgba(0, 0, 0, 0.1);">
+          <span class="label-app" >{{ checkZeroValue(summary.APPPROD_COUNT) }}</span>
+          <span class="ml-0" style="border-right: 1px solid rgba(0, 0, 0, 0.1);"></span>
+          <span  class="label-db ml-1" >{{ checkZeroValue(summary.DBPROD_COUNT) }}</span>
+          </span>
+        </td>
+
+        <td style="text-align: center;" colspan="1">
+          <span *ngIf="summary.APPPREPROD_COUNT + summary.DBPREPROD_COUNT == 0" class="bold font18">{{ checkZeroValue(summary.APPPREPROD_COUNT + summary.DBPREPROD_COUNT) }}</span>
+          <a *ngIf="summary.APPPREPROD_COUNT + summary.DBPREPROD_COUNT > 0" href="javascript:void(0)" (click)="showDetailedView({business: summary.BU, project: summary.PROJECT,env: 'PreProd'})" ><span class="bold font18">{{ checkZeroValue(summary.APPPREPROD_COUNT + summary.DBPREPROD_COUNT) }}</span></a>
+          <br>
+          <span style="border-top: 1px solid rgba(0, 0, 0, 0.1);">
+          <span class="label-app">{{ checkZeroValue(summary.APPPREPROD_COUNT) }}</span>
+          <span class="ml-0" style="border-right: 1px solid rgba(0, 0, 0, 0.1);"></span>
+          <span class="label-db ml-1" >{{ checkZeroValue(summary.DBPREPROD_COUNT) }}</span>
+          </span>
+        </td>
+
+        <td style="text-align: center;" colspan="1">
+          <span *ngIf="summary.APPQA_COUNT + summary.DBQA_COUNT == 0" class="bold font18">{{ checkZeroValue(summary.APPQA_COUNT + summary.DBQA_COUNT) }}</span>
+          <a *ngIf=" summary.APPQA_COUNT + summary.DBQA_COUNT > 0 " href="javascript:void(0)" (click)="showDetailedView({business: summary.BU, project: summary.PROJECT,env: 'QA'})" ><span class="bold font18">{{ checkZeroValue(summary.APPQA_COUNT + summary.DBQA_COUNT) }}</span></a>
+          <br>
+          <span style="border-top: 1px solid rgba(0, 0, 0, 0.1);">
+          <span class="label-app">{{ checkZeroValue(summary.APPQA_COUNT) }}</span>
+          <span class="ml-0" style="border-right: 1px solid rgba(0, 0, 0, 0.1);"></span>
+          <span class="label-db ml-1"  >{{ checkZeroValue(summary.DBQA_COUNT) }}</span>
+          </span>
+        </td>
+        
+        <td style="text-align: center;" colspan="1">
+          <span *ngIf="summary.APPDR_COUNT + summary.DBDR_COUNT == 0" class="bold font18">{{ checkZeroValue(summary.APPDR_COUNT + summary.DBDR_COUNT) }}</span>
+          <a *ngIf="summary.APPDR_COUNT + summary.DBDR_COUNT > 0" href="javascript:void(0)" (click)="showDetailedView({business: summary.BU, project: summary.PROJECT,env: 'DR'})" ><span class="bold font18">{{ checkZeroValue(summary.APPDR_COUNT + summary.DBDR_COUNT) }}</span></a>
+          <br>
+          <span style="border-top: 1px solid rgba(0, 0, 0, 0.1);">
+          <span class="label-app">{{ checkZeroValue(summary.APPDR_COUNT) }}</span>
+          <span class="ml-0" style="border-right: 1px solid rgba(0, 0, 0, 0.1);"></span>
+          <span class="label-db ml-1" >{{ checkZeroValue(summary.DBDR_COUNT) }}</span>
+          </span>
+        </td>
+        
+        <td style="text-align: center;" colspan="1">
+          <span *ngIf="summary.APPSTAGING_COUNT + summary.DBSTAGING_COUNT == 0" class="bold font18">{{ checkZeroValue(summary.APPSTAGING_COUNT + summary.DBSTAGING_COUNT) }}</span>
+          <a *ngIf="summary.APPSTAGING_COUNT + summary.DBSTAGING_COUNT > 0" href="javascript:void(0)" (click)="showDetailedView({business: summary.BU, project: summary.PROJECT,env: 'Staging'})" ><span class="bold font18">{{ checkZeroValue(summary.APPSTAGING_COUNT + summary.DBSTAGING_COUNT) }}</span></a>
+          <br>
+          <span style="border-top: 1px solid rgba(0, 0, 0, 0.1);">
+          <span class="label-app">{{ checkZeroValue(summary.APPSTAGING_COUNT) }}</span>
+          <span class="ml-0" style="border-right: 1px solid rgba(0, 0, 0, 0.1);"></span>
+          <span class="label-db ml-1" >{{ checkZeroValue(summary.DBSTAGING_COUNT) }}</span>
+          </span>
+        </td>
+        
+        <td style="text-align: center;" colspan="1">
+          <span *ngIf="summary.APPTOTAL + summary.DBTOTAL == 0" class="bold font18">{{ checkZeroValue(summary.APPTOTAL + summary.DBTOTAL) }}</span>
+          <a *ngIf="summary.APPTOTAL + summary.DBTOTAL > 0" href="javascript:void(0)" (click)="showDetailedView({business: summary.BU, project: summary.PROJECT})" ><span class="bold font18">{{ checkZeroValue(summary.APPTOTAL + summary.DBTOTAL) }}</span></a>
+          <br>
+          <span style="border-top: 1px solid rgba(0, 0, 0, 0.1);">
+          <span class="label-app" style="color: grey !important;">{{ checkZeroValue(summary.APPTOTAL) }}</span>
+          <span class="ml-0" style="border-right: 1px solid rgba(0, 0, 0, 0.1);"></span>
+          <span class="label-db ml-1" style="color: grey !important;">{{ checkZeroValue(summary.DBTOTAL) }}</span>
+          </span>
+        </td>
+
+        
+      </tr>
+    </table>
+    <div class="col-xl-12 text-center" *ngIf="showNoSummaryMsg()">No servers found</div>
+    <div class="col-xl-12 text-center text-danger" *ngIf="summaryCallError">Something went wrong. Please try again.
+     &nbsp;<a href="javascript:void(0)" (click)="getServerSummary()"><fa class="" name="refresh"></fa> Reload</a></div>
+     <div class="col-12 pr-0">
+      <div class="mt-2 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+        </ngb-pagination>
+      </div>
+    </div>
+
+  </div>
+</div>

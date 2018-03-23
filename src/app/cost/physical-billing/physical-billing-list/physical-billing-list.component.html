@@ -1,0 +1,123 @@
+<div class="box box-default mb-0">
+  <div class="row">
+    <p *ngIf="loading" class="col-xl-2 ml-auto mr-auto">
+      <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+    </p>
+  </div>  
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="modal fade" bsModal #assetUpdateModal="bs-modal" [config]="{backdrop: 'static'}"
+      tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: #303F9F;color: #fff;">
+            <h4 class="modal-title pull-left">Update Asset Data</h4>
+            <button type="button" class="close pull-right mb-5" aria-label="Close" (click)="assetUpdateModal.hide()">
+              <span style="background-color: #303F9F;color: #fff;" aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <physical-billing-update-form [assetFieldMapping]="assetFieldMapping" (reloadServerList)="reloadAssetList(assetUpdateModal)" [assetData]="assetToEdit"></physical-billing-update-form>
+          </div>
+        </div>
+      </div>
+    </div>     
+  </div>
+</div>
+
+<div class="row pt-0">
+  <div class="col-12 pr-0">
+    <div class="row">
+      <div class="col-xl-4 mt-4" *ngIf="showPagination()">
+        <span style="font-size: 14px;font-weight: bold;">Showing {{ pagination.pageItemIndex + 1 }}-{{ pagination.pageItemIndex + billings?.customResult?.length }} of {{ pagination.collectionSize }}</span>
+      </div>
+      <div class="col-xl-8">
+        <div class="mt-1 pull-right" *ngIf="showPagination()">
+          <ngb-pagination  (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+          </ngb-pagination>
+        </div>
+      </div>  
+    </div>
+
+
+  </div>
+  <!-- <div class="col-xl-12"> -->
+    <table class="table table-hover table-striped table-responsive" *ngIf="!loading">
+      <tr>
+
+        <th></th>
+        <!-- <th class="" scope="col">ID</th> -->
+        <th class="" scope="col">#</th>
+        <th class="" scope="col">S.No</th>
+        <th class="" scope="col">Model</th>
+        <th class="" scope="col">Model Type</th>
+        <th class="" scope="col">Location</th>
+        <th class="" scope="col">Zone</th>
+
+        <th class="" scope="col">Power</th>
+        <th class="" scope="col">Cost (capex)</th>
+        <th class="" scope="col">Cost (opex)</th>
+        <th>Edit</th>
+      </tr>
+
+      <tr  *ngFor="let billing of finalBillings?.result; let i = index;">
+        <td *ngIf="!billing.dynRow">
+          <button [collapseToggle]="'costDetails'+(i + 1)" (click)="finalBillings?.result[i + 1].expandDetails = !finalBillings?.result[i + 1].expandDetails" dynAccordion id="assetBillingDetails" [ngClass]="{'fa-plus':!finalBillings?.result[i + 1].expandDetails,'fa-minus':finalBillings?.result[i + 1].expandDetails}" class="blue-button btn-xs pointer btn-default fa waves-effect waves-effect" type="button" ></button>
+        </td>
+        <!-- <td *ngIf="!billing.dynRow">{{ billing.ID }}</td> -->
+        <td *ngIf="!billing.dynRow">{{ pagination.pageItemIndex + i / 2 + 1  }}.</td>
+        <td *ngIf="!billing.dynRow" [title]="billing.S_NO" >{{ billing.S_NO | truncate:10  }}</td>
+        <td *ngIf="!billing.dynRow" [title]="billing.ASSET_MODEL" >{{ billing.ASSET_MODEL | truncate:15  }}</td>
+        <td *ngIf="!billing.dynRow" [title]="billing.MODEL_TYPE" >{{ billing.MODEL_TYPE | truncate:10  }}</td>
+        <td *ngIf="!billing.dynRow">{{ billing.datacenter }}</td>
+        <td *ngIf="!billing.dynRow">{{ billing.INSTANCE_NAME }}</td>
+        <td *ngIf="!billing.dynRow">{{ billing.RACK_POWER }}</td>
+        <td *ngIf="!billing.dynRow">{{ billing.capex_type_COST ? (billing.capex_type_COST | number) : billing.capex_type_COST }}</td>
+        <td *ngIf="!billing.dynRow">{{ billing.opex_type_COST ? (billing.opex_type_COST | number) : billing.opex_type_COST }}</td>
+        <td *ngIf="!billing.dynRow">
+          <button id="assetEditButton" (click)="editAssetData(assetUpdateModal, billing)" type="button" title="Edit" class="pointer btn btn-default fa fa-pencil waves-effect waves-effect"></button>
+        </td>
+        <td style="padding: 0px !important;border: 0 !important;" *ngIf="billing.dynRow" colspan="11">
+          <div style="display: none;" id="costDetails{{ i }}">
+            <table style="font-size: 12px;background-color: #fff;margin-bottom: 0px !important;" class="table table-hover table-striped table-responsive">
+              <tr>
+                <th></th>
+                <th class="" scope="col">CPU</th>
+                <th class="" scope="col">Disk</th>
+                <th class="" scope="col">Private IP</th>
+                <th class="" scope="col">PO</th>
+                <th class="" scope="col">Capex Start Date</th>
+                <th class="" scope="col">Capex End Date</th>
+                <th class="" scope="col">Opex Start Date</th>
+                <th class="" scope="col">Opex End Date</th>
+                <th class="" scope="col">Opex PO</th>
+              </tr>
+              <tr>
+                <td></td>
+                <td>{{ finalBillings?.result[i - 1].CPU }}</td>
+                <td>{{ finalBillings?.result[i - 1].DISK }}</td>
+                <td>{{ finalBillings?.result[i - 1].PRIVATE_IP }}</td>
+                <td>{{ finalBillings?.result[i - 1].capex_type_PO }}</td>
+                <td>{{ finalBillings?.result[i - 1].AMC_S | date:'yyyy-MM-dd'}}</td>
+                <td>{{ finalBillings?.result[i - 1].AMC_E | date:'yyyy-MM-dd' }}</td>
+                <td>{{ finalBillings?.result[i - 1].opex_rows[0].START_DATE | date:'yyyy-MM-dd' }}</td>
+                <td>{{ finalBillings?.result[i - 1].opex_rows[0].END_DATE | date:'yyyy-MM-dd' }}</td>
+                <td>{{ finalBillings?.result[i - 1].opex_rows[0].opex_type_PO }}</td>
+              </tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div class="col-xl-12 text-center" *ngIf="showNoBillingMsg()">No assets found</div>
+    <div class="col-xl-12 text-center text-danger" *ngIf="billingCallError">Something went wrong. Please try again.
+     &nbsp;<a href="javascript:void(0)" (click)="getBilling()"><fa class="" name="refresh"></fa> Reload</a></div>
+     <div class="col-12 pr-0">
+      <div class="mt-2 pull-right" *ngIf="showPagination()">
+        <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+        </ngb-pagination>
+      </div>
+    </div>
+    <!-- </div> -->
+  </div>
+</div>

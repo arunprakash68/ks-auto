@@ -1,0 +1,48 @@
+<div class="page-auth">
+  <div class="main-body">
+    <div class="card card-white">
+      <div class="card-content">
+        <div class="logo">
+          <a [routerLink]="['/']">Login</a>
+        </div>
+
+        <form name="material_login_form" class="md-form-auth form-validation" (ngSubmit)="login()">
+          <fieldset>
+            <div class="form-group">
+              <md-input-container class="full-width md-icon-left">
+                <md-icon class="material-icons">mail_outline</md-icon>
+                <input required mdInput type="text" [(ngModel)]="model.email" #email="ngModel" name="email" placeholder="Email">
+              </md-input-container>
+            </div>
+            <div class="form-group">
+              <md-input-container class="full-width md-icon-left">
+                <md-icon class="material-icons">lock_outline</md-icon>
+                <input required mdInput type="password" name="password" [(ngModel)]="model.password" #password="ngModel" placeholder="Password">
+              </md-input-container>
+            </div>
+
+            <button md-raised-button type="submit" color="primary" class="float-right">Login</button>
+          </fieldset>
+        </form>
+        <!-- <div class="additional-info">
+          <a href="javascript:void(0)">Sign up</a>
+          <span class="divider-h"></span>
+          <a href="javascript:void(0)">Forgot your password?</a>
+        </div> -->
+
+      </div>
+      <div *ngIf=" !loadingError && loginFailed " class="alert alert-danger">
+                    <!-- <button type="button" class="close" data-dismiss="alert">
+                      <span aria-hidden="true">×</span>
+                    </button> -->
+                    <div>Invalid Username or Password</div>
+                  </div>
+                  <div *ngIf="loadingError" class="alert alert-danger">
+                    <!-- <button type="button" class="close" data-dismiss="alert">
+                      <span aria-hidden="true">×</span>
+                    </button> -->
+                    <div>Something went wrong. Please try again</div>
+                  </div>            
+                </div>
+              </div>
+            </div>

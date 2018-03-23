@@ -1,0 +1,60 @@
+ <section class="container-fluid data-center-storage">
+  <h2 class="article-title"></h2>
+
+  <div class="row">
+    <div class="clearfix col-12">
+      <tabset>
+        <tab heading="My Cluster" [active]="staticClusterTab.active" (select)="staticClusterTab.active = true" (deselect)="staticClusterTab.active = false">
+          <div class="box box-default server-tab-content">
+            <div class="" id="my-server" role="tabpanel">
+
+              <div class="row pt-4 pb-3">
+                <div class="col-6 pl-4"><button class="ml-3 btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" onclick="window.location.href='#/app/data-center/cluster/new'">New Cluster</button></div>
+                <div class="col-6">
+                  <span class="pull-right">
+                    <a href="javascript:;" (click)="openClusterFilter()" [attr.aria-expanded]="!isCollapsed" aria-controls="clusterFilterCollapse" >
+                      <img src="http://keystoneold.timesinternet.in/assets/img/filter.png" class="mr-4 server-filter-icon" height="40" width="40">
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div class="row" *ngIf=" searchTags && searchTags.length > 0 ">
+                <div class="col-12 text-center">
+                  <strong>Search Tags: </strong><text-tag (triggerClose)="triggerCloseTag(tag)" [prop]="tag.prop" [title]="tag.title" [closable]="tag.closable" *ngFor="let tag of searchTags"></text-tag>
+                </div>
+              </div>
+              <cluster-filter-search [ngbCollapse]="!isCollapsed" [isCollapsed]="isCollapsed" (searchOptions)="updateSearchOptions($event)"></cluster-filter-search>   
+
+              <div class="row">
+                <p *ngIf="loading" id="loaderimg" class="col-2 ml-auto mr-auto">
+                  <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                </p>
+              </div>
+              <div class="row mt-3 pl-5 pr-5">
+                <div class="col-xl-12">
+                  <storage-list (selectedClusterData)="selectCluster($event)" (triggerDynamicAlertsTab)="openDynamicAlertsTab($event)" (triggerDynamicStatsTab)="openDynamicStatsTab($event)" [serverSearchParams]="searchOptions"></storage-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <tab *ngFor="let tab of dynamicTabs" 
+        [active]="tab.active"
+        (select)="tab.active = true;callResize = !callResize;"
+        (deselect)="tab.active = false"
+        [disabled]="tab.disabled"
+        [customClass]="tab.customClass" >
+        <ng-template tabHeading>
+         <fa *ngIf="tab.tabType == 'stats'" name="area-chart" class="f-icon-dyn-tab"></fa>
+         <fa *ngIf="tab.tabType == 'alerts'" name="bar-chart" class="f-icon-dyn-tab"></fa>
+         <span> {{ tab.title }} </span>&nbsp;
+         <span *ngIf="tab.removable" class="tab-close-icon" (click)="removeTabHandler(tab)">x</span>
+       </ng-template>
+       <server-alerts-list *ngIf="tab.tabType == 'alerts'" [serverAlertsParams]="tab.serverAlertsParams"></server-alerts-list>
+       <server-stats [callResize]="callResize" *ngIf="tab.tabType == 'stats'" [graphParams]="tab.graphDataParams"></server-stats>
+     </tab>
+   </tabset>
+ </div>
+</div>
+
+</section>

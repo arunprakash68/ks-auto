@@ -1,0 +1,81 @@
+<div class="profile clearfix mb15">
+  <img width="50" class="img-responsive pull-left" src="http://keystoneold.timesinternet.in/assets/img/profileimg.png" alt="admin">
+  <div class="group pull-left" data-toggle="designation" title="" data-original-title="UI DEVELOPER">
+    <div class="name" title="{{userConfig.displayName}}">{{ userConfig.displayName | truncate:14 }}</div>
+    <small class="name small" title="{{userConfig.title}}">{{ userConfig.title | capitalizeFirst | truncate:16 }}</small>
+  </div>
+</div>
+<ul class="nav" #sidenav myAccordionNav myAppendSubmenuIcon mySlimScroll myHighlightActiveItems>
+  <!-- <li class="nav-header"><span>Navigation</span></li> -->
+  <!-- <li><a md-button [routerLink]="['/app/dashboard']"><i class="nav-icon material-icons">home</i><span class="nav-text">Dashboard</span></a></li> -->
+  
+  <!-- <li>
+    <a md-button href="#/app/local-it"><fa name="asterisk" class="nav-icon f-icon" size="lg"></fa><span class="nav-text">LOCAL IT</span></a>
+    <ul>
+      <li><a md-button class="md-button" [routerLink]="['/app/local-it/my-assets']"><fa name="desktop" class="nav-icon f-icon-small"></fa><span>My Assets</span></a></li>
+      <li><a md-button class="md-button" [routerLink]="['/app/local-it/my-tickets']"><fa name="support" class="nav-icon f-icon-small"></fa><span>My Tickets</span></a></li>
+    </ul>
+  </li> -->
+
+  <li>
+    <a md-button href="#/app/data-center"><i class="nav-icon material-icons">storage</i><span class="nav-text">DATA CENTER</span></a>
+    <ul>
+      <li><a md-button class="md-button" [routerLink]="['/app/data-center/server']"><fa name="server" class="nav-icon f-icon-small"></fa><span>Server</span></a></li>
+      <li><a md-button class="md-button" [routerLink]="['/app/data-center/assets']"><fa name="desktop" class="nav-icon f-icon-small"></fa><span>Assets</span></a></li>
+      <!-- <li><a md-button class="md-button" [routerLink]="['/app/data-center/cluster']"><fa name="list-ol" class="nav-icon f-icon-small"></fa><span>Cluster</span></a></li> -->
+      <!-- <li><a md-button class="md-button" [routerLink]="['/app/data-center/storage']"><fa name="database" class="nav-icon f-icon-small"></fa><span>Storage</span></a></li> -->
+      <li><a md-button class="md-button"><fa name="server" class="nav-icon f-icon-small"></fa><span>ELB</span></a>
+        <ul>
+          <li><a md-button class="md-button" [routerLink]="['/app/data-center/elb/vip']"><fa name="server" class="nav-icon f-icon-small"></fa><span>VIP</span></a></li>
+          <li><a md-button class="md-button"><fa name="shield" class="nav-icon f-icon-small"></fa><span>SSL</span></a>
+            <ul>
+                <li><a md-button class="md-button" ><fa name="certificate" class="nav-icon f-icon-small"></fa><span>Certificates</span></a>
+                  <ul class="pl-3">
+                      <li><a md-button class="md-button" [routerLink]="['/app/data-center/ssl/servercerts']"><fa name="certificate" class="nav-icon f-icon-small"></fa><span>Server Certificates</span></a></li>
+                      <li><a md-button class="md-button" [routerLink]="['/app/data-center/ssl/clientcerts']"><fa name="certificate" class="nav-icon f-icon-small"></fa><span>Client Certificates</span></a></li>
+                      <li><a md-button class="md-button" [routerLink]="['/app/data-center/ssl/cacerts']"><fa name="certificate" class="nav-icon f-icon-small"></fa><span>CA Certificates</span></a></li>
+                  </ul>
+                  
+                </li> 
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <!-- <li><a md-button class="md-button" [routerLink]="['/app/data-center/my-dashboard']"><fa name="database" class="nav-icon f-icon-small"></fa><span>My Dashboard</span></a></li> -->
+    </ul>
+  </li>
+
+  <li>
+    <a md-button href="#/app/cdn"><fa name="line-chart" class="nav-icon f-icon" size="md"></fa><span class="nav-text">CDN</span></a>
+    <ul>
+      <li><a md-button class="md-button" [routerLink]="['/app/cdn/performance']"><fa name="line-chart" class="nav-icon f-icon-small"></fa><span>Performance</span></a></li>
+    </ul>
+  </li>
+
+
+  <!-- <li>
+    <a md-button href="#/app/process"><fa name="circle-o-notch" class="nav-icon f-icon" size="lg"></fa><span class="nav-text">PROCESS</span></a>
+    <ul>
+      <li><a md-button class="md-button" [routerLink]="['/app/process/change-request']"><fa name="server" class="nav-icon f-icon-small"></fa><span>Change Request</span></a></li>
+    </ul>
+  </li> -->
+
+  <!-- <li>
+    <a md-button href="#/app/cost"><fa name="dollar" class="nav-icon f-icon" size="lg"></fa><span class="nav-text">COST</span></a>
+    <ul>
+      <li><a md-button class="md-button" [routerLink]="['/app/cost/di-type']"><fa name="server" class="nav-icon f-icon-small"></fa><span>DI Type</span></a></li>
+      <li><a md-button class="md-button" [routerLink]="['/app/cost/billing']"><fa name="money" class="nav-icon f-icon-small"></fa><span>Billing</span></a></li>
+      <li><a md-button class="md-button" [routerLink]="['/app/cost/asset-billing']"><fa name="money" class="nav-icon f-icon-small"></fa><span>Asset Billing</span></a></li>
+    </ul>
+  </li> -->
+
+  <!-- <li>
+    <a md-button href="#/app/table"><i class="nav-icon material-icons">list</i><span class="nav-text">Tables</span></a>
+    <ul>
+      <li><a md-button class="md-button prepend-icon" [routerLink]="['/app/table/static']"><span>Static Tables</span></a></li>
+      <li><a md-button class="md-button prepend-icon" [routerLink]="['/app/table/responsive']"><span>Responsive Tables</span></a></li>
+      <li><a md-button class="md-button prepend-icon" [routerLink]="['/app/table/data-table']"><span>Data Tables</span></a></li>
+    </ul>
+  </li> -->
+
+</ul>

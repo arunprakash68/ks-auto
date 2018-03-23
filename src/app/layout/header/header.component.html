@@ -1,0 +1,83 @@
+<section class="app-header">
+  <div class="app-header-inner"
+     [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
+                 'bg-color-dark': AppConfig.colorOption === '31',
+                 'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,
+                 'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,
+                 'bg-color-info': ['24','34'].indexOf(AppConfig.colorOption) >= 0,
+                 'bg-color-warning': ['25','35'].indexOf(AppConfig.colorOption) >= 0,
+                 'bg-color-danger': ['26','36'].indexOf(AppConfig.colorOption) >= 0}">
+
+    <div class="d-lg-none d-xl-none float-left">
+      <button md-button myToggleOffcanvasNav class="md-button header-icon toggle-sidebar-btn">
+        <i class="material-icons">menu</i>
+      </button>
+    </div>
+
+
+    <div class="brand d-none d-lg-inline-block d-xl-inline-block">
+      <h2><a [routerLink]="['/']">{{AppConfig.brand}}</a></h2>
+    </div>
+
+    <div class="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
+      <ul class="list-unstyled list-inline">
+        <!-- <li class="list-inline-item"><button md-button class="md-button header-btn" myOpenSearchOverlay><i class="material-icons">search</i></button></li> -->
+        <!-- <li class="list-inline-item"><button md-button class="md-button header-btn" style="font-size: 16px !important;"><fa name="arrows-alt"></fa></button></li> -->
+        <!-- <li class="list-inline-item"><button md-button class="md-button header-btn"><i class="material-icons">search</i></button></li> -->
+        <li class="list-inline-item">
+          <!-- <button md-button class="md-button header-btn" [mdMenuTriggerFor]="appNotification">
+            <i class="material-icons">notifications_none</i>
+            <span class="badge">3</span>
+          </button> -->
+          <!-- <button md-button class="md-button header-btn">
+            <i class="material-icons">notifications_none</i>
+            <span class="badge">3</span>
+          </button> -->
+          <md-menu #appNotification="mdMenu" x-position="after" y-position="below" overlapTrigger="false">
+            <md-list dense>
+              <md-list-item>
+                <md-icon md-list-avatar>mail_outline</md-icon>
+                <h4 md-line>New mail from David</h4>
+                <p md-line class="text-muted">5 minutes ago</p>
+              </md-list-item>
+              <md-list-item>
+                <md-icon md-list-avatar>chat_bubble_outline</md-icon>
+                <h4 md-line>Message from Jane</h4>
+                <p md-line class="text-muted">15 minutes ago</p>
+              </md-list-item>
+              <md-list-item>
+                <md-icon md-list-avatar>person_outline</md-icon>
+                <h4 md-line>New member John joined</h4>
+                <p md-line class="text-muted">1 hour ago</p>
+              </md-list-item>
+            </md-list>
+          </md-menu>
+        </li>
+      </ul>
+    </div>
+
+    <div class="top-nav-right">
+      <ul class="list-unstyled float-right">
+        <li dropdown>
+          <button md-button dropdownToggle class="md-button header-btn">
+            <img src="http://keystoneold.timesinternet.in/assets/img/profileimg.png" alt="" class="rounded img30_30">
+          </button>
+          <ul *dropdownMenu role="menu" class="dropdown-menu" style="min-width: 7rem !important; margin-right: -60px !important;position: relative !important;">
+            <li style="height: 25px !important;"><a style="color: #000 !important;" class="dropdown-item" [routerLink]="['/']"><fa name="sign-out"></fa> Logout</a></li>
+          </ul>
+          <!-- <md-menu #profilemenu="mdMenu" class="profile-menu" x-position="before" y-position="below" overlapTrigger="false">
+            <md-list dense>
+              <md-list-item>
+                <md-icon md-list-avatar><a [routerLink]="['/']"><fa name="sign-out"></fa></a></md-icon>
+                <h4 style="font-size: 16px;" md-line><a [routerLink]="['/']"><fa name="sign-out"></fa> Logout</a></h4>
+              </md-list-item>
+            </md-list>
+          </md-menu> -->
+        </li>
+        <li><button md-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay><i class="material-icons">search</i></button></li>
+        <!-- <li><button md-button class="md-button header-btn"><i class="material-icons">more_vert</i></button></li> -->
+      </ul>
+    </div>
+
+  </div>
+</section>

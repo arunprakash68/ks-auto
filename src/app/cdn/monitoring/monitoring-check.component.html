@@ -1,0 +1,655 @@
+ <section class="container-fluid">
+  <h2 class="article-title"></h2>
+
+  <div class="row">
+    <div class="clearfix col-12">
+      <tabset>
+        <tab heading="Performance Graphs" [active]="true" (select)="staticTab.active = true;callLogTabResize = !callLogTabResize;" (deselect)="staticTab.active = false">
+          <div class="box box-default performance-tab-content">
+            <div role="tabpanel">
+
+              <div class="row pt-4 pb-3">
+                <div class="col-xl-6"></div>
+                <div class="col-xl-6">
+                  <span class="pull-right">
+                    <a href="javascript:;" (click)="openPerfFilter()" [attr.aria-expanded]="!isFilterCollapsed">
+                      <img src="http://keystoneold.timesinternet.in/assets/img/filter.png" class="mr-4 server-filter-icon" height="40" width="40">
+                    </a>
+                  </span>
+                </div>
+              </div>
+              
+              <performance-filter-form (businessFiltersOut)="updateBusinessFilters($event)" (businessAccessDetailsOut)="updateBusinessAccessDetails($event)" (triggerFilterCollapse)="triggerFilterCollapse($event)" [updatedSearchOptions]="formOptions" [ngbCollapse]="!isFilterCollapsed" [isCollapsed]="isFilterCollapsed" (showGraphs)="checkShowGraphs($event)" (searchOptions)="updateSearchOptions($event)"></performance-filter-form>   
+
+              <div class="row">
+                <p *ngIf="loading.business" id="loaderimg" class="col-2 ml-auto mr-auto">
+                  <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                </p>
+              </div>
+              <!-- <div class="row mt-0 pl-4 pr-4 mb-4">
+                  <div class="col-xl-1">
+                    <button type="button" class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" (click)="openDynamicLogsTab('totalRequests', 'Total Requests')">View Logs</button>
+                  </div>
+                  <div class="col-xl-1">
+                    <button type="button" class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" (click)="openTop10Tab('top10urls', 'Top 10 Urls')">Top 10 Urls</button>
+                  </div>
+                </div> -->
+
+              <div class="row mt-0 pl-4 pr-4">
+                <div class="col-xl-12">
+
+                  <div id="performanceGraphsContainer" class="pl-0 pr-0 pt-0 pb-0" role="tabpanel" *ngIf=" !loading.business && showGraphs ">
+
+                    <div class="row">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Total Requests</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'totalRequests')" (reloadGraphData)="getTotalRequests()" [callResize]="callLogTabResize" [loadingError]="loadingError.totalRequests" [loading]="loading.totalRequests" [graphData]="serverMonitoringData.totalRequests"></stack-line-graph>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.totalRequests">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.totalRequests">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.totalRequests[0]?.totalVolume | number }}</div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.totalRequests[0]?.peakPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.totalRequests[0]?.peakTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.totalRequests[0]?.leastPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.totalRequests[0]?.leastTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <!--<div class="row">
+                                  <div class="col-xl-6">
+                                    <button type="button" class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" (click)="openDynamicLogsTab('totalRequests', 'Total Requests')">View Logs</button>
+                                  </div>
+                                  <div class="col-xl-6">
+                                    <button type="button" class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" (click)="openTop10Tab('top10urls', 'Top 10 Urls')">Top 10 Urls</button>
+                                  </div>
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Average Request Time</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'avgRequestTime')" (reloadGraphData)="getAvgRequestTime()" [callResize]="callLogTabResize" [loadingError]="loadingError.avgRequestTime" [loading]="loading.avgRequestTime" [graphData]="serverMonitoringData.avgRequestTime"></stack-line-graph>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.avgRequestTime">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.avgRequestTime">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <!-- <div class="row">
+                                  <div class="col-xl-6">
+                                    <button class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" type="button" (click)="openDynamicLogsTab('avgRequestTime', 'Average Request Time')">View Logs</button>
+                                  </div>
+
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Edge Bandwidth</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'edgeBandwidth')" (reloadGraphData)="getEdgeBandwidth()" [callResize]="callLogTabResize" [loadingError]="loadingError.edgeBandwidth" [loading]="loading.edgeBandwidth" [graphData]="serverMonitoringData.edgeBandwidth"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.edgeBandwidth">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.edgeBandwidth">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.edgeBandwidth[0]?.totalVolume | number }}</div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.edgeBandwidth[0]?.peakPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.edgeBandwidth[0]?.peakTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.edgeBandwidth[0]?.leastPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.edgeBandwidth[0]?.leastTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <!-- <div class="row">
+                                  <div class="col-xl-6">
+                                    <button class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" type="button" (click)="openDynamicLogsTab('edgeBandwidth', 'Edge Bandwidth')" >View Logs</button>
+                                  </div>
+
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Origin Bandwidth</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'originBandwidth')" (reloadGraphData)="getOriginBandwidth()" [callResize]="callLogTabResize" [loadingError]="loadingError.originBandwidth" [loading]="loading.originBandwidth" [graphData]="serverMonitoringData.originBandwidth"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.originBandwidth">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.originBandwidth">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.originBandwidth[0]?.totalVolume | number }}</div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.originBandwidth[0]?.peakPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.originBandwidth[0]?.peakTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.originBandwidth[0]?.leastPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.originBandwidth[0]?.leastTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <!-- <div class="row">
+                                  <div class="col-xl-6">
+                                    <button class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" type="button" (click)="openDynamicLogsTab('originBandwidth', 'Origin Bandwidth')">View Logs</button>
+                                  </div>
+
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">OS Distribution</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'osDistribution')" (reloadGraphData)="getPlatformDistribution()" [callResize]="callLogTabResize" [loadingError]="loadingError.osDistribution" [loading]="loading.osDistribution" [graphData]="serverMonitoringData.osDistribution"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.osDistribution">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.osDistribution">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <!-- <div class="row">
+                                  <div class="col-xl-6">
+                                    <button class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" type="button" (click)="openDynamicLogsTab('osDistribution', 'OS Distribution')">View Logs</button>
+                                  </div>
+
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Device Distribution</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'deviceDistribution')" (reloadGraphData)="getPlatformDistribution()" [callResize]="callLogTabResize" [loadingError]="loadingError.deviceDistribution" [loading]="loading.deviceDistribution" [graphData]="serverMonitoringData.deviceDistribution"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.deviceDistribution">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.deviceDistribution">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <!-- <div class="row">
+                                  <div class="col-xl-6">
+                                    <button class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" type="button" (click)="openDynamicLogsTab('deviceDistribution', 'Device Distribution')">View Logs</button>
+                                  </div>
+
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Request Distribution</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'percentErrors')" (reloadGraphData)="getPercentErrors()" [callResize]="callLogTabResize" [loadingError]="loadingError.percentErrors" [loading]="loading.percentErrors" [graphData]="serverMonitoringData.percentErrors"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.percentErrors">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.percentErrors">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <!-- <div class="row">
+                                  <div class="col-xl-6">
+                                    <button class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" type="button" (click)="openDynamicLogsTab('percentErrors', 'Request Distribution')">View Logs</button>
+                                  </div>
+
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Total Bytes</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'totalBytes')" (reloadGraphData)="getTotalBytes()" [callResize]="callLogTabResize" [loadingError]="loadingError.totalBytes" [loading]="loading.totalBytes" [graphData]="serverMonitoringData.totalBytes"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.totalBytes">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.totalBytes">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.totalBytes[0]?.totalVolume | number }}</div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.totalBytes[0]?.peakPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.totalBytes[0]?.peakTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.totalBytes[0]?.leastPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.totalBytes[0]?.leastTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <!-- <div class="row">
+                                  <div class="col-xl-6">
+                                    <button class="btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" type="button" (click)="openDynamicLogsTab('totalBytes', 'Total Bytes')">View Logs</button>
+                                  </div>
+
+                                </div> -->
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <!-- <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Manifest Average Request Time</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'manifestAvgRequestTime')" (reloadGraphData)="getManifestAvgRequestTime()" [callResize]="callLogTabResize" [loadingError]="loadingError.manifestAvgRequestTime" [loading]="loading.manifestAvgRequestTime" [graphData]="serverMonitoringData.manifestAvgRequestTime"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.manifestAvgRequestTime">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.manifestAvgRequestTime">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-4 mb-3"></div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div> -->
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Bandwidth Offload</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'bandwidthOffloadTime')" (reloadGraphData)="getBandwidthOffloadTime()" [callResize]="callLogTabResize" [loadingError]="loadingError.bandwidthOffloadTime" [loading]="loading.bandwidthOffloadTime" [graphData]="serverMonitoringData.bandwidthOffloadTime"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.bandwidthOffloadTime">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.bandwidthOffloadTime">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.bandwidthOffloadTime[0]?.totalVolume | number }}</div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.bandwidthOffloadTime[0]?.peakPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.bandwidthOffloadTime[0]?.peakTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">{{ serverMonitoringData.bandwidthOffloadTime[0]?.leastPS | number }}</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info">at {{ serverMonitoringData.bandwidthOffloadTime[0]?.leastTS }}</small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="col-xl-9">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Media Bandwidth Comparison</div>
+                          <div class="box-body pl-2 pr-0">
+                            <stack-line-graph (mouseDownEvent)="handleMouseDown($event)" (mouseUpEvent)="handleMouseUp($event)" (dataZoom)="handleGraphDataZoom($event, 'compedgeBandwidth')" (reloadGraphData)="getCompedgeBandwidth()" [callResize]="callLogTabResize" [loadingError]="loadingError.compedgeBandwidth" [loading]="loading.compedgeBandwidth" [graphData]="serverMonitoringData.compedgeBandwidth"></stack-line-graph>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-3">
+                        <div class="pt-0 ml-auto mr-auto box box-default">
+                          <div class="box-header graph-title">Summary</div>
+                          <div class="box-body pl-3 pr-3 graph-summary">
+                            <div class="row" *ngIf="loading.compedgeBandwidth">
+                              <p id="loaderimg" class="col-xl-6 ml-auto mr-auto">
+                                <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                              </p>
+                            </div>
+                            <div class="row" *ngIf="!loading.compedgeBandwidth">
+                              <div class="col-xl-12">
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Total:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Peak:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info"></small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                                <div class="row">
+                                  <div class="col-xl-6 graph-stats-title">Least:</div>
+                                  <div class="col-xl-6">NA</div>
+                                </div>
+                                <div class="row mt-0">
+                                  <div class="col-xl-12">
+                                    <small class="graph-summary-time-info"></small>
+                                  </div>
+                                </div>
+                                <div class="row mt-3 mb-3"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <tab *ngFor="let tab of dynamicTabs"
+        [active]="tab.active"
+        (select)="tab.active = true;callLogTabResize = !callLogTabResize;onselect(tab.type)"
+        (deselect)="tab.active = false"
+        [disabled]="tab.disabled"
+        [customClass]="tab.customClass" >
+        <ng-template tabHeading>
+        <span class="{{ tab.type }}"> {{ tab.title }} </span>&nbsp;
+           <!-- <span *ngIf="tab.removable" class="tab-close-icon" (click)="removeTabHandler(tab)">x</span> -->
+         </ng-template>
+         <logs-click  [tabselected]="tabselected" [tabtype]="tab.type" [perfFilterOptions]="formOptions" [formOptions]="formOptions" [businessFilters]="businessFilters" [businessAccessDetails]="businessAccessDetails"  [graphDataZoom]="tab.graphDataZoom"></logs-click>
+          </tab>
+     </tabset>
+   </div>
+ </div>
+
+</section>

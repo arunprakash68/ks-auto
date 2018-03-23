@@ -1,0 +1,9 @@
+<div class="img-box-container">
+	<div class="img-box-img" *ngIf="!isText">
+		<img src="{{imgSource}}" height="60" width="60">
+	</div>
+	<div class="img-box-text" *ngIf="isText">
+		<span>{{textString}}</span>
+	</div>
+	<div class="img-box-title">{{ imgTitle }}</div>
+</div>

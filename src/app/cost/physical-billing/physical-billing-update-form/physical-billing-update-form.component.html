@@ -1,0 +1,164 @@
+<div class="row form-group">
+	<div class="col-xl-12 pl-4">
+		<form>
+			
+			<div class="row mt-4">
+				<div class="col-xl-6">
+					<label for="select-dc">Location</label>
+					<select [(ngModel)]="formData.LOCATION" class="server-filter-form-input form-control" name="select-dc" ngModel>
+						<option [value]="dc.ID" *ngFor="let dc of datacenters">{{ dc.city }}</option>
+					</select>
+				</div>
+				
+				<div class="col-xl-6">
+					<label for="select-dc-zone">Zone</label>
+					<select [(ngModel)]="formData.DI_ID" class="server-filter-form-input form-control" name="select-dc-zone" ngModel>
+						<option value="">Select</option>
+						<option value="{{ dcZone.ID }}" *ngFor="let dcZone of dcZones[formData.LOCATION]">{{ dcZone.INSTANCE_NAME }}</option>
+					</select>
+				</div>	
+			</div>
+
+			<div class="row mt-4">
+				
+				<div class="col-xl-6">
+					<label for="select-model-type">Model Type</label>
+					<select (change)="formData.MODEL = ''" [(ngModel)]="formData.ASSET_TYPE_ID" class="server-filter-form-input form-control" name="select-model-type" ngModel>
+						<option value="">Select</option>
+						<option [value]="modelType.ID" *ngFor="let modelType of assetModelTypes">{{ modelType.ASSET_TYPE }}</option>
+					</select>
+				</div>
+
+				<div class="col-xl-6">
+					<label for="select-model">Model</label>
+					<select [(ngModel)]="formData.MODEL" class="server-filter-form-input form-control" name="select-model">
+						<option value="">Select</option>
+						<ng-container *ngFor="let model of assetModels;">
+							<option *ngIf="model.ASSET_TYPE_ID == formData.ASSET_TYPE_ID"  [value]="model.ID" >{{ model.ASSET_MODEL }}</option>
+						</ng-container>
+					</select>
+				</div>
+			</div>
+
+			<div class="row mt-3"></div>
+			<div class="row mt-5">
+				<div class="col-xl-12">
+					<div class="row">
+						<div class="col-xl-12"><strong class="font16">Hardware Configuration</strong></div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-xl-3">
+							<label for="s-no">Serial Number</label>
+							<input type="text" [(ngModel)]="formData.S_NO" class="server-filter-form-input form-control" name="s-no">
+						</div>
+						<div class="col-xl-3">
+							<label for="cpu">CPU</label>
+							<input type="text" [(ngModel)]="formData.CPU" class="server-filter-form-input form-control" name="cpu">
+						</div>
+						<div class="col-xl-3">
+							<label for="disk">DISK</label>
+							<input type="text" [(ngModel)]="formData.DISK" class="server-filter-form-input form-control" name="disk">
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row mt-3"></div>
+			<div class="row mt-5">
+				<div class="col-xl-12">
+					<div class="row">
+						<div class="col-xl-12"><strong class="font16">Software Configuration</strong></div>
+					</div>
+					<div class="row mt-3">
+
+						<div class="col-xl-3">
+							<label for="private-ip">Private IP</label>
+							<input type="text" [(ngModel)]="formData.PRIVATE_IP" class="server-filter-form-input form-control" name="private-ip">
+						</div>
+
+						<div class="col-xl-3">
+							<label for="power">Power</label>
+							<input type="text" [(ngModel)]="formData.RACK_POWER" class="server-filter-form-input form-control" name="power">
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="row mt-3"></div>
+			<div class="row mt-5">
+				<div class="col-xl-12">
+					<div class="row">
+						<div class="col-xl-12"><strong class="font16">Billing Information</strong></div>
+					</div>
+					<div class="row mt-3">
+						<div class="col-xl-3">
+							<label for="amc-s">Capex Start Date</label>
+							<!-- <input type="text" [ngModel]="formData.AMC_S | date:'yyyy-MM-dd'" (ngModelChange)="formData.AMC_S = $event" class="server-filter-form-input form-control" name="amc-s"> -->
+							<ngx-date-picker [(selectedDate)]="formData.AMC_S" [disableInput]="true"></ngx-date-picker>
+						</div>
+						<div class="col-xl-3">
+							<label for="amc-e">Capex End Date</label>
+							<!-- <input type="text" [(ngModel)]="formData.AMC_E" class="server-filter-form-input form-control" name="amc-e"> -->
+							<ngx-date-picker [(selectedDate)]="formData.AMC_E" [disableInput]="true"></ngx-date-picker>
+						</div>
+						<div class="col-xl-3">
+							<label for="po">PO</label>
+							<input type="text" [(ngModel)]="formData.capex_type_PO" class="server-filter-form-input form-control" name="po">
+						</div>
+						<div class="col-xl-3">
+							<label for="capex-cost">Cost (capex)</label>
+							<input type="text" [(ngModel)]="formData.capex_type_COST" class="server-filter-form-input form-control" name="capex-cost">
+						</div>
+					</div>	
+				</div>
+			</div>
+
+			<div class="row mt-3"></div>
+			<div class="row mt-5">
+				<div class="col-xl-12">
+					<div class="row">
+						<div class="col-xl-12"><strong class="font16">Warranty Information</strong></div>
+					</div>
+					<div *ngFor="let opexRow of formData.opex_rows;let i = index;" class="row mt-3">
+						<div class="col-xl-3">
+							<label for="opex-start-date{{ i }}">Opex Start Date</label>
+							<!-- <input type="text" [(ngModel)]="formData.opex_rows[i].START_DATE" class="server-filter-form-input form-control" name="opex-start-date{{ i }}"> -->
+							<ngx-date-picker [(selectedDate)]="formData.opex_rows[i].START_DATE" [disableInput]="true"></ngx-date-picker>
+						</div>
+						<div class="col-xl-3">
+							<label for="opex-end-date{{ i }}">Opex End Date</label>
+							<!-- <input type="text" [(ngModel)]="formData.opex_rows[i].END_DATE" class="server-filter-form-input form-control" name="opex-end-date{{ i }}"> -->
+							<ngx-date-picker [(selectedDate)]="formData.opex_rows[i].END_DATE" [disableInput]="true"></ngx-date-picker>
+						</div>
+						<div class="col-xl-3">
+							<label for="opex-po{{ i }}">Opex PO</label>
+							<input type="text" [(ngModel)]="formData.opex_rows[i].opex_type_PO" class="server-filter-form-input form-control" name="opex-po{{ i }}">
+						</div>
+						<div class="col-xl-2">
+							<label for="opex-cost{{ i }}">Cost (opex)</label>
+							<input type="text" [(ngModel)]="formData.opex_rows[i].opex_type_COST" class="server-filter-form-input form-control" name="opex-cost{{ i }}">
+						</div>
+						<div class="col-xl-1">
+							<div class="row mt-4"></div>
+							<div class="row mt-3">
+								<div class="col-xl-6" *ngIf="i + 1 == formData.opex_rows.length"><strong class="font22 link-color pointer" (click)="addOpexRow()">+</strong></div>
+								<!-- <div class="col-xl-6" *ngIf="!(i + 1 == filters.genericFilterRows.length && i == 0)"><strong class="font22 link-color pointer" (click)="deleteGenericFilterKeyRow(i)">-</strong></div> -->
+							</div>
+						</div>
+					</div>	
+				</div>
+			</div>
+			<div class="row mt-5">
+				<div class="col-xl-12">
+					<button (click)="onSubmit()" type="button" style="width: 15%;" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >
+						<i *ngIf="submitLoading" class='fa fa-spinner fa-spin '></i> Submit
+					</button>
+					<span *ngIf="submitError" class="text-danger ml-2">Something went wrong. Please try again</span>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>

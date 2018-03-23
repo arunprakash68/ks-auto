@@ -1,0 +1,13 @@
+<div class="summary-tile-container mb-4 mr-4 pointer" [ngClass]="tileColor">
+	<div class="">
+		<div class="" title="{{ summaryTileInfo.PROJECT }}"><strong>{{ summaryTileInfo.PROJECT | truncate:16 }}</strong></div>
+	</div>
+	<div class="mt-2">
+		<div><span>Prod: </span>{{ summaryTileInfo.PROD_COUNT }}</div>
+		<div><span>Pre Prod: </span>{{ summaryTileInfo.PREPROD_COUNT }}</div>
+		<div><span>QA: </span>{{ summaryTileInfo.QA_COUNT }}</div>
+		<div><span>Staging: </span>{{ summaryTileInfo.STAGING_COUNT }}</div>
+		<div><span>DR: </span>{{ summaryTileInfo.DR_COUNT }}</div>
+		<div><span>Total: </span>{{ summaryTileInfo.TOTAL }}</div>
+	</div>
+</div>

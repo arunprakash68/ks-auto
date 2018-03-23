@@ -1,0 +1,93 @@
+<div>
+	<div class="form-group row perf-filter-form card ml-auto mr-auto pb-0" >
+		<div class="col-xl-12">
+			<form #f="ngForm" >
+				<div class="row">
+					<div class="col-md-4">
+
+						<label for="select-business">Business Unit</label>
+						<!-- <span *ngIf=" f.submitted && selectBusiness.errors && selectBusiness.errors.required " class="ml-4 text-danger">*required</span> -->
+						<select (change)="onBusinessSelected()" class="form-control" name="select-business" [(ngModel)]="formData.business" ngModel>
+							<!-- <option value="" selected>Select Business</option> -->
+							<option [ngValue]="business" *ngFor="let business of businessAccessDetails">{{ business }}</option>
+						</select>
+					</div>
+					<div class="col-md-1"></div>
+
+					<div class="col-md-3">
+
+						<label for="select-servicetype">Service Type</label>
+						<!-- <span *ngIf=" f.submitted && selectServiceType.errors && selectServiceType.errors.required " class="ml-4 text-danger">*required</span> -->
+						<select [disabled]="serviceTypeDisabled" (change)="onServiceTypeSelected()" value="All" id="select-servicetype" class="form-control" name="select-servicetype" [(ngModel)] = "formData.serviceType" ngModel>
+							<option value="" selected>All</option>
+							<option value="{{ serviceType }}" *ngFor="let serviceType of formFilters?.serviceTypes">{{ serviceType }}</option>
+						</select>
+					</div>
+
+					<div class="col-md-3">
+
+						<label for="select-cpcode">CP Code</label>
+						<!-- <span *ngIf=" f.submitted && selectCPCode.errors && selectCPCode.errors.required " class="ml-4 text-danger">*required</span> -->
+						<select [disabled]="cpCodeDisabled" value="All" id="select-cpcode" class="form-control" name="select-cpcode" [(ngModel)]="formData.cpCode" ngModel>
+							<option value="" selected>All</option>
+							<option value="{{ cpCode.cp_code }}" *ngFor="let cpCode of cpCodes">{{ cpCode.cp_code_name }}</option>
+						</select>
+					</div>
+				</div>	
+				<div class="row mt-4">
+					<div class="col-md-4">
+						<label for="select-fromdate">From Date</label>
+						<!-- <div class="input-group">
+							<input disabled class="form-control" id="select-fromdate" name="select-fromdate" [(ngModel)]="myFromDateDisplay" />
+							<span class="input-group-btn">
+								<button class="btn btn-outline-secondary" type="button" (click)="onToggleFromPicker()">
+									<i class="fa fa-calendar" aria-hidden="true"></i>
+								</button>
+							</span>
+						</div> -->
+
+						<ngx-datetime-picker [(selectedDateTime)]="formData.myFromDate" [disableInput]="true" ></ngx-datetime-picker>
+
+						<!-- <datetime-popup [value]="formData.myFromDate" (valueChange)="onFromDateChange($event)"
+						[(showPopup)]="datepickerConfig.showFromPicker"
+						[showDate]="datepickerConfig.showDate"
+						[showTime]="datepickerConfig.showTime"></datetime-popup> -->
+					</div>
+					<div class="col-md-4">
+						<label for="select-todate">To Date</label>
+						<!-- <div class="input-group">
+							<input disabled class="form-control" id="select-todate" name="select-todate" [(ngModel)]="myToDateDisplay" />
+							<span class="input-group-btn">
+								<button class="btn btn-outline-secondary" type="button" (click)="onToggleToPicker()">
+									<i class="fa fa-calendar" aria-hidden="true"></i>
+								</button>
+							</span>
+						</div> -->
+
+						<ngx-datetime-picker [(selectedDateTime)]="formData.myToDate" [disableInput]="true" ></ngx-datetime-picker>
+
+						<!-- <datetime-popup [value]="formData.myToDate" (valueChange)="onToDateChange($event)"
+						[(showPopup)]="datepickerConfig.showToPicker"
+						[showDate]="datepickerConfig.showDate"
+						[showTime]="datepickerConfig.showTime"></datetime-popup> -->
+					</div>
+				</div>
+				<div class="row mt-5">
+					<div class="col-xl-4"></div>
+					<div class="col-xl-4"></div>
+					<div class="col-xl-4">
+						<div class="pull-right">
+							<button type="submit" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" (click)="onSubmit(true)">View Graphs</button>
+							<button id="perf-filter-cancel" type="button" class="ml-1 btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="triggerCollapse()">Cancel</button>
+						</div>
+					</div>
+				</div>
+				<div class="row mt-3">
+					<div class="col-md-12 text-center">
+						<div *ngIf="viewGraphsErrorMessage != ''" class="text-danger">{{ viewGraphsErrorMessage }}</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

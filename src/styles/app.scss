@@ -1,0 +1,1184 @@
+@import "variables";
+
+@import "vendors/material2/material2";
+
+@import "pages/demo";
+@import "pages/auth";
+@import "pages/error";
+@import "pages/lock-screen";
+@import "pages/profile";
+@import "pages/invoice";
+@import "pages/dashboard";
+@import "pages/maintenance";
+@import "pages/about";
+@import "pages/terms";
+@import "pages/blog";
+@import "elb";
+
+html, body {
+	margin: 0px;
+}
+
+body {
+	height: 100%;
+	width: 100%
+}
+
+// common styles
+
+.btn{
+	cursor: pointer;
+}
+.mg-top-2{
+	margin-top:2em;
+}
+.card-box{
+	padding: 40px;
+}
+
+.txt-center{
+	text-align: center;
+}
+.top-nav-right a:active {
+	background-color: #fff !important;
+}
+
+.btn-toggle-grp{
+	md-button-toggle{
+		margin: 0 10px 0 0;
+		text-transform: capitalize;
+	}
+}
+.table {
+	td {
+		vertical-align: middle !important;
+	}	
+}
+
+
+.table-height{
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.server-filter-icon {
+	@extend .pointer;
+	margin-top: -5px;
+}
+.server-tab-content {
+	box-shadow: none !important;
+	border-radius: 0 !important;
+}
+
+.billing-tab-content {
+	box-shadow: none !important;
+	border-radius: 0 !important;
+}
+
+.elb-tab-content {
+	box-shadow: none !important;
+	border-radius: 0 !important;
+}
+
+//************** CDN Performance tab start ***************
+.performance-tab-content {
+	@extend .server-tab-content;
+}
+server-logs-list .box {
+	box-shadow: none !important;
+}
+
+elb-list .box {
+	box-shadow: none !important;
+}
+
+.code-0xx {
+	@extend .label-location;
+	background-color: red;
+}
+
+.code-1xx {
+	@extend .label-location;
+	background-color: red;
+}
+
+.code-2xx {
+	@extend .label-location;
+	background-color: green;
+}
+
+.code-3xx {
+	@extend .label-location;
+	background-color: blue;
+}
+
+.code-4xx {
+	@extend .label-location;
+	background-color: red;
+}
+
+.code-5xx {
+	@extend .label-location;
+	background-color: red;
+}
+
+.graph-summary-time-info {
+	color: #808080;
+}
+//************** CDN Performance tab end ***************
+.server-tab-title-container {
+	border-bottom: 0px !important;
+}
+// .server-tab-title {
+// 	padding: 14px 20px !important;
+// 	// box-shadow: 0 0 2px rgba(0, 0, 0, 0.15) !important;
+// 	// box-shadow: none !important;
+// 	border-bottom: 0px !important;
+// 	background: #ffffff !important;
+// 	border-color: #ffffff !important; 
+// }
+.server-filter-container {
+	width: 90%;
+	padding: 30px;
+}
+
+.perf-filter-form {
+	@extend .server-filter-container;
+	overflow: visible !important; 
+}
+
+.logs-filter-form {
+	@extend .server-filter-container;
+	overflow: visible !important; 
+}
+
+.mat-button-toggle { 
+	border-radius: 3px !important; 
+	background-color: #fafafa !important; 
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26) !important;
+	margin-right: 10px;
+}
+
+.mat-button-toggle-label{
+	margin-bottom: 0;
+}
+
+// .mat-button-toggle-checked .mat-button-toggle-label-content{ background-color:#8BC34A !important; }
+.mat-button-toggle-checked { 
+	background-color: #3f51b5 !important; 
+	color: rgba(255, 255, 255, 0.87) !important;
+}
+
+.mat-button-toggle-group {
+	box-shadow: none !important;
+}
+
+.server-filter-container .mat-button-toggle-group {
+	box-shadow: none !important;
+	height: 35px !important;
+}
+
+.new-server-adv-config .mat-button-toggle-group {
+	box-shadow: none !important;
+	height: 35px !important;
+}
+
+.vm-type .mat-button-toggle-group {
+	box-shadow: none !important;
+}
+
+.server-filter-form-input {
+	width: 90% !important;
+}
+#server-filter-cancel {
+	background-color: gray !important; 
+	border-color: gray !important; 	
+}
+#perf-filter-cancel {
+	@extend #server-filter-cancel;
+}
+#logs-filter-cancel {
+	@extend #server-filter-cancel;
+}
+
+#physical-billing-filter-cancel {
+	@extend #server-filter-cancel;
+}
+
+.data-center-server button {
+	background-color: #3f51b5 !important; 
+	border-color: #3f51b5 !important; 
+}
+
+.cost-billing button {
+	background-color: #3f51b5 !important; 
+	border-color: #3f51b5 !important; 	
+}
+
+.dc-elb button {
+	background-color: #3f51b5 !important; 
+	border-color: #3f51b5 !important; 	
+}
+
+button.blue-button {
+	background-color: #3f51b5 !important; 
+	border-color: #3f51b5 !important; 	
+}
+
+infra-billing-list .box {
+	box-shadow: none !important;
+}
+
+physical-billing-list .box {
+	box-shadow: none !important;
+}
+
+.data-center-storage button {
+	background-color: #3f51b5 !important; 
+	border-color: #3f51b5 !important; 	
+}
+
+.nav-tabs .nav-link.active {
+	padding: 14px 20px !important;
+	// box-shadow: 0 0 2px rgba(0, 0, 0, 0.15) !important;
+	// box-shadow: none !important;
+	border: 1px solid #e9e9e9;
+	border-bottom: 0px !important;
+	background-color: #ffffff !important;
+	border-color: #ffffff !important; 
+	// border-color: #ffffff !important; 
+}
+
+.nav-tabs .nav-link {
+	padding: 14px 20px !important;
+	// box-shadow: 0 0 2px rgba(0, 0, 0, 0.15) !important;
+	// box-shadow: none !important;
+	border: 1px solid #e9e9e9;
+	border-bottom: 0px !important;
+	// background-color: #ffffff !important;
+	// border-color: #ffffff !important; 
+	// // border-color: #ffffff !important; 
+}
+
+.nav-tabs {
+	border-bottom: 0px !important;
+}
+app-top10-urls .nav-tabs .nav-link.active {
+	 background-color: #e6e6e6 !important;
+}
+
+.nav-tabs > li {
+    margin-bottom: -1px;
+    z-index: 2;
+}
+.green-circle {
+	color: green;
+}
+.red-circle {
+	color: red;	
+}
+.location-mumbai {
+	background-color: #CCCC08;
+}
+.location-chennai {
+	background-color: green;
+}
+.location-singapore {
+	background-color: #DC143C;	
+}
+.location-netmagic {
+	background-color: #00BFFF;
+}
+.location-vsnl {
+	background-color: #00BF9A;
+}
+
+.bg-green {
+	background-color: green;	
+}
+.bg-red {
+	background-color: red;	
+}
+.bg-lightblue {
+	background-color: 'lightblue';
+}
+.grey {
+	color: #c1bbc1;
+}
+.tab-close-icon {
+	color: red;
+	font-weight: normal;
+}
+.label-location {
+	display: inline;
+    padding: .4em .6em .3em;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    color: #ffffff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+.label-status {
+	@extend .label-location;
+}
+.label-classification {
+	@extend .label-location;
+}
+
+.label-monitor-status {
+	@extend .label-location;
+	background-color: #808000;
+}
+.label-project {
+	@extend .label-location;
+	background-color: #0000FF;
+}
+
+.stats-alert-button {
+	background-color: #e5e5e5 !important;
+	display: inline-block !important;
+    font-weight: normal !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    vertical-align: middle !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    border: 1px solid transparent !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+    border-radius: 0.2rem !important;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
+}
+#serverStatsButton {
+	@extend .stats-alert-button;
+}
+#serverAlertsButton{
+	@extend .stats-alert-button;	
+}
+
+#storageStatsButton {
+	@extend .stats-alert-button;
+}
+#storageAlertsButton {
+	@extend .stats-alert-button;	
+}
+
+#serverEditButton {
+	@extend .stats-alert-button;	
+}
+#assetEditButton {
+	@extend .stats-alert-button;	
+}
+#buBillingDetails {
+	// @extend .stats-alert-button;
+	color: #fff;
+	background-color: #303F9F !important;	
+}
+#assetBillingDetails {
+	// @extend .stats-alert-button;
+	color: #fff;
+	background-color: #303F9F !important;	
+}
+.font-fa-icon{
+	display: inline-block;
+    padding: 0 4px;
+    color: #474a56;
+    border: 1px solid #ececec;
+    background: #f8f8f8;
+    border-radius: 3px;
+    margin: 0 27px;
+	font-size: 0.9em;
+	&:hover{
+		background: #ececec;
+    	border: 1px solid #dfdfdf;
+	}
+}
+.f-icon {
+	text-align: center;
+	width: 24px;
+}
+
+.f-icon-dyn-tab {
+	margin-right: 5px;
+}
+
+.f-icon-small {
+	text-align: center;
+	width: 20px;
+	margin-right: 10px;
+	margin-left: 30px;
+}
+
+.profile {
+    padding: 10px 0px 10px 7px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.mb15 {
+    margin-bottom: 15px;
+}
+
+
+.profile > .group {
+	margin-top: 7px;
+    margin-left: 20px;
+    color: #464646;
+}
+
+.profile > .group .name {
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+small {
+	font-weight: normal !important;
+	font-size: 85% !important;
+}
+
+//************** New Server start ***************
+
+.new-server h3 {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 1.3rem;
+    border-bottom: 2px solid #f1f1f1;
+    padding-bottom: 11px;
+	color: #0069ff;
+	width: 100%;
+}
+
+.new-server h3 > span {
+    border-bottom: 2px solid #0069ff;
+    padding-bottom: 10px;
+}
+
+.new-server select {
+    width: 80% !important;
+}
+
+.new-server .mat-button-toggle-group {
+	cursor: default !important;
+}
+
+//************** New Server end ***************
+
+//************** DC Region start ***************
+
+.img-box-container {
+	@extend .pointer;
+	border: 1px solid #dfdfdf;
+	text-align: center;
+	color: #000;
+    text-transform: capitalize;
+	.img-box-img,.img-box-text{
+		padding: 10px 20px;
+		border-bottom: 1px solid #dfdfdf;
+	}
+	.img-box-text{
+		span{
+			display: flex;
+			width: 80px;
+			height: 80px;
+			border: 2px solid;
+			border-radius: 50%;
+			font-weight: bold;
+			justify-content: center;
+			white-space: initial;
+			font-size: 1.1em;
+			text-transform: uppercase;
+			align-items: center;
+			color: #474747;
+			line-height: initial;
+		}
+	}
+	.img-box-title {
+		padding: 5px 20px;
+		line-height: initial;
+	}
+}
+
+.mat-button-toggle-checked {
+	.img-box-img,.img-box-text {
+		background-color: gainsboro;
+		color: #fff;
+	}
+	.img-box-title {
+		background-color: #607d8b;
+		color: #fff;
+	}
+}
+
+.dc-region .mat-button-toggle-checked {
+	background-color: #ffffff !important;
+	color: black !important;
+	box-shadow: none !important;
+}
+
+.dc-region .mat-button-toggle-group {
+	box-shadow: none !important;
+}
+
+.dc-region .mat-button-toggle-label-content {
+	line-height: 20px !important;
+}
+
+.dc-region .mat-button-toggle-label-content {
+	padding: 0px !important;
+}
+
+//************** DC Region end ***************
+
+
+
+//************** OS Type start ***************
+
+.os-type .mat-button-toggle-checked {
+	background-color: #ffffff !important;
+	color: black !important;
+	box-shadow: none !important;
+}
+
+.os-type .mat-button-toggle-group {
+	box-shadow: none !important;
+}
+
+.os-type .mat-button-toggle-label-content {
+	line-height: 20px !important;
+}
+
+.os-type .mat-button-toggle-label-content {
+	padding: 0px !important;
+}
+
+//************** OS Type end ***************
+
+
+//************** OS Image start ***************
+
+.os-image .mat-button-toggle-checked {
+	background-color: #ffffff !important;
+	color: black !important;
+	box-shadow: none !important;
+}
+
+.os-image .mat-button-toggle-group {
+	box-shadow: none !important;
+}
+
+.os-image .mat-button-toggle-label-content {
+	line-height: 20px !important;
+}
+
+.os-image .mat-button-toggle-label-content {
+	padding: 0px !important;
+}
+
+//************** OS Image end ***************
+
+
+
+//************** VM Type start ***************
+
+
+.vm-type-info-container {
+	border: 1px solid #dfdfdf;
+	text-align: center;	
+	width: 150px;
+}
+
+.vm-type .mat-button-toggle .price {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	border-bottom: 1px solid #dfdfdf;	
+	color: #000000;
+}
+
+.vm-type-info-container .price .m-price {
+	text-decoration: line-through;
+	font-weight: 500;
+}
+
+.vm-type-info-container .price .d-price {
+	font-size: 26px;
+	font-weight: 500;	
+}
+
+.vm-type-info-container .info {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.vm-type .mat-button-toggle .info {
+	color: #000000;
+}
+
+.vm-type .mat-button-toggle .info .grey {
+	@extend .grey;
+}
+
+.vm-type .mat-button-toggle-checked {
+	background-color: #ffffff !important;
+	color: black !important;
+	box-shadow: none !important;
+}
+
+.vm-type .mat-button-toggle-checked .price {
+	background-color: #607d8b !important;
+	color: #ffffff !important;
+}
+
+.vm-type .mat-button-toggle-checked .info {
+	background-color: gainsboro !important;
+}
+
+.vm-type .mat-button-toggle {
+	box-shadow: none !important;
+	background-color: #ffffff !important;
+}
+
+.vm-type .mat-button-toggle-label-content {
+	line-height: 20px !important;
+}
+
+.vm-type .mat-button-toggle-label-content {
+	padding: 0px !important;
+}
+
+//************** VM Type end ***************
+
+
+//************** Datetime picker start ***************
+
+datetime-popup > .dropdown .glyphicon {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+datetime-popup > .dropdown timepicker {
+    display: flex;
+    justify-content: center;
+}
+
+datetime-popup > .dropdown .bg-faded {
+    border:0;
+    background-color: #fff;
+}
+
+datetime-popup > .dropdown datepicker button {
+    border:0;
+    background-color: #fff;
+}
+
+datetime-popup > .dropdown datepicker button.active {
+    background-color: #ddd;
+}
+
+datetime-popup > .dropdown .glyphicon.glyphicon-remove-circle:before {
+    content: "\f05c";
+}
+
+datetime-popup > .dropdown .glyphicon.glyphicon-chevron-down:before {
+    content: "\f078";
+}
+
+datetime-popup > .dropdown .glyphicon.glyphicon-chevron-up:before {
+    content: "\f077";
+}
+
+datetime-popup > .dropdown .glyphicon.glyphicon-chevron-left:before {
+    content: "\f053";
+}
+
+datetime-popup > .dropdown .glyphicon.glyphicon-chevron-right:before {
+    content: "\f054";
+}
+
+datetime-popup > .dropdown .glyphicon.hidden {
+    display: none !important;
+}
+
+.calendar--day {
+	width: 2.285em !important;
+}
+
+.ngx-picker input {
+	display: block !important;
+    width: 100% !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+    color: #495057 !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    background-clip: padding-box !important;
+    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+    border-radius: 0.2rem !important;
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s !important;
+}
+
+.ngx-picker button {
+	background-color: none !important;
+	border-color: none !important; 	
+}
+
+.performance-graphs .btn-info {
+	background-color: #00BCD4 !important;
+	border-color: #00BCD4 !important;
+}
+
+//************** Datetime picker end ***************
+
+//************** Progressbar start ***************
+
+progressbar bar {
+	background: green !important;
+}
+
+//************** Progressbar end ***************
+
+//************** Custom tag start ***************
+.tag {
+  font-size: 13px !important;
+  padding: .3em .4em .4em !important;
+  margin: 0 .2em !important;
+}
+.tag a {
+  color: #bbb;
+  cursor: pointer;
+  opacity: 0.6;
+}
+.tag a:hover {
+  opacity: 1.0
+}
+.tag .remove {
+  vertical-align: bottom;
+  top: 0;
+}
+.tag a {
+  margin: 0 0 0 .3em;
+}
+.tag a .glyphicon-white {
+  color: #fff;
+  margin-bottom: 2px;
+}
+.tag-bg-lb {
+	background: #5bc0de;
+}
+.custom-label {
+	display: inline;
+    padding: .2em .6em .3em;
+    font-size: 80%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+
+
+//************** Custom tag end ***************
+
+//************** Server list start ***************
+
+.bg-prod {
+	background-color: #FF0000;
+}
+
+.bg-preprod {
+	background-color: #FF8C00;
+}
+
+.bg-qa {
+	background-color: #9370DB;	
+}
+
+.bg-dr {
+	background-color: #FF1493;	
+}
+
+.bg-staging {
+	background-color: #32CD32;	
+}
+
+.label-monitor-status-prod {
+	@extend .label-location;
+	@extend .bg-prod;
+}
+
+.label-monitor-status-staging {
+	@extend .label-location;
+	@extend .bg-staging;
+}
+
+.label-monitor-status-preprod {
+	@extend .label-location;
+	@extend .bg-preprod;
+}
+
+.label-monitor-status-dr {
+	@extend .label-location;
+	@extend .bg-dr;
+}
+
+.label-monitor-status-qa {
+	@extend .label-location;
+	@extend .bg-qa;
+}
+
+//************** Server list end ***************
+
+//************** Generic Reload button start ***************
+
+logs-click a:hover {
+	text-decoration: none;
+}
+
+//************** Generic Reload button end ***************
+
+//************** Server summary start ***************
+
+server-summary-list a:hover {
+	text-decoration: none;
+}
+
+a.summary-tile-link {
+	color: #000;
+	text-decoration: none;
+}
+
+a.summary-tile-link:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+.summary-tile-container {
+	// background-color: #F8F8FF;
+	width: 150px;
+	word-wrap: break-word;
+	padding: 10px;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26) !important; 
+}
+
+server-summary-list .box {
+	box-shadow: none !important;
+}
+
+.bg-ghostwhite {
+	background-color: #F8F8FF;
+}
+
+.bg-smokewhite {
+	background-color: #F5F5F5;
+}
+
+.bg-floralwhite {
+	background-color: #FFFAF0;
+}
+
+.bg-lightgoldenrodyellow {
+	background-color: #FAFAD2;
+}
+
+.bg-lightblue {
+	background-color: lightblue;
+}
+
+.bg-lightgreen {
+	background-color: lightgreen;
+}
+
+.bg-bisque {
+	background-color: #FFE4C4;
+}
+
+// server-summary-list .table th {
+// 	border: 0px;
+// }
+
+// server-summary-list .table td {
+// 	border: 0px;
+// }
+
+.label-app {
+	// @extend .label-location;
+	// background-color: lightgreen !important;	
+	color: grey !important;
+	font-size: 12px;
+	// border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.label-db {
+	// @extend .label-location;
+	// background-color: lightblue !important;
+	// color: #000 !important;	
+	color: grey !important;
+	font-size: 12px;
+}
+.font18 {
+	font-size: 18px;
+}
+
+.font16 {
+	font-size: 16px;
+}
+
+.link-color {
+	color: #2A378C;
+}
+
+.font22 {
+	font-size: 22px;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+
+
+//************** Server summary end ***************
+
+//************** Billing list start ***************
+
+// infra-billing-list tabset .nav-item {
+// 	// border: 1px solid #e5e5e5;
+// }
+
+// infra-billing-list tabset .nav-item .nav-link.active {
+// 	color: #495057;
+// 	background-color: #fff;
+// 	border-color: #ddd #ddd #fff;
+// }
+
+infra-billing-list tabset .nav-item .nav-link {
+	border: 1px solid transparent !important;
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
+}
+
+infra-billing-list tabset li.nav-item.active {
+	border-top: 1px solid #ddd !important;
+	border-right: 1px solid #ddd !important;
+	border-left: 1px solid #ddd !important;
+	border-bottom: 0px !important;
+	margin-bottom: -1px !important; 
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
+	background-color: #fff;
+}
+
+infra-billing-list tabset li.nav-item {
+	background-color: #f5f5f5;
+}
+
+infra-billing-list tabset a.nav-link.active {
+	color: #000 !important;
+}
+
+// infra-billing-list tabset ul.nav{
+// 	border-bottom: 1px solid #ddd;
+// }
+
+// infra-billing-list tabset table th {
+// 	border-top: 0px !important;
+// }
+
+// infra-billing-list tabset table tr {
+// 	border: 0px !important;
+// }
+
+// infra-billing-list tabset table td {
+// 	border: 0px !important;
+// }
+
+infra-billing-list table tr.dyn-row:hover {
+	background-color: #fff !important;
+}
+
+infra-billing-list table td {
+	padding: 0.3rem !important;
+	padding-left: 0.65rem !important;
+}
+
+elb-list table tr.dyn-row:hover {
+	background-color: #fff !important;
+}
+
+elb-list {
+	.table-responsive {
+		width:100%;
+		table {
+			th {
+				padding: 0.756rem 0.3rem;
+			}
+			td{
+				button{
+					color: #fff;
+					&.fa-line-chart{
+						font-size: 0.8em;
+						padding: 7px 5px;
+					}
+				}
+				padding: 0.3rem;
+				&.project-bu {
+					color: #fff;
+					font-size: 12px;
+					text-transform: capitalize;
+					span{
+						display: inline-block;
+						padding: 3px;
+						margin: 1px 0;
+						line-height: initial;
+						border-radius: 2px;
+						background: #ee940e;
+						&:last-child{
+							background: #2cb884;
+						}
+					}
+				}
+				&.zone{
+					min-width: 100px;
+				}
+				.fa{
+					&.fa-circle.green{
+						color:green;
+						font-size: 0.8em;
+					}
+					&.fa-circle.red{
+						color:red;
+						font-size: 0.8em;
+					}
+					&.fa-exclamation-triangle{
+						color:orange;
+						font-size: 1em;
+					}
+				}
+			}
+		}
+	}
+	
+}
+
+
+
+// .cloud-server {
+// 	background-color: #979EDE;
+// }
+
+// .storage-server {
+// 	background-color: #4451C4;
+// }
+
+// .physical-server {
+// 	background-color: #6E77D1;
+// }
+
+// .elb-server {
+// 	background-color: #5964CB;
+// }
+
+
+
+//************** Billing list end ***************
+
+
+server-stats md-button-toggle-group {
+	height: 35px !important;
+	font-size: 12px;
+}
+
+server-update-form md-button-toggle-group {
+	height: 30px !important;
+	font-size: 12px;
+}
+
+server-update-form .mat-button-toggle-label-content {
+	line-height: 30px;
+	padding: 0px 10px;
+}
+
+.graph-title {
+	background: #F0F8FF;
+}
+
+.graph-summary {
+	height: 245px;
+}
+
+.graph-stats-title {
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.profile .group {
+	width: 112px;
+	white-space: normal;
+}
+
+.data-center-server .table td {
+	padding: 0.3rem !important;
+	padding-left: 0.65rem !important;
+}
+
+.data-center-storage .table td {
+	padding: 0.3rem !important;
+	padding-left: 0.65rem !important;
+}
+
+physical-billing-list .table td {
+	padding: 0.3rem !important;
+	padding-left: 0.65rem !important;
+}
+
+
+// common styling for img-button-toggle
+.img-button-toggle{
+	.mat-button-toggle {
+		background: #fff !important;
+		box-shadow: none !important;
+		margin: 20px 20px 20px 0px;
+		.mat-button-toggle-label{
+			margin:0;
+		}
+		.mat-button-toggle-label-content{
+			padding: 0;
+		}
+	}
+	.mat-button-toggle-disabled{
+		opacity: 0.7;
+		background: #f5f5f5 !important;
+	}
+}
+
+.search-input{
+	display: flex;
+    margin: 0;
+    float: right;
+}
+
+.capitalize{
+	text-transform: capitalize;
+}
+
+.uppercase{
+	text-transform: uppercase;
+}

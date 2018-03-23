@@ -1,0 +1,91 @@
+<div class="row mg-top-2">
+    <div  class="col-xl-2">
+        <label for="serverPort">Enter Server Port</label>
+        <input 
+			(change)="updateFormData()" 
+			class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" 
+			id="serverPort" name="serverPort" 
+			[(ngModel)]="formData.port" 
+			[placeholder]="'Server Port'" 
+			type="number" min=1 max=65535 
+            ng-reflect-name="serverPort">
+    </div>	
+    <div *ngIf="loading.lbmethods" class="col-xl-4">
+		<p  class="col-xl-4 ml-auto mr-auto">
+			<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+		</p>
+	</div>
+	<div *ngIf="loadingError.lbmethods" class="col-xl-4 text-danger">
+		Unable to load projects. 
+		<a href="javascript:void(0)" (click)="getLBMethodList()">
+			<fa class="" name="refresh"></fa> Reload</a>
+	</div>
+    <div  class="col-xl-3" *ngIf="!loading.lbmethods && !loadingError.lbmethods">
+        <label for="lbmethod">Select LB Method</label>
+        <select [disabled]="lbMethodList && lbMethodList.length == 0" (change)="updateFormData()" [(ngModel)]="formData.lbmethod" class="server-filter-form-input form-control" name="lbmethod" ngModel>
+            <option *ngFor="let lb of lbMethodList" value="{{ lb }}">{{ lb }}</option>
+        </select>
+    </div>
+</div>
+
+<div class="row mg-top-2">
+    <div *ngIf="loading.servers" class="col-xl-4">
+        <p  class="col-xl-4 ml-auto mr-auto">
+            <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+        </p>
+    </div>
+    <div *ngIf="loadingError.servers" class="col-xl-4 text-danger">
+        Unable to load projects. 
+        <a href="javascript:void(0)" (click)="getLBMethodList()">
+            <fa class="" name="refresh"></fa> Reload</a>
+    </div>
+    <div class="col-xl-12" *ngIf="!loading.servers && !loadingError.servers">
+        <label for="vipmembers">Select VIP Members</label>
+
+        <div class="col-xl-4 search-input">
+            <input
+            class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" 
+            id="search-value" name="search-value" 
+            [(ngModel)]="formData.search_value" 
+            placeholder="Search" type="text" 
+            ng-reflect-name="search-value">
+            <button (click)="getServersList()" type="submit"  class="btn btn-primary waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >
+                <i class='fa fa-search'></i>
+            </button>
+        </div>
+        
+
+
+        <div class="table-responsive table-height mg-top-2">
+            <table class="table table-hover table-stiped">
+                <tr>
+                  <th class="" scope="col">#</th>
+                  <th class="" scope="col">VIP</th>
+                  <th class="" scope="col">Hostname</th>
+                  <th class="" scope="col">Location</th>
+                  <th class="" scope="col"></th>
+                </tr>
+                <tr *ngFor="let member of vipmembers;let i = index;">
+                    <td class="" scope="col">{{i+1}}</td>
+                    <td class="" scope="col">{{member.ip}}</td>
+                    <td class="" scope="col">{{member.hostname}}</td>
+                    <td class="" scope="col">{{member.location}}</td>
+                    <td class="" scope="col">
+                        <md-checkbox 
+                            (click)="toggleSelection(member.ip)" 
+                            class="example-margin" 
+                            [color]="'primary'"
+                            [value]="member.ip">
+                        </md-checkbox>
+                    </td>
+                </tr>
+                <tr *ngIf="vipmembers && vipmembers.length == 0">
+                    <td colspan="5" class="text-center">No Data Found</td>
+                </tr>
+            </table>
+        </div>
+    
+    </div>
+    
+</div>
+    
