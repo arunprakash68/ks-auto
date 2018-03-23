@@ -34,25 +34,27 @@ import { DataCenterClusterComponent } from './cluster/cluster.component';
 import { DataCenterStorageComponent } from './storage/storage.component';
 import { DataCenterMyDashboardComponent } from './my-dashboard/my-dashboard.component';
 
-import { ELBComponent } from './elb/elb.component';
-import { ELBListComponent } from './elb/elb-list/elb-list.component';
+import { ELBComponent } from './elb/vip/elb.component';
+import { ELBListComponent } from './elb/vip/elb-list/elb-list.component';
 import { NewELBComponent } from './elb/new-elb/new-elb.component';
 import { CreateVipComponent } from './elb/new-elb/create-vip/create-vip.component';
 import { CreatePoolComponent } from './elb/new-elb/create-pool/create-pool.component';
 import { CreateMonitorComponent } from './elb/new-elb/create-monitor/create-monitor.component';
-import { ELBFilterFormComponent } from './elb/filter-form/filter-form.component';
+import { ELBFilterFormComponent } from './elb/vip/filter-form/filter-form.component';
 
 import { CostModule } from '../cost/cost.module';
 
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
 
 import { AvatarModule } from 'ngx-avatar';
-import { ServercertificateComponent } from './ssl/servercertificate/servercertificate.component';
-import { ClientcertificateComponent } from './ssl/clientcertificate/clientcertificate.component';
-import { CacertificateComponent } from './ssl/cacertificate/cacertificate.component';
-import { ServercertificatelistComponent } from './ssl/servercertificate/servercertificatelist/servercertificatelist.component';
-import { ClientcertificatelistComponent } from './ssl/clientcertificate/clientcertificatelist/clientcertificatelist.component';
-import { CacertificatelistComponent } from './ssl/cacertificate/cacertificatelist/cacertificatelist.component';
+import { ServerCertificateComponent } from './elb/ssl/server-certificate/server-certificate.component';
+import { ClientCertificateComponent } from './elb/ssl/client-certificate/client-certificate.component';
+import { CaCertificateComponent } from './elb/ssl/ca-certificate/ca-certificate.component';
+import { ServerCertificateListComponent } from './elb/ssl/server-certificate/server-certificate-list/server-certificate-list.component';
+import { ClientCertificateListComponent } from './elb/ssl/client-certificate/client-certificate-list/client-certificate-list.component';
+import { CaCertificateListComponent } from './elb/ssl/ca-certificate/ca-certificate-list/ca-certificate-list.component';
+import { PoolComponent } from './elb/pool/pool.component';
+import { PoolListComponent } from './elb/pool/pool-list/pool-list.component';
 
 
 @NgModule({
@@ -101,12 +103,14 @@ import { CacertificatelistComponent } from './ssl/cacertificate/cacertificatelis
     CreatePoolComponent,
     CreateMonitorComponent,
     ELBFilterFormComponent,
-    ServercertificateComponent,
-    ClientcertificateComponent,
-    CacertificateComponent,
-    ServercertificatelistComponent,
-    ClientcertificatelistComponent,
-    CacertificatelistComponent
+    ServerCertificateComponent,
+    ClientCertificateComponent,
+    CaCertificateComponent,
+    ServerCertificateListComponent,
+    ClientCertificateListComponent,
+    CaCertificateListComponent,
+    PoolComponent,
+    PoolListComponent
   ]
 })
 

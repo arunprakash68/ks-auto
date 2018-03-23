@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BusinessAccessDetailsService } from '../../../_services/business-access-details.service';
-import { LocationZoneListService } from '../../../_services/location-zone-list.service';
-import { ErrorHandlerService } from '../../../_services/error-handler.service';
+import { BusinessAccessDetailsService } from '../../../../_services/business-access-details.service';
+import { LocationZoneListService } from '../../../../_services/location-zone-list.service';
+import { ErrorHandlerService } from '../../../../_services/error-handler.service';
 import { Router, NavigationEnd } from '@angular/router';
 
 
@@ -20,6 +20,8 @@ export class ELBFilterFormComponent {
 	projects: any;
 	formData: any;
 	envList: any[];
+	searchFilters : any[];
+
 	@Input() isCollapsed: boolean;
 	@Input() updatedSearchOptions: any;
 	@Output() searchOptions: EventEmitter<any> = new EventEmitter<any>();
@@ -40,6 +42,12 @@ export class ELBFilterFormComponent {
 			{ value: 'qa', title: 'qa' },
 			{ value: 'dr', title: 'dr' }
 		];
+
+		this.searchFilters = ['Vip Ip']
+	}
+
+	ngOnInit(){
+		this.formData.filterKey = this.searchFilters[0]
 	}
 
 	ngOnChanges() {

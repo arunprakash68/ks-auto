@@ -22,14 +22,12 @@
                   <label for="select-project">Select Business Unit</label>
 
                   <select  [(ngModel)]="formData.bu" (change)="onBusinessChange()"  class="server-filter-form-input form-control" name="select-business" ngModel>
-                    <!-- <option selected>Select Project</option> -->
                     <option value="{{ business.bu_name }}" *ngFor="let business of businessAccessDetails?.bu">{{ business.bu_name }}</option>
                   </select>
                 </div>
                 <div class="col-xl-4" *ngIf="!loading.bu && !loadingError.bu">
                   <label for="select-project">Select Project</label>
-                  <select (change)="onProjectChange()"  [(ngModel)]="formData.project" class="server-filter-form-input form-control" name="select-project" ngModel>
-                    <!-- <option selected>Select Project</option> -->
+                  <select [disabled]="projects[formData.bu].length == 0" (change)="onProjectChange()"  [(ngModel)]="formData.project" class="server-filter-form-input form-control" name="select-project" ngModel>
                     <option value="{{ project.project }}" *ngFor="let project of projects[formData.bu]">{{ project.project }}</option>
                   </select>
                 </div>
@@ -37,7 +35,9 @@
             </div>
 
           </div>
-
+          <div class="mg-top-2" *ngIf="projects && projects[formData.bu] && projects[formData.bu].length == 0">
+						<p class="text-danger ml-2 mt-3">You do not have  write access to <strong>{{formData.bu}}</strong> business!!</p>
+					</div>
           <!-- <div class="row mt-5">
            <div class="col-xl-12 dc-region">
             <h3><span>Choose a Datacenter Region</span></h3>
@@ -216,7 +216,7 @@
 </div>
 
 <div class="row mt-5"></div>
-<div class="row mt-5">
+<div class="row mt-5" *ngIf="formData.bu && formData.project">
   <div class="col-xl-12">
     <button [disabled]="!(formData.bu && formData.project && (!loadingError.dcZone && !loading.dcZone))" type="submit" class="btn-lg btn-block btn btn-primary waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" >
       <i *ngIf="submitLoading" class='fa fa-spinner fa-spin '></i> Create New Server

@@ -322,11 +322,12 @@ export class NewServerComponent implements OnInit {
 	}
 
 	fillProjectsMap() {
-		for(let i = 0; i < this.businessAccessDetails['bu'].length; i++) {
-			this.projects[this.businessAccessDetails['bu'][i]['bu_name']] = this.businessAccessDetails['bu'][i]['project'];
+		let bu = this.businessAccessDetails['bu'];
+		for(let i = 0; i < bu.length; i++) {
+			this.projects[bu[i]['bu_name']] = (bu[i]['project']).filter(function(obj){
+				return (obj.access_type).indexOf('w') > -1
+			});
 		}
-		console.log(this.projects);
-
 	}
 
 	onBusinessChange() {

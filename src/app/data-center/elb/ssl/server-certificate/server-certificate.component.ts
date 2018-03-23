@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-clientcertificate',
-  templateUrl: './clientcertificate.component.html',
-  // styleUrls: ['./clientcertificate.component.scss']
+  selector: 'app-server-certificate',
+  templateUrl: './server-certificate.component.html',
 })
-export class ClientcertificateComponent implements OnInit {
-
+export class ServerCertificateComponent implements OnInit {
   isCollapsed: Boolean;
   staticTab: any;
 

@@ -20,6 +20,7 @@ router.post('/createvip', (req, res) => {
                     env: postParams.env,
                     scheme: postParams.scheme,
                     siteshield: postParams.siteshield,
+                    snatpool: (postParams.snatpool ? postParams.snatpool : '')
         };
 
         let header = {
@@ -54,7 +55,10 @@ router.post('/createpool', (req, res) => {
                     vipmembers: JSON.stringify(postParams.vipmembers), 
                     port: JSON.stringify(postParams.port),  
                     domain_name: postParams.domain_name,
-                    lb_method: postParams.lb_method
+                    lb_method: postParams.lb_method,
+                    project: postParams.project,  
+                    bu: postParams.bu,  
+                    env: postParams.env,
         };
 
         let header = {

@@ -119,8 +119,11 @@ export class NewELBComponent implements OnInit {
 	}
 
 	fillProjectsMap() {
-		for(let i = 0; i < this.businessAccessDetails['bu'].length; i++) {
-			this.projects[this.businessAccessDetails['bu'][i]['bu_name']] = this.businessAccessDetails['bu'][i]['project'];
+		let bu = this.businessAccessDetails['bu'];
+		for(let i = 0; i < bu.length; i++) {
+			this.projects[bu[i]['bu_name']] = (bu[i]['project']).filter(function(obj){
+				return (obj.access_type).indexOf('w') > -1
+			});
 		}
 	}
 
@@ -202,6 +205,7 @@ export class NewELBComponent implements OnInit {
 			lb_method : this.formData.lbmethod,
 			siteshield : (this.formData.scheme == 'internet-facing' && this.formData.loadBalancerType == 'application') ? 
 							(this.formData.siteshield ? 1 : 0) : 0,
+			snatpool : this.formData.snatPool
 		}
 		
 		this.createNewELBService.createNewELBVip(options).subscribe(data => {
@@ -239,6 +243,9 @@ export class NewELBComponent implements OnInit {
 		let options = {
 			zone : this.formData.zone,
 			location : this.formData.location,
+			project : this.formData.project,
+			bu : this.formData.bu,
+			env : this.formData.monitoringvalue,
 			port : [this.formData.port.toString()],
 			vipmembers : this.formData.vipmembers,
 			domain_name : this.formData.domain_name,

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ELBService } from '../../../../_services/data-center/elb.service';
-import { ErrorHandlerService } from '../../../../_services/error-handler.service';
+import { ELBService } from '../../../../../_services/data-center/elb.service';
+import { ErrorHandlerService } from '../../../../../_services/error-handler.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
@@ -11,12 +11,11 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 
 @Component({
-  selector: 'app-clientcertificatelist',
-  templateUrl: './clientcertificatelist.component.html',
+  selector: 'app-client-certificate-list',
+  templateUrl: './client-certificate-list.component.html',
   providers: [ELBService, ErrorHandlerService],
-  // styleUrls: ['./clientcertificatelist.component.scss']
 })
-export class ClientcertificatelistComponent implements OnInit {
+export class ClientCertificateListComponent implements OnInit {
 
   loading: Boolean;
   params: any;

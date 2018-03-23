@@ -50,7 +50,7 @@ app.post('/login', (req, res) => {
         var postParams = req.body;
         request({
             method: 'POST',
-            url: process.env.assets_api + '/v1/api/login',
+            url: process.env.assets_api + '/login',
             json: postParams,
             headers: {
                 'Content-Type': 'application/json',

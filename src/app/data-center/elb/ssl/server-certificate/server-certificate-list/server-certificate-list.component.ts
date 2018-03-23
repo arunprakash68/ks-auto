@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ELBService } from '../../../../_services/data-center/elb.service';
-import { ErrorHandlerService } from '../../../../_services/error-handler.service';
+import { ELBService } from '../../../../../_services/data-center/elb.service';
+import { ErrorHandlerService } from '../../../../../_services/error-handler.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';
@@ -11,16 +11,15 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/catch';
 
 @Component({
-  selector: 'app-cacertificatelist',
-  templateUrl: './cacertificatelist.component.html',
+  selector: 'app-server-certificate-list',
+  templateUrl: './server-certificate-list.component.html',
   providers: [ELBService, ErrorHandlerService],
-  // styleUrls: ['./cacertificatelist.component.scss']
 })
-export class CacertificatelistComponent implements OnInit {
+export class ServerCertificateListComponent implements OnInit {
 
   loading: Boolean;
   params: any;
-  cacertlist: any;
+  servercertlist: any;
   certCallError: Boolean;
   showNoCertMsg: Boolean;
   totalResult: number;
@@ -32,23 +31,25 @@ export class CacertificatelistComponent implements OnInit {
       'zone': 'TIL-MUM-1A',
       'location': 'Mumbai'
     }
+    this.totalResult = 0;
     this.showNoCertMsg = false;
     this.certCallError = false;
-    this.totalResult= 0;
 
    }
 
   ngOnInit() {
     this.getsslcert();
-    // console.log('location: ',localStorage.getItem("location"));
   }
 
   getsslcert(){
     this.elbService.getSSLCertificate(this.params).subscribe(data => {
-      this.cacertlist = data.sslcerts.filter(cert => {
-        return cert.certificatetype.indexOf('ROOT_CERT') !== -1
+      this.servercertlist = data.sslcerts.filter(cert => {
+        return cert.certificatetype.indexOf('SRVR_CERT') !== -1
       });
-      this.cacertlist.filter(function(obj){
+      this.totalResult = this.servercertlist.length;
+      this.servercertlist = this.servercertlist.slice(0, 16);
+
+      this.servercertlist.filter(function(obj){
         let cn = obj.subject.split(",");
         for(let i=0;i<cn.length;i++ )
         {
@@ -68,11 +69,11 @@ export class CacertificatelistComponent implements OnInit {
         
         
       });
-      this.totalResult = this.cacertlist.length;
-      this.cacertlist = this.cacertlist.slice(0, 16);
+
+
       this.loading = false;
       this.certCallError = false;
-      if(this.cacertlist.length === 0){
+      if(this.servercertlist.length === 0){
         this.showNoCertMsg = true;
       }
 

@@ -99,7 +99,7 @@ export class LogsClickComponent implements OnInit, OnChanges {
 			dwldLink.setAttribute("target", "_blank");
 		}
 		dwldLink.setAttribute("href", url);
-		dwldLink.setAttribute("download", "Enterprise.csv");
+		dwldLink.setAttribute("download", "Logs-list.csv");
 		dwldLink.style.visibility = "hidden";
 		document.body.appendChild(dwldLink);
 		dwldLink.click();

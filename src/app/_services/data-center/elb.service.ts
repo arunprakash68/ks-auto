@@ -28,7 +28,6 @@ export class ELBService extends GenericApiService {
 	}
 
 	getLBMethods(params) {
-		console.log(params)
 		return this.makeGetRequest({
 			path: '/api/data-center/lbalgo',
 			params: params,
@@ -37,9 +36,16 @@ export class ELBService extends GenericApiService {
 	}
 
 	getSSLCertificate(params) {
-		console.log(params)
 		return this.makeGetRequest({
 			path: '/api/data-center/sslcert',
+			params: params,
+			headers: this.servicesUtilityService.getDefaultHeaders()
+		});
+	}
+
+	getSnatPools(params) {
+		return this.makeGetRequest({
+			path: '/api/data-center/snatpools',
 			params: params,
 			headers: this.servicesUtilityService.getDefaultHeaders()
 		});

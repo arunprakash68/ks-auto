@@ -32,8 +32,17 @@ body {
 .mg-top-2{
 	margin-top:2em;
 }
+.no-pd{
+	padding: 0;
+}
 .card-box{
 	padding: 40px;
+}
+
+.self-align{
+	display: flex;
+    align-self: flex-end;
+    padding: 10px 0;
 }
 
 .txt-center{
@@ -756,7 +765,6 @@ progressbar bar {
 //************** Custom tag start ***************
 .tag {
   font-size: 13px !important;
-  padding: .3em .4em .4em !important;
   margin: 0 .2em !important;
 }
 .tag a {
@@ -783,7 +791,7 @@ progressbar bar {
 }
 .custom-label {
 	display: inline;
-    padding: .2em .6em .3em;
+    padding: .2em .6em;
     font-size: 80%;
     font-weight: 700;
     line-height: 1;

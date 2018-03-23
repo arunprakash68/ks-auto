@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, NgModule } from '@angular/core';
-import { ELBService } from '../../../_services/data-center/elb.service';
-import { ErrorHandlerService } from '../../../_services/error-handler.service';
+import { ELBService } from '../../../../_services/data-center/elb.service';
+import { ErrorHandlerService } from '../../../../_services/error-handler.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/timer';

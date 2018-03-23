@@ -10,12 +10,12 @@ import { DataCenterMyDashboardComponent } from './my-dashboard/my-dashboard.comp
 
 import { PhysicalBillingComponent } from '../cost/physical-billing/physical-billing.component';
 
-import { ELBComponent } from './elb/elb.component';
+import { ELBComponent } from './elb/vip/elb.component';
 import { NewELBComponent } from './elb/new-elb/new-elb.component';
-import { ServercertificateComponent } from './ssl/servercertificate/servercertificate.component';
-import { ClientcertificateComponent } from './ssl/clientcertificate/clientcertificate.component';
-import { CacertificateComponent } from './ssl/cacertificate/cacertificate.component';
-
+import { ServerCertificateComponent } from './elb/ssl/server-certificate/server-certificate.component';
+import { ClientCertificateComponent } from './elb/ssl/client-certificate/client-certificate.component';
+import { CaCertificateComponent } from './elb/ssl/ca-certificate/ca-certificate.component';
+import { PoolComponent } from './elb/pool/pool.component';
 
 export const DataCenterRoutes: Routes = [
 {
@@ -29,12 +29,13 @@ export const DataCenterRoutes: Routes = [
 	{path: 'elb', component: ELBComponent },
 	{path: 'elb/new', component: NewELBComponent },
 	{path: 'elb/vip', component: ELBComponent },
-	{path: 'ssl/servercerts', component: ServercertificateComponent },
-	{path: 'ssl/clientcerts', component: ClientcertificateComponent },
-	{path: 'ssl/cacerts', component: CacertificateComponent },
+	{path: 'ssl/servercerts', component: ServerCertificateComponent },
+	{path: 'ssl/clientcerts', component: ClientCertificateComponent },
+	{path: 'ssl/cacerts', component: CaCertificateComponent },
 	{path: 'cluster', component: DataCenterClusterComponent },
 	{path: 'storage', component: DataCenterStorageComponent },
 	{path: 'storage/new', component: NewServerComponent },
+	{path: 'elb/pool', component : PoolComponent},
 	// {path: '**', redirectTo: '/app/data-center/server' }
 	// {path: 'my-dashboard', component: DataCenterMyDashboardComponent }
 	]

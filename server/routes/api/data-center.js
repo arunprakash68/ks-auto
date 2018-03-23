@@ -552,4 +552,33 @@ router.get('/sslcert', (req, res) => {
     }
 })
 
+// Get snat pools
+router.get('/snatpools', (req, res) => {
+    try {
+        const getParams = req.query;
+        var qs = { 
+            'zone': getParams['zone'] ? getParams['zone'] : '',
+        };
+        const options = {
+            baseUrl: process.env.auto_api,
+            uri: '/api/v0.1/snatpools',
+            qs,
+            method: 'GET',
+            json: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Email': req.get('X-Email'),
+                'X-Token': req.get('X-Token'),
+                'X-Location': (getParams['location'] ? getParams['location'] : '')
+            }
+        }
+        
+        httpRequestPromise.resolveHTTPRequestPromise(options, req, res);
+
+    } catch(e){
+        console.log(options);
+        console.log(e);
+    }
+})
+
 module.exports = router;

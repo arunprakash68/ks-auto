@@ -27,6 +27,11 @@
 										</a>
 									</span>
 								</div>
+								<!-- search tags -->
+								<div class="col-12 text-center" *ngIf=" searchTags && searchTags.length > 0 ">
+									<strong>Search Tags: </strong><text-tag (triggerClose)="triggerCloseTag(tag)" [prop]="tag.prop" [title]="tag.title" [closable]="tag.closable" *ngFor="let tag of searchTags"></text-tag>
+								</div>
+								<!-- filter form -->
 								<div class="col-xl-12">
 									<elb-filter-form (triggerFilterCollapse)="triggerFilterCollapse($event)" [updatedSearchOptions]="searchOptions" [ngbCollapse]="!isCollapsed" [isCollapsed]="isCollapsed" (searchOptions)="updateSearchOptions($event)"></elb-filter-form>
 								</div>

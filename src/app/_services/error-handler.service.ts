@@ -14,7 +14,6 @@ export class ErrorHandlerService {
 	// }
 
 	validateAuthentication(response){
-		console.log(response);
 		if (response && response['status'] && (response['status'].toString() == 401 
 			|| response['status'].toString() == 403 
 			|| response['status'].toString() == 406 

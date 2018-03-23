@@ -24,6 +24,7 @@ export class CreateVipComponent implements OnInit {
 	sslCertList : any;
 	lbProtocol : any;
 	profiles : any;
+	snatpoolsList : any;
 
 	@Input() formData: any;
 	@Input() currentLB: any;
@@ -64,6 +65,7 @@ export class CreateVipComponent implements OnInit {
 		
 		if(this.currentLocZone && this.currentLocZone.location){
 			this.getSSLCertificatesList();
+			this.getSnatPoolsList();
 		}
 	}
 
@@ -151,6 +153,39 @@ export class CreateVipComponent implements OnInit {
 			}
 			this.loading['sslcert'] = false;
 			this.loadingError['sslcert'] = true;
+		})
+	}
+
+	// get snat pools list
+	getSnatPoolsList(){
+
+		this.loading['snatPool'] = true;
+		this.loadingError['snatPool'] = false;
+
+		let param = {
+			location : this.currentLocZone.location,
+			zone : this.currentLocZone.zone
+		};
+		
+		this.elbService.getSnatPools(param).subscribe(data => {
+			
+			if(data && data.snatpools){
+				this.snatpoolsList = data.snatpools;
+				this.formData.snatPool = this.snatpoolsList[0]
+			}
+			else{
+				this.snatpoolsList = [];
+			}
+
+			this.loading['snatPool'] = false;
+			
+		
+		}, error => {
+			if (!this.errorHandlerService.validateAuthentication(error)) {
+				this.router.navigate(['/login']);
+			}
+			this.loading['snatPool'] = false;
+			this.loadingError['snatPool'] = true;
 		})
 	}
 

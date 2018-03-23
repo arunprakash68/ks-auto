@@ -1,5 +1,5 @@
 	<div id="elbFilterCollapse">
-		<div class="form-group row server-filter-container card ml-auto mr-auto pb-0" >
+		<div class="form-group row server-filter-container card ml-auto mr-auto" >
 			<form #f="ngForm" (ngSubmit)="onSubmit(f.value)">
 				<div class="col-12">
 					<div class="row">
@@ -42,7 +42,23 @@
 								</md-button-toggle-group>
 							</div>
 						</div>
+						<div class="col-6 no-pd">
+							<div class="row">
+								<div class="col-5">
+									<label for="filterkey">Filter Key</label>
+									<select name="filterkey" class="form-control" [(ngModel)]="formData.filterKey">
+										<option value="{{ filter }}" *ngFor="let filter of searchFilters">{{ filter }}</option>
+									</select>	
+								</div>
+								<div class="self-align">=</div>
+								<div class="col-6">
+									<label>Filter Value</label>
+									<input class="form-control" placeholder="{{'Enter ' + formData.filterKey}}" type="text" [(ngModel)]="formData.search" name="filtervalue">
+								</div>
+							</div>
+						</div>
 					</div>
+
 				</div>
 				<div class="col-12">
 					<div class="row mt-5">
