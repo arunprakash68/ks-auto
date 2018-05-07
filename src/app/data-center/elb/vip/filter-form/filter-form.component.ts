@@ -1,9 +1,11 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BusinessAccessDetailsService } from '../../../../_services/business-access-details.service';
 import { LocationZoneListService } from '../../../../_services/location-zone-list.service';
 import { ErrorHandlerService } from '../../../../_services/error-handler.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { BuProjectComponent } from '../../../../shared/bu-project/bu-project.component';
+
 
 
 @Component({
@@ -26,6 +28,7 @@ export class ELBFilterFormComponent {
 	@Input() updatedSearchOptions: any;
 	@Output() searchOptions: EventEmitter<any> = new EventEmitter<any>();
 	@Output() triggerFilterCollapse: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@ViewChild('buProject') container:BuProjectComponent;
 
 
 	constructor(
@@ -36,11 +39,11 @@ export class ELBFilterFormComponent {
 		this.formData = {};
 		this.projects = {};
 		this.envList = [
-			{ value: 'prod', title: 'prod' },
-			{ value: 'pre prod', title: 'pre prod' },
-			{ value: 'staging', title: 'staging' },
-			{ value: 'qa', title: 'qa' },
-			{ value: 'dr', title: 'dr' }
+			{ value: 1, title: 'prod' },
+			{ value: 2, title: 'pre prod' },
+			{ value: 3, title: 'staging' },
+			{ value: 4, title: 'qa' },
+			{ value: 5, title: 'dr' }
 		];
 
 		this.searchFilters = ['Vip Ip']
@@ -62,27 +65,13 @@ export class ELBFilterFormComponent {
 	}
 
 	openServerFilter() {
-		this.getBusinessAccessDetails();
 		this.getLocationZoneList();
 	}
 
-	getBusinessAccessDetails() {
-		if (this.businessAccessDetails) {
-			return;
-		}
-		this.businessAccessDetailsService.getBusinessAccessDetails().subscribe(data => {
-
-			if (data && data['status'] != 0) {
-				this.businessAccessDetails = data;
-				this.fillProjectsMap();
-				this.updateFormData();
-			}
-
-		}, error => {
-			if (!this.errorHandlerService.validateAuthentication(error)) {
-				this.router.navigate(['/login']);
-			}
-		})
+	// bu project component update
+	getBuProData(data){
+		this.businessAccessDetails = data.businessAccessDetails;
+		this.projects = data.projects
 	}
 
 	getLocationZoneList() {
@@ -105,24 +94,13 @@ export class ELBFilterFormComponent {
 		})
 	}
 
-	updateFormData() {
-		if(this.businessAccessDetails && this.businessAccessDetails.bu && this.businessAccessDetails.bu.length > 0){
-			let business = '';
-			if (this.updatedSearchOptions['business']) {
-				business = this.updatedSearchOptions['business'];
-			}
-			this.formData['bu'] = business;
-			this.onBusinessChange(this.updatedSearchOptions['project']);
-		}
-
-	}
 
 	onSubmit(formData) {
 		var options = {
 			start_count: 0,
 			zone: this.checkNullString(this.formData['zone']),
 			project: this.checkNullString(this.formData['project']),
-			env: this.checkNullString(this.formData['env']),
+			env: this.formData['env'] ? parseInt(this.formData['env']) : '',
 			business: this.checkNullString(this.formData['bu'])
 		}
 		this.searchOptions.emit(options);
@@ -141,6 +119,7 @@ export class ELBFilterFormComponent {
 			this.formData['project'] = this.checkNullString(this.updatedSearchOptions['project']);
 			this.formData['bu'] = this.checkNullString(this.updatedSearchOptions['business']);
 			this.formData['env'] = this.checkEmptyString(this.updatedSearchOptions['env']);
+			this.container.formData = this.formData;
 		}
 	}
 
@@ -151,15 +130,17 @@ export class ELBFilterFormComponent {
 		return str;
 	}
 
-	fillProjectsMap() {
-		for (let i = 0; i < this.businessAccessDetails['bu'].length; i++) {
-			this.projects[this.businessAccessDetails['bu'][i]['bu_name']] = this.businessAccessDetails['bu'][i]['project'];
-		}
+	onBusinessChange(data) {
+		this.formData['project'] = data ? data.project : '';
+		this.formData['bu'] = data ? data.bu : '';
+		this.filterCheck();
 	}
 
-	onBusinessChange(project) {
-		this.formData['project'] = project ? project : '';
+	onProjectChange(data){
+		this.formData['project'] = data ? data.project : '';
+		this.formData['bu'] = data ? data.bu : '';
 		this.filterCheck();
+		// do nothing not required here
 	}
 
 	filterCheck() {
@@ -178,7 +159,7 @@ export class ELBFilterFormComponent {
 		}
 	}
 
-	onZoneEnvChange() {
+	onZoneEnvChange(buProject) {
 
 		/**
 		 * This code is used for checking the interdependency of BU, project and env drop down
@@ -186,13 +167,16 @@ export class ELBFilterFormComponent {
 		 */
 
 		if (this.formData['zone'] != '') {
-
+			
+			this.formData['bu'] = this.formData['bu'] == '' ? this.businessAccessDetails['bu'][0]['bu_name'] : this.formData['bu'];
 			this.formData['project'] = this.formData['project'] == '' ? this.projects[this.formData['bu']][0].project : this.formData['project'];
+			this.container.formData['project'] = this.formData['project'];
+			this.container.formData['bu'] = this.formData['bu'];
 		}
 		else if (this.formData['env']) {
 
 			this.formData['bu'] = this.formData['bu'] == '' ? this.businessAccessDetails['bu'][0]['bu_name'] : this.formData['bu'];
+			this.container.formData['bu'] = this.formData['bu'];
 		}
-
 	}
 }

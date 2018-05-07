@@ -191,7 +191,7 @@ export class LogsFilterFormComponent {
 	}
 
 	onSubmit(tabtype1: any) {
-
+		
 		let filters = {};
 		if (this.formData['statusCodeGroup'] != '' && this.formData['statusCode'] == '') {
 			filters['status_group'] = this.formData['statusCodeGroup'];

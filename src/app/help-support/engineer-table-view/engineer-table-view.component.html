@@ -1,0 +1,66 @@
+<div class="row">
+  <p *ngIf="loading" id="loaderimg" class="col-xl-2 ml-auto mr-auto">
+    <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+  </p>
+</div>
+
+
+<div class="row">
+  <!-- <div class="col-12 pr-0">
+    <div class="row">
+      <div class="col-xl-4 mt-4" *ngIf="showPagination()">
+        <span style="font-size: 14px;font-weight: bold;">Showing {{ pageItemIndex + 1 }}-{{ pageItemIndex + servers?.vmdata.length }} of {{ collectionSize }}</span>
+      </div>
+      <div class="col-xl-8">
+        <div class="mt-1 pull-right" *ngIf="showPagination()">
+          <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <table class="table table-hover table-responsive table-bordered">
+
+    <thead class="thead">
+
+      <tr>
+        <th>Engineer Name</th>
+        <th>Logged In</th>
+        <th>Total</th>
+        <th>Inprogress</th>
+        <th>User Not Available</th>
+        <th>On Hold</th>
+        <th>Resolved</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="engineerLocationInfo">
+
+      <tr *ngFor=" let engineer of engineerLocationInfo; let i = index; " (click)="goToDetailsDashboard(engineer.Engineer)">
+        <td>{{ engineer.Engineer}}</td>
+        <td>
+          {{engineer.loggedin}}
+        </td>
+        <td> {{engineer.total}}</td>
+        <td> {{engineer.inprogress}}</td>
+        <td> {{engineer.notavailable}}</td>
+        <td> {{engineer.onhold}}</td>
+        <td> {{engineer.resolved}}</td>
+
+      </tr>
+    </tbody>
+  </table>
+  <!-- <div class="col-xl-12 text-center" *ngIf="showNoServersMsg()">No servers found</div>
+  <div class="col-xl-12 text-center text-danger" *ngIf="serverCallError">Something went wrong. Please try again. &nbsp;
+    <a href="javascript:void(0)" (click)="getMyServers()">
+      <fa class="" name="refresh"></fa> Reload</a>
+  </div> -->
+
+  <div class="col-12 pr-0">
+    <div class="mt-2 pull-right">
+      <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page"
+        [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+      </ngb-pagination>
+    </div>
+  </div>
+</div>

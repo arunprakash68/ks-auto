@@ -200,10 +200,10 @@ export class PerformanceFilterFormComponent {
     }
     let timeDiff = Math.abs(this.formData.myToDate.getTime() - this.formData.myFromDate.getTime());
     let diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    if(diffDays > 2) {
-      this.viewGraphsErrorMessage = 'Please select a date range not greater than 2 days.';
-      return;
-    }
+    // if(diffDays > 2) {
+    //   this.viewGraphsErrorMessage = 'Please select a date range not greater than 2 days.';
+    //   return;
+    // }
     let fromDate = Date.parse(this.formData.myFromDate.toString());
     let toDate = Date.parse(this.formData.myToDate.toString());
     let options = {

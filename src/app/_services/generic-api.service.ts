@@ -23,4 +23,16 @@ export class GenericApiService {
 		return this.apiRequestService.resolveRequest(apiRequest);		
 	}
 
+	makeDeleteRequest(apiRequest: any) {
+		apiRequest['type'] = 'DELETE';
+		apiRequest['url'] = APPCONFIG['apiHost'];
+		return this.apiRequestService.resolveRequest(apiRequest);		
+	}
+
+	makePutRequest(apiRequest: any) {
+		apiRequest['type'] = 'PUT';
+		apiRequest['url'] = APPCONFIG['apiHost'];
+		return this.apiRequestService.resolveRequest(apiRequest);		
+	}
+
 }

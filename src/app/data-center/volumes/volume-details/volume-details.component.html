@@ -1,0 +1,23 @@
+<p>Volume ID : <span *ngFor="let volume of volumeDetailsList | objectKeys">{{volume}}</span></p>
+
+<!-- tabsets -->
+<tabset>
+    <tab *ngFor="let tabz of tabsList"
+        [heading]="tabz.template"
+        [active]="tabz.active"
+        (select)="tabz.active = true"
+        (deselect)="tabz.active = false"
+        [disabled]="false">
+        <div  [ngSwitch]="tabz.template">
+            <div *ngSwitchCase="'Description'">
+                <volume-description [desData]='desData'></volume-description>
+            </div>
+            <div *ngSwitchCase="'Status Check'">
+                <volume-status-check [desData]='desData'></volume-status-check>
+            </div>
+            <div *ngSwitchCase="'Monitoring'">
+                <volume-monitoring [desData]='desData'></volume-monitoring>
+            </div>
+        </div>
+    </tab>
+</tabset>

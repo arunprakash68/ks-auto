@@ -25,6 +25,7 @@ export class EChartsDirective implements AfterViewInit, OnDestroy {
   private timer;
 
   ngAfterViewInit() {
+    
     // this.myChart = echarts.init(this.el.nativeElement, 'macarons');
     // this.myChart.on('click', function(e) {
     //   this.clickEvent.emit(e);
@@ -49,14 +50,18 @@ export class EChartsDirective implements AfterViewInit, OnDestroy {
   ngOnChanges(changes: SimpleChanges) {
     let callResizeValues = changes['callResize'];
     if(callResizeValues && (callResizeValues.currentValue != callResizeValues.previousValue)){
-      
+      setTimeout(() => { 
+        if (!this.myChart) {
+          this.graphInit();
+        }
+          this.myChart.resize();
+      }, 50);
     } else {
       if(!this.EChartsOptions){ return; }
       if (this.EChartsOptions && this.EChartsOptions['series'].length < 1) { return; }
       if (!this.myChart) {
         this.graphInit();
       }
-
         this.myChart.setOption(this.EChartsOptions);
       
     }
@@ -76,7 +81,7 @@ export class EChartsDirective implements AfterViewInit, OnDestroy {
       if (this.myChart) {
         this.myChart.resize();
       }
-    }, 300)
+    }, 50)
   }
 
   @HostListener('window:resize')

@@ -23,11 +23,14 @@ export class CreatePoolComponent implements OnInit {
 	loading : any;
 	loadingError : any;
 	locationMap : any;
+	memberType :any;
 
 
 	@Input() formData: any;
 	@Input() currentLocZone: any;
 	@Input() currentBuProject: any;
+	@Input() updatePool: any;
+	@Input() currentMembers: any;
 	@Output() sendFormData: EventEmitter<any> = new EventEmitter<any>();
 
 	constructor(private errorHandlerService: ErrorHandlerService,
@@ -43,6 +46,7 @@ export class CreatePoolComponent implements OnInit {
 				mumbai : 1,
 				chennai : 2
 			}
+			this.vipmembers = {}
 			
 		}
 	
@@ -54,20 +58,33 @@ export class CreatePoolComponent implements OnInit {
 	ngOnChanges() {	
 		if(this.currentLocZone && this.currentLocZone.location){
 			this.getLBMethodList();
-			if(this.currentBuProject){
-				this.getServersList();
-			}
+			this.updateSearchResult();
 		}
 		
 	}
+	// update search result
+	updateSearchResult(){
+		if(this.currentBuProject){
+			let curBuPro = this.currentBuProject;
+			this.memberType = curBuPro.bu + '_' + curBuPro.project + this.locationMap[(this.currentLocZone.location).toLowerCase()] + '_' + this.formData.search_value;
+			this.getServersList();
+		}
+	}
 	
 	getServersList(){
+		if(this.vipmembers && this.memberType && this.vipmembers[this.memberType] && this.vipmembers[this.memberType].length > 0){
+			return;
+		}
+		if(this.formData.vipmembers){
+			this.formData.vipmembers.length = 0;
+		}
+		
 		this.loading['servers'] = true;
 		this.loadingError['servers'] = false;
 
 		let params = {
-			business : this.formData.bu,
-			project : this.formData.project,
+			business : this.currentBuProject.bu,
+			project : this.currentBuProject.project,
 			location : this.locationMap[(this.currentLocZone.location).toLowerCase()],
 			search_value : this.formData.search_value
 		}
@@ -75,7 +92,17 @@ export class CreatePoolComponent implements OnInit {
 		this.serverListService.getMyServers(params).subscribe(data => {
 
 			this.loading['servers'] = false;
-			this.vipmembers = data.vmdata;
+			
+			let currMember = this.currentMembers;
+			if(currMember){
+				this.vipmembers[this.memberType] = data.vmdata.filter(function(obj){
+					return currMember.indexOf(obj.ip) == -1
+				})
+			}
+			else{
+				this.vipmembers[this.memberType] = data.vmdata;
+			}
+			
 
 		}, error => {
 			if (!this.errorHandlerService.validateAuthentication(error)) {
@@ -127,7 +154,13 @@ export class CreatePoolComponent implements OnInit {
 		else {
 		  this.formData.vipmembers.push(ip);
 		}
+		if(!this.updatePool){
+			this.updateFormData();
+		}
+	};
+
+	onAddMember(){
 		this.updateFormData();
-	  };
+	}
 
 }

@@ -243,9 +243,13 @@ export class NewServerComponent implements OnInit {
 			this.getOSList();
 			return;
 		}
+		let params = {
+			os: this.formData['ostype'],
+			bu: this.formData['bu']
+		}
 		this.loading['osImage'] = true;
 		this.loadingError['osImage'] = false;
-		this.createNewServerService.getTemplateImages({os: this.formData['ostype']}).subscribe(data => {
+		this.createNewServerService.getTemplateImages(params).subscribe(data => {
 			console.log('**********OS Images List**************')
 			console.log(data);
 			this.loading['osImage'] = false;

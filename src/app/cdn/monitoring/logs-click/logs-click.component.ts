@@ -59,6 +59,22 @@ export class LogsClickComponent implements OnInit, OnChanges {
 
 			this.formOptions = searchOptionsnew;
 		}
+		else if (this.tabtype === 'performance') {
+			let searchOptionsnew = {
+				start_time: searchOptions.start_time,
+				end_time: searchOptions.end_time,
+				business: searchOptions.business,
+				tab: 'performance'
+			}
+			if (searchOptions.service_type) {
+				searchOptionsnew = Object.assign(searchOptionsnew, { service_type: searchOptions.service_type })
+			}
+			if (searchOptions.cp_code) {
+				searchOptionsnew = Object.assign(searchOptionsnew, { cp_code: searchOptions.cp_code })
+			}
+
+			this.formOptions = searchOptionsnew;
+		}
 
 		this.searchOptions = searchOptions;
 		this.isFilterCollapsed = false;

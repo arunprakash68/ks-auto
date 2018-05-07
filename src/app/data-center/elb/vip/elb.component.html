@@ -1,7 +1,7 @@
 <section class="container-fluid dc-elb">
 	<h2 class="article-title"></h2>
 	<div class="row">
-		<div class="clearfix col-12">
+		<div class="clearfix col-12 ">
 			<tabset>
 				<tab heading="My ELBs" [active]="staticBillingTab.active" (select)="staticBillingTab.active = true" (deselect)="staticBillingTab.active = false">
 					<div class="box box-default elb-tab-content">
@@ -18,38 +18,62 @@
 								</select>
 								</div> -->
 								<div class="col-xl-12 mt-3">
-									<p class="pull-left">
+									<div class="pull-left">
 										<button class="ml-3 btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" data-toggle="tab" onclick="window.location.href=window.location.href='#/app/data-center/elb/new'">New ELB</button>
-									</p>
+										<div class="btn-group" dropdown>
+											<button id="button-basic" dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle" aria-controls="dropdown-basic">
+												Actions
+												<span class="caret"></span>
+											</button>
+											<ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+												<li role="menuitem" [ngClass]="{'disabled' : !(actions.length > 1 || isActive)}" (click)="(actions.length > 1 || isActive) && deleteElb(confirmModal)">
+													<a class="dropdown-item">Delete</a>
+												</li>
+												<li role="menuitem" [ngClass]="{'disabled' : !isActive}" (click)="isActive && editElb(editModal)">
+													<a class="dropdown-item"> Edit</a>
+												</li>
+											</ul>
+										</div>
+									</div>
 									<span class="pull-right">
+										<span (click)="refreshElbList()">
+											<fa name="refresh" size="2x" class="font-fa-icon f-icon-elb-list" ></fa>
+										</span>
 										<a href="javascript:void(0);" (click)=" isCollapsed = !isCollapsed " [attr.aria-expanded]="!isCollapsed" aria-controls="elbFilterCollapse" >
-											<fa name="filter" size="3x" class="font-fa-icon"></fa>
+											<fa name="filter" size="2x" class="font-fa-icon f-margin-left"></fa>
 										</a>
 									</span>
 								</div>
 								<!-- search tags -->
 								<div class="col-12 text-center" *ngIf=" searchTags && searchTags.length > 0 ">
-									<strong>Search Tags: </strong><text-tag (triggerClose)="triggerCloseTag(tag)" [prop]="tag.prop" [title]="tag.title" [closable]="tag.closable" *ngFor="let tag of searchTags"></text-tag>
+									<strong>Search Tags: </strong>
+									<text-tag (triggerClose)="triggerCloseTag(tag)" [prop]="tag.prop" [title]="tag.title" [closable]="tag.closable" *ngFor="let tag of searchTags"></text-tag>
 								</div>
 								<!-- filter form -->
 								<div class="col-xl-12">
-									<elb-filter-form (triggerFilterCollapse)="triggerFilterCollapse($event)" [updatedSearchOptions]="searchOptions" [ngbCollapse]="!isCollapsed" [isCollapsed]="isCollapsed" (searchOptions)="updateSearchOptions($event)"></elb-filter-form>
+									<elb-filter-form (triggerFilterCollapse)="triggerFilterCollapse($event)" [updatedSearchOptions]="searchOptions" [ngbCollapse]="!isCollapsed"
+									 [isCollapsed]="isCollapsed" (searchOptions)="updateSearchOptions($event)"></elb-filter-form>
 								</div>
 							</div>
 							<div class="row mt-2"></div>
-							<div class="row mt-0 pl-5 pr-5">
+							<div class="row mt-0">
 								<div class="col-xl-12 mt-2">
-									<elb-list [elbSearchParams]="searchOptions"></elb-list>
+									<elb-list #elbList [elbSearchParams]="searchOptions"></elb-list>
 								</div>
 							</div>
 						</div>
 					</div>
 				</tab>
 			</tabset>
-		
+
 		</div>
 	</div>
 
-  
+
+	<!-- confirm dialog -->
+	<confirm-dialog #confirmModal (triggerDelete)="confirmDelete($event)"></confirm-dialog>
+	<!-- edit dialog -->
+	<edit-dialog #editModal (triggerUpdate)="editUpdate($event)"></edit-dialog>
+
 
 </section>

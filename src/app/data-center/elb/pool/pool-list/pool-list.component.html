@@ -1,45 +1,136 @@
+<keystone-loader *ngIf="loading.poolList"></keystone-loader>
 
-    <div class="row">
-        <p *ngIf="loading" class="col-md-2 ml-auto mr-auto">
-          <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
-        </p>
-      </div>
-      <div class="row">
-          <div class="col-xl-12 text-center text-danger" *ngIf="certCallError">Something went wrong. Please try again.
-              &nbsp;<a href="javascript:void(0)" (click)="getsslcert()"><fa class="" name="refresh"></fa> Reload</a>
-          </div> 
-      </div>  
-      <div class="row pt-0">
-        
-        <div class="col-xl-4 mt-4" >
-            <span *ngIf="!loading" style="font-size: 14px;font-weight: bold;">Showing 1-{{cacertlist.length}} of {{totalResult}}</span>
-          </div>
-        </div>
-        <div class="row pt-0 mt-4">
-        <table class="table table-hover table-striped table-responsive" *ngIf="!loading">
-          <tr>
-            <th class="" scope="col">#</th>
-            <th class="" scope="col">Name</th>
-            <th class="" scope="col">Project</th>
-            <th class="" scope="col">Zone</th>
-            <th class="" scope="col">Tag</th>
-            <th class="" scope="col">VIP Attached</th>
-            <th class="" scope="col">Status</th>
-            <th class="" scope="col"></th>
-            <th class="" scope="col"></th>
-          </tr>
-          <tr *ngFor=" let cacert of cacertlist; let i = index; ">
-            <td>{{ i+1 | number }}</td>
-            <td>{{cacert.certkey | truncate:25}}</td>
-            <td>{{cacert.commonname | truncate:25}}</td>
-            <td>{{cacert.issuer | truncate:50}}</td>
-            <td>{{cacert.daystoexpiration}}</td>
-            <td>{{cacert.status}}</td>
-            <td>{{cacert.issuer | truncate:50}}</td>
-            <td>{{cacert.daystoexpiration}}</td>
-            <td>{{cacert.status}}</td>
-          </tr>
-        </table>
-        <div class="col-xl-12 text-center" *ngIf="showNoCertMsg">No Certificates found</div>
-    </div>
-  
+<div class="row">
+	<div class="col-xl-12 text-center text-danger" *ngIf="loadingError.poolList">Something went wrong. Please try again. &nbsp;
+		<a href="javascript:void(0)" (click)="getPoolSummaryList()">
+			<fa class="" name="refresh"></fa> Reload</a>
+	</div>
+</div>
+<!-- pagination -->
+<div class="row pt-0" *ngIf="!loading.poolList && !loadingError.poolList && poolList?.summary.length > 0">
+	<div class="col-xl-4 mt-4">
+		<span style="font-size: 14px;font-weight: bold;">Showing {{ pagination.pageItemIndex + 1 }}-{{ pagination.pageItemIndex + poolList?.summary.length }} of {{ pagination.collectionSize
+			}}</span>
+	</div>
+	<div class="col-xl-8">
+		<div class="mt-1 pull-right">
+			<ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize"
+			 [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+			</ngb-pagination>
+		</div>
+	</div>
+</div>
+<!-- pool list table -->
+<div class="row pt-0 mt-4">
+	<table class="table table-hover table-custom table-responsive" *ngIf="!loading.poolList && !loadingError.poolList">
+		<tr>
+			<th *ngFor="let list of poolListHeaders" class="" scope="col">{{list.header}}</th>
+		</tr>
+		<ng-container *ngFor=" let pool of poolList?.summary; let i = index; ">
+			<!-- pool list tr -->
+			<tr>
+				<td>{{ pagination.pageItemIndex + i + 1 }}.</td>
+				<td>
+					<p class="new-tag" title="{{pool.sgname}}">{{pool.sgname | truncate:25}}
+						<span *ngIf='pool.creation_date | latestTag'>{{pool.creation_date | latestTag}}</span>
+					</p>
+				</td>
+				<td class="project-bu">
+					<span title="{{pool.project}}">{{ pool.project | truncate:12 }}</span>
+					<span title="{{pool.bu}}">{{ pool.bu | truncate:10 }}</span>
+				</td>
+				<td>{{pool.zone}}</td>
+				<td>
+					<label class="label-monitor-status-{{ envMap[pool.env] }}" title="{{envMap[pool.env] | capitalizeFirst }} Environment">
+						{{ envMap[pool.env] }}
+					</label>
+				</td>
+				<td>{{pool.port}}</td>
+				<td class="expandable-ips">
+					<p *ngIf="!expandIps[i]">
+						<span>{{pool.vipip && pool.vipip.length > 0 ? pool.vipip[0] : '-'}}</span>
+					</p>
+
+					<p *ngIf="expandIps[i]">
+						<span *ngFor="let ip of pool?.vipip">
+							{{ip}}
+						</span>
+					</p>
+
+					<i *ngIf="pool.vipip && pool.vipip.length > 1" (click)="expandIps[i] = !expandIps[i]" class="fa" [ngClass]="{'fa-arrow-up':expandIps[i],'fa-arrow-down':!expandIps[i]}"></i>
+
+				</td>
+				<td class="txt-center status" title="{{pool.status}}">
+					<fa name="{{ statusIconMap[pool.status] ? statusIconMap[pool.status] : 'minus' }}" size="lg"></fa>
+				</td>
+				<td>
+					<button dynAccordion [collapseToggle]="'accr'+(i + 1)" (click)="pool.expanded = !pool.expanded;getPoolMembersArray(i);" [ngClass]="{'fa-plus':!pool.expanded,'fa-minus':pool.expanded}"
+					 class="btn-sm pointer btn btn-default fa fa-minus btn-primary" type="button"></button>
+				</td>
+			</tr>
+			<!-- pool vip members list tr -->
+			<tr class="nested-tr">
+				<td colspan="10">
+					<div style="display: none;" id="accr{{i + 1}}">
+						<div class="row">
+							<p *ngIf="loading.membersList[i]" class="col-md-1 ml-auto mr-auto">
+								<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+							</p>
+							<div class="col-xl-12 text-center text-danger" *ngIf="loadingError.membersList[i]">Something went wrong. Please try again. &nbsp;
+								<a href="javascript:void(0)" (click)="getPoolMembersArray(i)">
+									<fa class="" name="refresh"></fa> Reload</a>
+							</div>
+						</div>
+						<div class="align-right" *ngIf="!loading.membersList[i] && !loadingError.membersList[i]">
+							<button (click)="openAddMemberModal(lgModal, i)" class="btn-sm btn btn-default btn-primary">Add Members to Pool</button>
+						</div>
+						<table *ngIf="!loading.membersList[i] && !loadingError.membersList[i]" class="text-center">
+							<tr>
+								<th *ngFor="let list of memberHeaders">{{list.header}}</th>
+							</tr>
+							<tr *ngFor="let member of pool?.members;let idx = index">
+								<td>
+									{{idx+1}}
+								</td>
+								<td>{{member.name}}</td>
+								<td>{{member.port}}</td>
+								<td class="txt-center status" title="{{member.state}}">
+									<fa name="{{ statusIconMap[member.state] ? statusIconMap[member.state] : 'minus' }}" size="lg"></fa>
+								</td>
+								<td>
+									<mat-slide-toggle (change)="statusUpdateMember(i,idx)" class="switch-toggle" [color]="'primary'" [checked]="member.enabled"
+									 [(ngModel)]="member.enabled">
+									</mat-slide-toggle>
+								</td>
+								<td>
+									<button (click)="deleteMember(i,idx,modal)" type="button" class="icon fa fa-trash"></button>
+								</td>
+							</tr>
+							<tr *ngIf="pool.members && pool.members.length == 0">
+								<td>No Record Found</td>
+							</tr>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</ng-container>
+	</table>
+	<div class="col-xl-12 text-center" *ngIf="poolList?.summary.length == 0">No Data found</div>
+	<!-- modal for add pool members -->
+	<ng-template #lgModal>
+		<div class="modal-header">
+			<h4 class="modal-title pull-left">Add Members</h4>
+			<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<create-pool updatePool='true' [formData]="formData" [currentMembers]="currentMembers" [currentBuProject]="currentBuProject"
+			 [currentLocZone]="currentLocZone" (sendFormData)=addMember($event)></create-pool>
+		</div>
+	</ng-template>
+
+	<!-- confirm dialog -->
+	<confirm-dialog #modal (triggerDelete)="confirmDelete(textStrings)"></confirm-dialog>
+
+</div>

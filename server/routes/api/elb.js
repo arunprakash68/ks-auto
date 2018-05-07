@@ -4,8 +4,8 @@ var request = require('request');
 const httpRequestPromise = require('../../custom-request-promise');
 
 
-// Create VIP starts here
-router.post('/createvip', (req, res) => {
+// Create VIP starts
+router.post('/create/hostvip', (req, res) => {
     
     try {
         let postParams = req.body;
@@ -17,10 +17,58 @@ router.post('/createvip', (req, res) => {
                     bu: postParams.bu,  
                     domain_name: postParams.domain_name,
                     lb_method: postParams.lb_method,
-                    env: postParams.env,
+                    env: postParams.env ? parseInt(postParams.env) : '',
                     scheme: postParams.scheme,
                     siteshield: postParams.siteshield,
-                    snatpool: (postParams.snatpool ? postParams.snatpool : '')
+                    send_string: postParams.send_string,
+                    recv_string: postParams.recv_string,
+                    vipmembers: JSON.stringify(postParams.vipmembers),  
+                    port: JSON.stringify(postParams.port),
+                    lb_type: postParams.lb_type,
+                    location: postParams.location,  
+                    sslcertname : postParams.sslcertname,
+                    waf : postParams.waf,
+                    http_https_redir : postParams.http_https_redir
+        };
+        
+        let header = {
+                    'Content-Type': req.get('Content-Type'), 
+                    'X-Email': req.get('X-Email'),
+                    'X-Location': postParams.location, 
+                    'X-Token': req.get('X-Token')
+        };
+        
+        request({
+                method : 'POST',
+                url : process.env.auto_api+'/api/v0.1/hostvip',
+                json : options,
+                headers : header
+            }, (error, response, body) => {
+                res.json(body);
+            });
+
+    }catch(e) {
+        console.log(e);
+    }
+})
+
+// Create VIP starts here
+router.post('/create/elbvip', (req, res) => {
+    
+    try {
+        let postParams = req.body;
+        let vipport = postParams.vipport;
+        let options = {
+                    zone: postParams.zone,  
+                    vipport: JSON.stringify(postParams.vipport),  
+                    project: postParams.project,  
+                    bu: postParams.bu,  
+                    domain_name: postParams.domain_name,
+                    lb_method: postParams.lb_method,
+                    env: postParams.env ? parseInt(postParams.env) : '',
+                    scheme: postParams.scheme,
+                    siteshield: postParams.siteshield,
+                    // snatpool: (postParams.snatpool ? postParams.snatpool : '')
         };
 
         let header = {
@@ -32,7 +80,7 @@ router.post('/createvip', (req, res) => {
         
         request({
                 method : 'POST',
-                url : process.env.auto_api+'/api/v0.1/createvip',
+                url : process.env.auto_api+'/api/v0.1/elbvip',
                 json : options,
                 headers : header
             }, (error, response, body) => {
@@ -46,7 +94,7 @@ router.post('/createvip', (req, res) => {
 // Create VIP ends here
 
 // Create Pool starts here
-router.post('/createpool', (req, res) => {
+router.post('/create/elbpool', (req, res) => {
     try {
         let postParams = req.body;
 
@@ -58,7 +106,8 @@ router.post('/createpool', (req, res) => {
                     lb_method: postParams.lb_method,
                     project: postParams.project,  
                     bu: postParams.bu,  
-                    env: postParams.env,
+                    env: postParams.env ? parseInt(postParams.env) : '',
+                    lb_type: postParams.lb_type
         };
 
         let header = {
@@ -70,7 +119,7 @@ router.post('/createpool', (req, res) => {
         
         request({
                 method : 'POST',
-                url : process.env.auto_api+'/api/v0.1/createpool',
+                url : process.env.auto_api+'/api/v0.1/elbpool',
                 json : options,
                 headers : header
             }, (error, response, body) => {
@@ -84,7 +133,7 @@ router.post('/createpool', (req, res) => {
 // Create Pool ends here
 
 // Create Monitor starts here
-router.post('/createmonitor', (req, res) => {
+router.post('/create/elbmonitor', (req, res) => {
     try {
         let postParams = req.body;
 
@@ -104,7 +153,7 @@ router.post('/createmonitor', (req, res) => {
         
         request({
                 method : 'POST',
-                url : process.env.auto_api+'/api/v0.1/healthcheck',
+                url : process.env.auto_api+'/api/v0.1/elbmonitor',
                 json : options,
                 headers : header
             }, (error, response, body) => {
@@ -243,5 +292,61 @@ router.post('/sslredirect', (req, res) => {
         console.log(e);
     }
 })
+
+
+
+
+// Update elb
+router.put('/edit/vip', (req, res) => {
+    try {
+        let putParams = req.body;
+
+        let header = {
+                    'Content-Type': req.get('Content-Type'), 
+                    'X-Email': req.get('X-Email')
+        };
+
+        request({
+            method : 'PUT',
+            url : process.env.auto_api+'/api/v0.1/vipsummary',
+            json : putParams,
+            headers : header
+        }, (error, response, body) => {
+            res.json(body);
+        });
+
+    } catch(e){
+        console.log(e);
+    }
+})
+
+
+
+
+// delete elb
+router.delete('/delete/hostvip', (req, res) => {
+    try {
+        let deleteParams = req.query;
+        let options = deleteParams;
+        
+        let header = {
+                    'Content-Type': req.get('Content-Type'), 
+                    'X-Email': req.get('X-Email')
+        };
+        request({
+            method : 'DELETE',
+            url : process.env.auto_api+'/api/v0.1/hostvip',
+            json : options,
+            headers : header
+        }, (error, response, body) => {
+            res.json(body);
+        });
+
+    } catch(e){
+        console.log(options);
+        console.log(e);
+    }
+})
+
 
 module.exports = router;

@@ -1,0 +1,39 @@
+<ng-template #confirmModal>
+	<div class="modal-header">
+		<h4 class="modal-title pull-left">{{textStrings.header}}</h4>
+		<button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<h5>{{textStrings.confirmText}}</h5>
+		<strong *ngIf="textStrings.isInput">Request Details</strong>
+		<p *ngIf="textStrings.canDelete">{{textStrings.body}}</p>
+		<div class="row" *ngIf="textStrings.isInput">
+			<div class="col-xl-12">
+				<label for="value">{{textStrings.inputText}}</label>
+				<input 
+					class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" 
+					id="value" name="value" 
+					[(ngModel)]="confirmValue" 
+					[placeholder]="textStrings.placeholder" 
+					type="text"
+					ng-reflect-name="value">
+			</div>
+		</div>
+		<p *ngIf="textStrings.canDelete" class="note">{{textStrings.note}}</p>
+	  <button *ngIf="textStrings.canDelete" type="button" class="btn btn-primary" (click)="validateValue()">Confirm</button>
+	</div>
+  </ng-template>
+   
+  <ng-template #confirmModalAlert>
+	<div class="modal-header">
+	  <h4 class="modal-title pull-left">Input Mismatch</h4>
+	  <button type="button" class="close pull-right" aria-label="Close" (click)="closeAlertModal()">
+		<span aria-hidden="true">&times;</span>
+	  </button>
+	</div>
+	<div class="modal-body">
+	  Entered {{textStrings.placeholder}} doesn't match selected {{textStrings.placeholder}}
+	</div>
+  </ng-template>

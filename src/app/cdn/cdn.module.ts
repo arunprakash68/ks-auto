@@ -19,6 +19,7 @@ import { CdnComponent } from './cdn.component';
 // import { StackLineGraphComponent } from '../shared/stack-line-graph/stack-line-graph.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 import { Top10UrlsComponent } from './monitoring/logs-click/top10-urls/top10-urls.component';
+import { PerformanceGraphComponent } from './monitoring/logs-click/performance-graph/performance-graph.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { Top10UrlsComponent } from './monitoring/logs-click/top10-urls/top10-url
     LogsClickComponent,
     ServerLogslistComponent,
     LogsFilterFormComponent,
-    Top10UrlsComponent
+    Top10UrlsComponent,
+    PerformanceGraphComponent
   ]
 })
 

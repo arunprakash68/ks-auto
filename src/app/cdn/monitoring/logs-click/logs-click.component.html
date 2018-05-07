@@ -21,6 +21,7 @@
 				</span>
 			</div>
 		</div>
+		
 		<logs-filter-form [tabselected]="tabselected" [serverLogs]="serverLogs" [businessFilters]="businessFilters" [graphDataZoom]="graphDataZoom"
 		 [perfFilterOptions]="perfFilterOptions" [businessAccessDetails]="businessAccessDetails" (triggerFilterCollapse)="triggerFilterCollapse($event)"
 		 [ngbCollapse]="!isFilterCollapsed" (searchOptions)="updateSearchOptions($event)" [tabtype]="tabtype"></logs-filter-form>
@@ -32,6 +33,9 @@
 			<div class="col-xl-12" *ngIf="tabtype == 'top10'">
 				<app-top10-urls [tabselected]="tabselected" [perfFilterOptions]="formOptions"></app-top10-urls>
 			</div>
+			<div class="col-xl-12" *ngIf="tabtype == 'performance'">
+				<app-performance-graph [tabselected]="tabselected" [perfFilterOptions]="formOptions"></app-performance-graph>
+			</div> 
 		</div>
 	</div>
 </div>

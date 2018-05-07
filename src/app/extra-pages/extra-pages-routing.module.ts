@@ -13,7 +13,7 @@ export const ExtraPagesRoutes: Routes = [
   {
     path: '',
     children: [
-      { path: '', redirectTo: '/login', pathMatch: 'full' },
+      { path: '', redirectTo: '/app/my-dashboard', pathMatch: 'full' },
       { path: 'login', component: PageLoginComponent },
       { path: 'sign-up', component: PageSignUpComponent },
       { path: 'forgot-password', component: PageForgotPasswordComponent },

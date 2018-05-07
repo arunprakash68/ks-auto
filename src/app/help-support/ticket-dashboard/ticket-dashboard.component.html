@@ -1,0 +1,85 @@
+<div class="row">
+  <p *ngIf="loading" id="loaderimg" class="col-xl-2 ml-auto mr-auto">
+    <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+  </p>
+</div>
+<!-- <div class="row">
+  <div class="col-xl-12">
+    <div class="modal fade" bsModal #serverUpdateModal="bs-modal" [config]="{backdrop: 'static'}"
+    tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color: #303F9F;color: #fff;">
+          <h4 class="modal-title pull-left">Update Server Data</h4>
+          <button type="button" class="close pull-right mb-5" aria-label="Close" (click)="serverUpdateModal.hide()">
+            <span style="background-color: #303F9F;color: #fff;" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <server-update-form (reloadServerList)="reloadServerList(serverUpdateModal)" [serverData]="serverToEdit"></server-update-form>
+        </div>
+      </div>
+    </div>
+  </div>     
+</div>
+</div> -->
+
+<div class="row">
+  <!-- <div class="col-12 pr-0">
+    <div class="row">
+      <div class="col-xl-4 mt-4" *ngIf="showPagination()">
+        <span style="font-size: 14px;font-weight: bold;">Showing {{ pageItemIndex + 1 }}-{{ pageItemIndex + servers?.vmdata.length }} of {{ collectionSize }}</span>
+      </div>
+      <div class="col-xl-8">
+        <div class="mt-1 pull-right" *ngIf="showPagination()">
+          <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page" [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  
+  <table class="table table-hover table-responsive table-bordered">
+
+    <thead class="thead">
+
+      <tr>
+        <th>Location</th>
+        <th>Total Tickets(SLA)</th>
+        <th>New(Response)</th>
+        <th>Inprogress</th>
+        <th>User not Available</th>
+        <th>On Hold</th>
+        <th>Resolved</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="totalTicketsInfo">
+
+      <tr *ngFor=" let ticket of totalTicketsInfo; let i = index; " (click)="goToTicketDashboard(ticket.location)">
+        <td>{{ ticket.location}}</td>
+        <td class="color-white" [style.background-color]="ticket.color">
+          {{ticket.total}}
+        </td>
+        <td class="color-white" [style.background-color]="ticket.newcolor"> {{ticket.new}}</td>
+        <td> {{ticket.inprogress}}</td>
+        <td> {{ticket.notavailable}}</td>
+        <td> {{ticket.onhold}}</td>
+        <td> {{ticket.resolved}}</td>
+
+      </tr>
+    </tbody>
+  </table>
+  <!-- <div class="col-xl-12 text-center" *ngIf="showNoServersMsg()">No servers found</div>
+  <div class="col-xl-12 text-center text-danger" *ngIf="serverCallError">Something went wrong. Please try again. &nbsp;
+    <a href="javascript:void(0)" (click)="getMyServers()">
+      <fa class="" name="refresh"></fa> Reload</a>
+  </div> -->
+
+  <div class="col-12 pr-0">
+    <div class="mt-2 pull-right">
+      <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pageSize" [collectionSize]="collectionSize" [(page)]="page"
+        [maxSize]="maxSize" [rotate]="rotate" [boundaryLinks]="boundaryLinks">
+      </ngb-pagination>
+    </div>
+  </div>
+</div>

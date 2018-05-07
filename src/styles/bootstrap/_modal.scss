@@ -57,6 +57,7 @@
   @include box-shadow($modal-content-box-shadow-xs);
   // Remove focus outline from opened modal
   outline: 0;
+  margin-top: 50%;
 }
 
 // Modal background

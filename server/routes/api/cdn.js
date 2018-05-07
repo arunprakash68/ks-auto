@@ -57,6 +57,26 @@ router.get('/servers/compedgebandwidth', (req, res) => {
     resolvePerfGraphAPIs(req, res, '/api/v0.1/compedgebandwidth');
 });
 
+// Get Performance section Apis city, country , isp
+router.get('/servers/asnrequests', (req, res) => {
+    resolvePerfGraphAPIs(req, res, '/api/v0.1/asnrequests');
+});
+router.get('/servers/cityrequests', (req, res) => {
+    resolvePerfGraphAPIs(req, res, '/api/v0.1/cityrequests');
+});
+router.get('/servers/countryrequests', (req, res) => {
+    resolvePerfGraphAPIs(req, res, '/api/v0.1/countryrequests');
+});
+router.get('/servers/asnreqtime', (req, res) => {
+    resolvePerfGraphAPIs(req, res, '/api/v0.1/asnreqtime');
+});
+router.get('/servers/cityreqtime', (req, res) => {
+    resolvePerfGraphAPIs(req, res, '/api/v0.1/cityreqtime');
+});
+router.get('/servers/countryreqtime', (req, res) => {
+    resolvePerfGraphAPIs(req, res, '/api/v0.1/countryreqtime');
+});
+
 function resolvePerfGraphAPIs(req, res, uri) {
     try {
         const getParams = req.query;
@@ -69,7 +89,8 @@ function resolvePerfGraphAPIs(req, res, uri) {
                 'business': (getParams['business'] ? getParams['business'].toLowerCase() : '')
             },
             method: 'GET',
-            json: true
+            json: true,
+            timeout: 120000
         }
         if (getParams['service_type']) {
             options.qs.service_type = (getParams['service_type']);

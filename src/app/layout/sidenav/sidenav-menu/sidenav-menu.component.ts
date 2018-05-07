@@ -1,5 +1,6 @@
 import { Component, Input, ElementRef, ViewChild } from '@angular/core';
 import { CapitalizeFirstPipe } from '../../.././pipes/capitalizefirst.pipe';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
 	selector: 'my-app-sidenav-menu',
@@ -11,7 +12,10 @@ export class AppSidenavMenuComponent {
 	userConfig: any;
 	@ViewChild('sidenav') sidenav: ElementRef;
 
-	constructor(){
+	constructor(private router: Router){
+		if(!localStorage.getItem('user')){
+			this.router.navigate(['/login']);
+		  }
 		this.userConfig = JSON.parse(localStorage.getItem('user'));
 	}
 

@@ -145,7 +145,8 @@ export class DataCenterServerComponent implements OnInit {
       title: this.selectedServerData['hostname'],//Add alerts icon
       tabType: 'stats',
       graphDataParams: {
-        ip: this.selectedServerData['ip']
+        ip: this.selectedServerData['ip'],
+        vmtype: this.selectedServerData['vmtype']
       }
     }
     this.addDynamicTab(options);

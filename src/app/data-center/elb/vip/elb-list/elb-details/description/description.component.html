@@ -1,0 +1,47 @@
+<div class="" *ngIf='!desData.length'>
+    <!-- basic configuration -->
+    <h5 class="details-head">Basic Configuration</h5>
+    <div class="column cols-2">
+        <p><strong>Name</strong> : <span> {{desData.lb_name || '-'}}</span></p>
+        <p><strong>Creation Time</strong> : <span> {{desData.creation_date * 1000 | date:'LLLL dd, yyyy - h:mm:ss a'}}</span></p>
+        <p><strong>IP</strong> : <span> {{desData.vip || '-'}}</span></p>
+        <p><strong>Status</strong> : <span> {{desData.state || '-'}}</span></p>
+        <p><strong>DNS Name</strong> : <span> {{desData.domain_name || '-'}}</span></p>
+        <p><strong>Scheme</strong> : <span> {{(desData.scheme || '-') | capitalizeFirst}}</span></p>
+        <p><strong>SSL Certificate</strong> : <span> {{desData.ssl_cert || '-'}}</span></p>
+        <p><strong>Type</strong> : <span> {{ getMap(desData.protocol,'lbTagMap') || '-'}}</span></p>
+        <p><strong>Business</strong> : <span> {{desData.bu || '-'}}</span></p>
+        <p><strong>Project</strong> : <span> {{desData.project || '-'}}</span></p>
+        <p><strong>Zone</strong> : <span> {{desData.zone || '-'}}</span></p>
+        <p><strong>Environment</strong> : <span> {{ (getMap(desData.env,'envMap') || '-') | capitalizeFirst}}</span></p>
+    </div>
+    
+
+    <!-- attributes -->
+    <h5 class="details-head">Attributes</h5>
+    <div class="column cols-2">
+        <p><strong>Siteshield Enabled</strong> : <span> {{desData.siteshield | capitalizeFirst}}</span></p>
+        <p><strong>Web App Firewall</strong> :
+            <mat-slide-toggle  
+                (change)="onWafChange()"
+                class="switch-toggle mg-left-1"
+                [color]="'primary'"
+                [checked]="desData.waf"
+                [(ngModel)]="desData.waf">
+            </mat-slide-toggle>
+        </p>
+        <p><strong>HTTP-HTTPS Redirection</strong> :
+            <mat-slide-toggle  
+                (change)="onRedirectionChange()"
+                class="switch-toggle mg-left-1"
+                [color]="'primary'"
+                [checked]="desData.http_https_redir"
+                [(ngModel)]="desData.http_https_redir">
+            </mat-slide-toggle>
+        </p>
+    </div>
+    
+</div>
+<div *ngIf='desData.length && desData.length > 0'>
+    {{desData}}
+</div>

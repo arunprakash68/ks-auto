@@ -9,9 +9,9 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awes
 
 // import { DatetimePopupModule } from 'ngx-bootstrap-datetime-popup/src/datetime-popup.module';
 
-import { DateTimePickerModule} from 'ngx-datetime-picker';
+import { DateTimePickerModule } from 'ngx-datetime-picker';
 
-import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TabsModule, ProgressbarModule, ModalModule, BsDropdownModule } from 'ngx-bootstrap';
 
 
@@ -62,68 +62,73 @@ import { PipesModule } from './pipes/pipes.module';
 
 import { ServicesUtilityService } from './_services/services-utility.service';
 import { ApiRequestService } from './_services/api-request-utitlity/api-request.service';
-
-
+import { HelpSupportComponent } from './help-support/help-support.component';
+import { HelpSupportModule } from './help-support/help-support.module';
 
 @NgModule({
     providers: [ServicesUtilityService, ApiRequestService],
     imports: [
-    NgbModule.forRoot(),
-    TabsModule.forRoot(),
-    ProgressbarModule.forRoot(),
-    ModalModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    AngularFontAwesomeModule,
-    DateTimePickerModule,
-    BrowserModule,
-    HttpModule,
-    FormsModule,
-    MaterialModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
+        NgbModule.forRoot(),
+        TabsModule.forRoot(),
+        ProgressbarModule.forRoot(),
+        ModalModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        AngularFontAwesomeModule,
+        DateTimePickerModule,
+        BrowserModule,
+        HttpModule,
+        FormsModule,
+        MaterialModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
 
-    // Sub modules
-    LayoutModule,
-    SharedModule,
-    PipesModule,
-    ExtraPagesModule
-
+        // Sub modules
+        LayoutModule,
+        SharedModule,
+        PipesModule,
+        ExtraPagesModule,
+        HelpSupportModule
     ],
     declarations: [
-    AppComponent,
-    // Layout
-    LayoutComponent,
-    PreloaderDirective,
-    // Header
-    AppHeaderComponent,
-    // Sidenav
-    AppSidenavComponent,
-    ToggleOffcanvasNavDirective,
-    AutoCloseMobileNavDirective,
-    AppSidenavMenuComponent,
-    AccordionNavDirective,
-    AppendSubmenuIconDirective,
-    HighlightActiveItemsDirective,
-    // Customizer
-    AppCustomizerComponent,
-    ToggleQuickviewDirective,
-    // Footer
-    AppFooterComponent,
-    // Search overlay
-    AppSearchOverlayComponent,
-    SearchOverlayDirective,
-    OpenSearchOverlaylDirective,
-    //
-    // PageLoginComponent,
-    DashboardComponent,
-    // Pages
-    PageLayoutFullscreenComponent,
+        AppComponent,
+        // Layout
+        LayoutComponent,
+        PreloaderDirective,
+        // Header
+        AppHeaderComponent,
+        // Sidenav
+        AppSidenavComponent,
+        ToggleOffcanvasNavDirective,
+        AutoCloseMobileNavDirective,
+        AppSidenavMenuComponent,
+        AccordionNavDirective,
+        AppendSubmenuIconDirective,
+        HighlightActiveItemsDirective,
+        // Customizer
+        AppCustomizerComponent,
+        ToggleQuickviewDirective,
+        // Footer
+        AppFooterComponent,
+        // Search overlay
+        AppSearchOverlayComponent,
+        SearchOverlayDirective,
+        OpenSearchOverlaylDirective,
+        //
+        // PageLoginComponent,
+        DashboardComponent,
+        // Pages
+        PageLayoutFullscreenComponent,
+        HelpSupportComponent,
+        // TicketDashboardComponent,
+        // EngineerDashboardComponent,
+        // TicketGraphViewComponent,
+        // EngineerGraphViewComponent
     ],
     bootstrap: [AppComponent]
 })
 
 export class AppModule {
-    constructor(public appRef: ApplicationRef) {}
+    constructor(public appRef: ApplicationRef) { }
     hmrOnInit(store) {
         console.log('HMR store', store);
     }

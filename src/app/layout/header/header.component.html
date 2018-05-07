@@ -1,6 +1,5 @@
 <section class="app-header">
-  <div class="app-header-inner"
-     [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
+  <div class="app-header-inner" [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-dark': AppConfig.colorOption === '31',
                  'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,
@@ -16,7 +15,11 @@
 
 
     <div class="brand d-none d-lg-inline-block d-xl-inline-block">
-      <h2><a [routerLink]="['/']">{{AppConfig.brand}}</a></h2>
+        <!-- <img width="20" height="20" style="margin-top: -10px;" src="/assets/images/keystone-temp-logo.png"> -->
+      <h2>
+         
+        <a [routerLink]="['/']">{{AppConfig.brand}}</a>
+      </h2>
     </div>
 
     <div class="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
@@ -63,7 +66,20 @@
             <img src="http://keystoneold.timesinternet.in/assets/img/profileimg.png" alt="" class="rounded img30_30">
           </button>
           <ul *dropdownMenu role="menu" class="dropdown-menu" style="min-width: 7rem !important; margin-right: -60px !important;position: relative !important;">
-            <li style="height: 25px !important;"><a style="color: #000 !important;" class="dropdown-item" [routerLink]="['/']"><fa name="sign-out"></fa> Logout</a></li>
+            <ul style="list-style-type:none;margin-left:-40px;">
+              <li style="height: 25px !important;">
+                <a style="color: #000 !important;" class="dropdown-item" (click)="triggerlogout()">
+                  <fa name="sign-out"></fa> Logout</a>
+                </li>
+            </ul>
+
+            <ul style="list-style-type:none; margin-left:-40px;">
+              <li style="height: 25px !important;" (click)="goToHelpPage()">
+                <a style="color: #000 !important;font-weight:normal;"  target="_blank"  class="dropdown-item" [routerLink]="['/helpsupport']">
+                  <i class="fa fa-life-ring"></i> Help & Support</a>
+              </li>
+            </ul>
+
           </ul>
           <!-- <md-menu #profilemenu="mdMenu" class="profile-menu" x-position="before" y-position="below" overlapTrigger="false">
             <md-list dense>
@@ -74,10 +90,16 @@
             </md-list>
           </md-menu> -->
         </li>
-        <li><button md-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay><i class="material-icons">search</i></button></li>
+        <li>
+          <button md-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay>
+            <i class="material-icons">search</i>
+          </button>
+        </li>
         <!-- <li><button md-button class="md-button header-btn"><i class="material-icons">more_vert</i></button></li> -->
       </ul>
     </div>
 
   </div>
 </section>
+
+<alert-message #modal (triggerDelete)="sessionpop(textStrings)"></alert-message>

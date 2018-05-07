@@ -24,8 +24,11 @@ export class StackLineGraphComponent {
   @Output() dataZoom: EventEmitter<any> = new EventEmitter<any>();
   @Output() mouseUpEvent: EventEmitter<any> = new EventEmitter<any>();
   @Output() mouseDownEvent: EventEmitter<any> = new EventEmitter<any>();
+
+  @Input() tabperformance: any;
   stackLine: any;
   config: any;
+
 
   ngOnChanges() {
     this.loadingNoData = false;
@@ -143,13 +146,23 @@ export class StackLineGraphComponent {
     for(let i = 0; i < graphData.length; i++) {
       const name = graphData[i]['name'];
       this.stackLine['legend']['data'][i] = name;
-      this.stackLine['series'][i] = {
-        name: name,
-        data: [],
-        type: 'line',
-        stack: 'Sum',
-        itemStyle: {normal: {areaStyle: {type: 'default'}}},
-      };
+      if(this.tabperformance === 'performance'){
+        this.stackLine['series'][i] = {
+          name: name,
+          data: [],
+          type: 'line',
+        };
+      }
+      else{
+        this.stackLine['series'][i] = {
+          name: name,
+          data: [],
+          type: 'line',
+          stack: 'Sum',
+          itemStyle: {normal: {areaStyle: {type: 'default'}}},
+        };
+      }
+      
 
       for(let j = 0; j < graphData[i].data.length; j++) {
         let dataPoint = graphData[i].data[j][1];

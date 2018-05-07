@@ -31,23 +31,30 @@ export class ServerStackLineGraphComponent {
       return;
     }
     let graphData = this.graphData;
+    let minValData;
 
-    let minData = graphData[0]['data'].map(function(val, index) {
-      return val[1];
-    });
-    let minValData = Math.min.apply(null, minData);
-
-    graphData = graphData.sort(function(a, b) {
-      a = a['data'].map(function(val, index) {
+    if(graphData && graphData.length > 0){
+      let minData = graphData[0]['data'].map(function(val, index) {
         return val[1];
       });
-      let maxValA = Math.max.apply(null, a);
-      b = b['data'].map(function(val, index) {
-        return val[1];
+      minValData = Math.min.apply(null, minData);
+  
+      graphData = graphData.sort(function(a, b) {
+        a = a['data'].map(function(val, index) {
+          return val[1];
+        });
+        let maxValA = Math.max.apply(null, a);
+        b = b['data'].map(function(val, index) {
+          return val[1];
+        });
+        let maxValB = Math.max.apply(null, b);
+        return maxValA - maxValB;
       });
-      let maxValB = Math.max.apply(null, b);
-      return maxValA - maxValB;
-    });
+    }
+    else{
+      this.loadingNoData =  true;
+    }
+    
     this.config = CHARTCONFIG;
     this.stackLine = {
       tooltip : {

@@ -116,6 +116,60 @@ export class ServerMonitoringService {
 			return compedgeBandwidth;
 		});
 	}
+	getAsnrequests(params: IMonitoringRequest) {
+		return this.http.get(APPCONFIG['apiHost'] + '/api/cdn/servers/asnrequests?' + Object.keys(params).map(key => {
+			return key + '=' + params[key];
+		}).join('&'))
+		.map((response: Response) => {
+			let asnRequests = response.json();
+			return asnRequests;
+		});
+	}
+	getCityrequests(params: IMonitoringRequest) {
+		return this.http.get(APPCONFIG['apiHost'] + '/api/cdn/servers/cityrequests?' + Object.keys(params).map(key => {
+			return key + '=' + params[key];
+		}).join('&'))
+		.map((response: Response) => {
+			let cityRequests = response.json();
+			return cityRequests;
+		});
+	}
+	getCountryrequests(params: IMonitoringRequest) {
+		return this.http.get(APPCONFIG['apiHost'] + '/api/cdn/servers/countryrequests?' + Object.keys(params).map(key => {
+			return key + '=' + params[key];
+		}).join('&'))
+		.map((response: Response) => {
+			let countryRequests = response.json();
+			return countryRequests;
+		});
+	}
+	getAsnreqtime(params: IMonitoringRequest) {
+		return this.http.get(APPCONFIG['apiHost'] + '/api/cdn/servers/asnreqtime?' + Object.keys(params).map(key => {
+			return key + '=' + params[key];
+		}).join('&'))
+		.map((response: Response) => {
+			let asnReqtime = response.json();
+			return asnReqtime;
+		});
+	}
+	getCityreqtime(params: IMonitoringRequest) {
+		return this.http.get(APPCONFIG['apiHost'] + '/api/cdn/servers/cityreqtime?' + Object.keys(params).map(key => {
+			return key + '=' + params[key];
+		}).join('&'))
+		.map((response: Response) => {
+			let cityReqtime = response.json();
+			return cityReqtime;
+		});
+	}
+	getCountryreqtime(params: IMonitoringRequest) {
+		return this.http.get(APPCONFIG['apiHost'] + '/api/cdn/servers/countryreqtime?' + Object.keys(params).map(key => {
+			return key + '=' + params[key];
+		}).join('&'))
+		.map((response: Response) => {
+			let countryReqtime = response.json();
+			return countryReqtime;
+		});
+	}
 
 	getCPCodes(params: any) {
 		return this.http.get(APPCONFIG['apiHost'] + '/api/cdn/servers/cpcodes' + '?' + Object.keys(params).map(key => {

@@ -43,11 +43,11 @@ export class CreateVipComponent implements OnInit {
 				{value:'internal',title:'Internal'}
 			];
 			this.monitoringEnvList = [
-				{value:'prod',title:'prod'},
-				{value:'pre prod',title:'pre prod'},
-				{value:'staging',title:'staging'},
-				{value:'qa',title:'qa'},
-				{value:'dr',title:'dr'}
+				{value:1,title:'prod'},
+				{value:2,title:'pre prod'},
+				{value:3,title:'staging'},
+				{value:4,title:'qa'},
+				{value:5,title:'dr'}
 			];
 			this.lbProtocol = [{http : false},{https:false}]
 
@@ -65,7 +65,7 @@ export class CreateVipComponent implements OnInit {
 		
 		if(this.currentLocZone && this.currentLocZone.location){
 			this.getSSLCertificatesList();
-			this.getSnatPoolsList();
+			// this.getSnatPoolsList();
 		}
 	}
 
@@ -134,9 +134,7 @@ export class CreateVipComponent implements OnInit {
 					this.formData.sslcert = this.sslCertList.length > 0 ? this.sslCertList[0] : '';
 				}
 				else{
-					this.sslCertList = data.sslcerts.filter(function(obj){
-						return obj.certificatetype == 'CLIENTANDSERVER_CERT'
-					})
+					this.sslCertList = data.sslcerts;
 					this.formData.sslcert = this.sslCertList.length > 0 ? this.sslCertList[0].certkey : '';
 				}
 			}
@@ -157,36 +155,36 @@ export class CreateVipComponent implements OnInit {
 	}
 
 	// get snat pools list
-	getSnatPoolsList(){
+	// getSnatPoolsList(){
 
-		this.loading['snatPool'] = true;
-		this.loadingError['snatPool'] = false;
+	// 	this.loading['snatPool'] = true;
+	// 	this.loadingError['snatPool'] = false;
 
-		let param = {
-			location : this.currentLocZone.location,
-			zone : this.currentLocZone.zone
-		};
+	// 	let param = {
+	// 		location : this.currentLocZone.location,
+	// 		zone : this.currentLocZone.zone
+	// 	};
 		
-		this.elbService.getSnatPools(param).subscribe(data => {
+	// 	this.elbService.getSnatPools(param).subscribe(data => {
 			
-			if(data && data.snatpools){
-				this.snatpoolsList = data.snatpools;
-				this.formData.snatPool = this.snatpoolsList[0]
-			}
-			else{
-				this.snatpoolsList = [];
-			}
+	// 		if(data && data.snatpools){
+	// 			this.snatpoolsList = data.snatpools;
+	// 			this.formData.snatPool = this.snatpoolsList[0]
+	// 		}
+	// 		else{
+	// 			this.snatpoolsList = [];
+	// 		}
 
-			this.loading['snatPool'] = false;
+	// 		this.loading['snatPool'] = false;
 			
 		
-		}, error => {
-			if (!this.errorHandlerService.validateAuthentication(error)) {
-				this.router.navigate(['/login']);
-			}
-			this.loading['snatPool'] = false;
-			this.loadingError['snatPool'] = true;
-		})
-	}
+	// 	}, error => {
+	// 		if (!this.errorHandlerService.validateAuthentication(error)) {
+	// 			this.router.navigate(['/login']);
+	// 		}
+	// 		this.loading['snatPool'] = false;
+	// 		this.loadingError['snatPool'] = true;
+	// 	})
+	// }
 
 }

@@ -1,0 +1,34 @@
+<p style="margin-bottom: 5px;"><strong>ELB : {{elbString}}</strong></p>
+
+<p *ngIf="(elbDetailsList | objectKeys).length > 1">{{selectMsg}}</p>
+<!-- tabsets -->
+<tabset *ngIf="(elbDetailsList | objectKeys).length == 1">
+    <tab *ngFor="let tabz of tabsList"
+        [heading]="tabz.template"
+        [active]="tabz.active"
+        (select)="tabz.active = true"
+        (deselect)="tabz.active = false"
+        [disabled]="false">
+        <div  [ngSwitch]="tabz.template">
+            <!-- description tab -->
+            <description *ngSwitchCase="'description'" [desData]='desData'></description>
+            <!-- listeners tab -->
+            <listeners *ngSwitchCase="'listeners'" [desData]='desData'></listeners>
+            <!-- monitoring tab -->
+            <div *ngSwitchCase="'monitoring'">
+                <p class="text-center">Coming Soon...</p>
+            </div>
+            <!-- events tab -->
+            <div *ngSwitchCase="'events'">
+                <p *ngFor="let events of lbEvents?.events">
+                    <strong>{{events.event_date * 1000 | date:'LLLL dd, yyyy - h:mm:ss a'}} : </strong>
+                    <span>{{events.events}}</span>
+                </p>
+                <div class="text-center">
+                    <md-spinner class="spinner-sm" *ngIf="loading.lbEvents"></md-spinner>
+                </div>
+                
+            </div>
+        </div>
+    </tab>
+</tabset>

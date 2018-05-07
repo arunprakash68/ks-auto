@@ -108,20 +108,27 @@ export class MMonitoringComponent implements OnInit {
 		
 	}
 	doCreateTab(){
-
+		let tabparams0 = {active:false,
+			disabled:false,
+			graphDataZoom:{start: 0, end: 100, business: "Ad Tech", start_time_init: 0, end_time_init: 0},
+			removable:false,
+			tabType:"City",
+			title:"Performance Graphs",
+			type:"performance"}
 		let tabparams1 = {active:false,
 			disabled:false,
-			graphDataZoom:{start: 0, end: 100, business: "Ad Tech", start_time_init: 1520319912, end_time_init: 1520406312},
+			graphDataZoom:{start: 0, end: 100, business: "Ad Tech", start_time_init: 0, end_time_init: 0},
 			removable:false,
 			tabType:"5XX",
 			title:"Top 10 Urls",
 			type:"top10"}
 		let tabparams2 = {active:false,
 			disabled:false,
-			graphDataZoom:{start: 0, end: 100, business: "Ad Tech", start_time_init: 1520319912, end_time_init: 1520406312},
+			graphDataZoom:{start: 0, end: 100, business: "Ad Tech", start_time_init: 0, end_time_init: 0},
 			removable:false,
 			title:"Raw Logs",
 			type:"log"}
+		this.addDynamicTab(tabparams0);
 		this.addDynamicTab(tabparams1);
 		this.addDynamicTab(tabparams2);
 	}

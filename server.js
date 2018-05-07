@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 var request = require('request');
+var CryptoJS = require("crypto-js");
 
 try {
     if(!process.env.APP_ENVIRONMENT || process.env.APP_ENVIRONMENT === 'local') {
@@ -14,6 +15,8 @@ try {
         require('dotenv').config({path: './config/prod.conf'});       
     } else if(process.env.APP_ENVIRONMENT === 'staging') {
         require('dotenv').config({path: './config/staging.conf'});
+    } else if(process.env.APP_ENVIRONMENT === 'dev') {
+        require('dotenv').config({path: './config/dev.conf'});
     } else {
         throw new Error('config file read error');
     }
@@ -47,12 +50,15 @@ app.use('/api', api);
 
 app.post('/login', (req, res) => {
     try {
-        var postParams = req.body;
+        // var postParams = req.body;
+        var postParamspre = req.body.data;
+        var bytes  = CryptoJS.AES.decrypt(postParamspre, 'momuoyevol');
+		var postParams = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
         request({
             method: 'POST',
             url: process.env.assets_api + '/login',
             json: postParams,
-            headers: {
+            headers: { 
                 'Content-Type': 'application/json',
                 'X-email': postParams.email,
                 'X-password': postParams.password 
@@ -68,7 +74,31 @@ app.post('/login', (req, res) => {
         console.log(e);
     }
 })
+app.post('/logout', (req, res) => {
+    try {
+        var postParams = req.body;
+        if(postParams.token !== undefined)
+        {
+            request({
+                method: 'POST',
+                url: process.env.assets_api + '/logout',
+                json: postParams,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-token': postParams.token
+                }
+            }, (error, response, body) => {
+                console.log(error);
+                res.json(body);
+            });
+        }
+        
 
+
+    } catch(e){
+        console.log(e);
+    }
+})
 
 app.get('/health/status', (req, res) => {
     try {
@@ -135,6 +165,6 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
-server.timeout = 22000;
+server.timeout = 120000;
 
 server.listen(port, () => console.log(`Running on localhost:${port}`));

@@ -1,0 +1,58 @@
+<section class="container-fluid data-center-server" style="position:relative;overflow-x:hidden;">
+  <h2 class="article-title"></h2>
+  <div class="row pt-4 pb-3" style=" position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;margin:15px;">
+    <div class="col-xl-12 pl-4">
+      <span style="padding-right:10px"> Ticket Ageing:</span>
+      <select placeholder="Ageing" class="selectpicker pull-right" [(ngModel)]="selectedAgeing" data-style="btn-primary" style="margin-right: 30px;">
+        <option value="0">
+          0
+        </option>
+        <option value="1">
+          1
+        </option>
+        <option value="2">
+          2
+        </option>
+        <option value="week">
+          week
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="clearfix col-12">
+
+      <div class="box box-default server-tab-content">
+        <div class="">
+          <div class="row pt-4">
+              <div class="col-xl-12 pl-4 location-text">
+              {{ticketLocation}} Tickets
+            </div>
+          </div>
+          <div class="row pt-4 pb-3">
+            <div class="col-xl-12 pl-4">
+
+              <button class="ml-3 btn btn-primary btn-sm waves-effect waves-effect waves-effect waves-effect" onclick="window.location.href='#/app/help-support'">Back</button>
+              <a href="javascript:void(0)" class="ml-4" (click)="changeView()">{{ticketView}}</a>
+            </div>
+
+          </div>
+          <div class="row mt-0 pl-5 pr-5" *ngIf="tableView">
+            <div class="col-xl-12">
+              <location-table-list [(ageingParams)]="selectedAgeing"></location-table-list>
+            </div>
+          </div>
+
+          <div class="row mt-0 pl-5 pr-5" *ngIf="!tableView">
+            <div class="col-xl-12">
+              <location-graph-view [(ageingParams)]="selectedAgeing"></location-graph-view>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

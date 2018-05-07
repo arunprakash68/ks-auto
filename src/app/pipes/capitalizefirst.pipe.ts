@@ -14,7 +14,11 @@ import { Pipe, PipeTransform } from '@angular/core';
  })
  export class CapitalizeFirstPipe implements PipeTransform {
  	transform(value: string, args: any[]): string {
- 		if (value === null) return 'Not assigned';
+		 if (value === null) return 'Not assigned';
+		 if (value == undefined) return 'Not assigned';
+		 if(typeof value == "boolean"){
+			 value = String(value);
+		 }
  		let wordsArr = value.split(' ');
  		let finalStr = '';
  		for(let i = 0; i < wordsArr.length; i++) {

@@ -1,0 +1,16 @@
+ 
+<ng-template #confirmModalAlert>
+	<div class="modal-header">
+		<h4 class="modal-title pull-left">{{textStrings.header}}</h4>
+		<button type="button" *ngIf="closable" class="close pull-right" aria-label="Close" (click)="closeAlertModal()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		{{textStrings.body}}
+		
+		<button type="button" *ngIf="!closable" class="btn btn-danger " aria-label="Close" (click)="linkactivate(); closeAlertModal()">
+			<span aria-hidden="true">{{textStrings.linktext}}</span>
+		</button>
+	</div>
+</ng-template>

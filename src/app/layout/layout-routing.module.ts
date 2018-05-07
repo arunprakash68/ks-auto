@@ -2,19 +2,21 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { LayoutComponent } from './layout.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { MyDashboardComponent } from '../my-dashboard/my-dashboard.component'
 
 const routes: Routes = [
   {
     path: 'app',
     component: LayoutComponent,
     children: [
-      { path: '', redirectTo: '/app/dashboard', pathMatch: 'full' },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'local-it', loadChildren: '../local-it/local-it.module#LocalItModule' },
+      { path: '', redirectTo: '/app/my-dashboard', pathMatch: 'full' },
+      // { path: 'dashboard', component: DashboardComponent },
+      // { path: 'local-it', loadChildren: '../local-it/local-it.module#LocalItModule' },
+      { path: 'my-dashboard', component: MyDashboardComponent  },
       { path: 'data-center', loadChildren: '../data-center/data-center.module#DataCenterModule' },
       { path: 'cdn', loadChildren: '../cdn/cdn.module#CdnModule' },
-      { path: 'process', loadChildren: '../process/process.module#ProcessModule' },
-      { path: 'cost', loadChildren: '../cost/cost.module#CostModule' },
+      // { path: 'process', loadChildren: '../process/process.module#ProcessModule' },
+      // { path: 'cost', loadChildren: '../cost/cost.module#CostModule' },
       // { path: 'chart', loadChildren: '../charts/charts.module#ChartsModule' },
       // { path: 'ecommerce', loadChildren: '../ecommerce/ecommerce.module#ECommerceModule' },
       // { path: 'form', loadChildren: '../forms/forms.module#MyFormsModule' },

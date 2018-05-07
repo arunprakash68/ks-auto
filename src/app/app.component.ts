@@ -1,4 +1,5 @@
 import * as jQuery from 'jquery';
+import 'jqueryui';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
@@ -26,14 +27,31 @@ export class AppComponent implements OnInit {
   constructor(private router: Router) { }
 
   ngOnInit() {
+    if(!localStorage.getItem('user')){
+      this.router.navigate(['/login']);
+    }
     this.AppConfig = APPCONFIG;
     console.log(this.AppConfig);
-    // Scroll to top on route change
+    // Scroll to top on route change 
     this.router.events.subscribe((evt) => {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
       document.body.scrollTop = 0;
     });
+
+    this.checkLogin();
+
+  }
+
+  
+  checkLogin(){
+    if(!window.localStorage.user){
+      this.router.navigate(['/login']);
+    }
+    // if(window.localStorage.user && !JSON.parse(window.localStorage.user).user){
+    //   localStorage.clear();
+    //   this.router.navigate(['/login']);
+    // }
   }
 }

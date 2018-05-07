@@ -7,7 +7,6 @@ function resolveHTTPRequestPromise(options, req, res, callbackFlag) {
 		}
 
 		let jsonData = null;
-		
 		rp(options)
 		.then(function(data){
 			res.json(data);

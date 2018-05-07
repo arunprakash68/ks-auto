@@ -1,0 +1,23 @@
+<div class="column cols-2" *ngIf='!desData.length'>
+        <p><strong>Volume ID</strong> : <span> {{desData.id}} </span></p>
+        <p><strong>Created</strong> : <span> {{desData.creation_date * 1000 | date:'LLLL dd, yyyy - h:mm:ss a'}} </span></p>
+        <p><strong>Size</strong> : <span> {{desData.size}} </span></p>
+        <p><strong>Attachment Information</strong> : <span> Lorem Ipsum </span></p>
+        <p><strong>Availability Zone</strong> : <span> {{desData.zone}} </span></p>
+        <p><strong>State</strong> : <span> {{desData.status}} </span></p>
+        <p><strong>Volume Type</strong> : <span> {{desData.volume_type}} </span></p>
+        <p><strong>Encrypted</strong> : <span> Lorem Ipsum </span></p>
+</div>
+<!-- <div class="column cols-2" *ngIf='!desData.length'>
+    <p><strong>Volume ID</strong> : <span> {{desData.lb_name}}</span></p>
+    <p><strong>Created</strong> : <span> {{desData.creation_date * 1000 | date:'LLLL dd, yyyy - h:mm:ss a'}}</span></p>
+    <p><strong>Size</strong> : <span> {{desData.vip}}</span></p>
+    <p><strong>Attachment Information</strong> : <span> {{desData.scheme}}</span></p>
+    <p><strong>Availability Zone</strong> : <span> {{desData.bu}}</span></p>
+    <p><strong>State</strong> : <span> {{desData.state}}</span></p>
+    <p><strong>Volume Type</strong> : <span> {{ getMap(desData.protocol,'lbTagMap')}}</span></p>
+    <p><strong>Encrypted</strong> : <span> {{desData.project}}</span></p>
+</div> -->
+<div *ngIf='desData.length && desData.length > 0'>
+    {{desData}}
+</div>

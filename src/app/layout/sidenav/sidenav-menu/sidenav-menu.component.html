@@ -21,14 +21,15 @@
     <a md-button href="#/app/data-center"><i class="nav-icon material-icons">storage</i><span class="nav-text">DATA CENTER</span></a>
     <ul>
       <li><a md-button class="md-button" [routerLink]="['/app/data-center/server']"><fa name="server" class="nav-icon f-icon-small"></fa><span>Server</span></a></li>
-      <li><a md-button class="md-button" [routerLink]="['/app/data-center/assets']"><fa name="desktop" class="nav-icon f-icon-small"></fa><span>Assets</span></a></li>
+      <li><a md-button class="md-button" [routerLink]="['/app/data-center/volumes']"><fa name="server" class="nav-icon f-icon-small"></fa><span>Volumes</span></a></li>
+      <!-- <li><a md-button class="md-button" [routerLink]="['/app/data-center/assets']"><fa name="desktop" class="nav-icon f-icon-small"></fa><span>Assets</span></a></li> -->
       <!-- <li><a md-button class="md-button" [routerLink]="['/app/data-center/cluster']"><fa name="list-ol" class="nav-icon f-icon-small"></fa><span>Cluster</span></a></li> -->
       <!-- <li><a md-button class="md-button" [routerLink]="['/app/data-center/storage']"><fa name="database" class="nav-icon f-icon-small"></fa><span>Storage</span></a></li> -->
       <li><a md-button class="md-button"><fa name="server" class="nav-icon f-icon-small"></fa><span>ELB</span></a>
         <ul>
           <li><a md-button class="md-button" [routerLink]="['/app/data-center/elb/vip']"><fa name="server" class="nav-icon f-icon-small"></fa><span>VIP</span></a></li>
           <li><a md-button class="md-button" [routerLink]="['/app/data-center/elb/pool']"><fa name="server" class="nav-icon f-icon-small"></fa><span>POOL</span></a></li>
-          <li><a md-button class="md-button"><fa name="shield" class="nav-icon f-icon-small"></fa><span>SSL</span></a>
+          <!-- <li><a md-button class="md-button"><fa name="shield" class="nav-icon f-icon-small"></fa><span>SSL</span></a>
             <ul>
                 <li><a md-button class="md-button" ><fa name="certificate" class="nav-icon f-icon-small"></fa><span>Certificates</span></a>
                   <ul class="pl-3">
@@ -39,10 +40,10 @@
                   
                 </li> 
             </ul>
-          </li>
+          </li> -->
         </ul>
       </li>
-      <!-- <li><a md-button class="md-button" [routerLink]="['/app/data-center/my-dashboard']"><fa name="database" class="nav-icon f-icon-small"></fa><span>My Dashboard</span></a></li> -->
+      <!-- <li><a md-button class="md-button" [routerLink]="['/app/my-dashboard']"><fa name="database" class="nav-icon f-icon-small"></fa><span>My Dashboard</span></a></li> -->
     </ul>
   </li>
 

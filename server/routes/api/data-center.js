@@ -3,8 +3,13 @@ const router = express.Router();
 var request = require('request');
 const httpRequestPromise = require('../../custom-request-promise');
 const elb = require('./elb');
+const pool = require('./pool');
+
+const volume = require('./volume');
 
 router.use('/elb',elb);
+router.use('/pool',pool);
+router.use('/volume',volume);
 
 // Get list of Data Centers
 router.get('/', (req, res) => {
@@ -64,7 +69,7 @@ router.post('/servers/new', (req, res) => {
         if(dcZone){
             if(dcZone === 'TIL-MUM-Zone') {
                 zoneApi = process.env.til_mum_zone_server_create_api;
-            } else if(dcZone === 'TIL-CHN-Zone') {
+            } else if(dcZone === 'TIL-CHN-Zone' || dcZone === 'TBS-CHN-Zone') {
                 zoneApi = process.env.til_chn_zone_server_create_api;
             } else if(dcZone === 'MBRSL-CHN-Zone') {
                 zoneApi = process.env.mbrsl_chn_zone_server_create_api;
@@ -328,14 +333,15 @@ router.get('/os/images', (req, res) => {
         const getParams = req.query;
         var options = {
             baseUrl: process.env.dc_api + ':' + process.env.dc_api_port,
-            uri: '/api/v0.1/gettemplate',
+            uri: '/api/v0.1/getbutemplate',
             qs: {
-                'os': getParams['os']
+                'os': getParams['os'],
+                'bu': getParams['bu']
             },
             method: 'GET',
             json: true
         }
-
+        
         httpRequestPromise.resolveHTTPRequestPromise(options, req, res);
     } catch (e) {
         console.log(options);
@@ -416,14 +422,7 @@ router.get('/vipsummary', (req, res) => {
         const options = {
             baseUrl: process.env.auto_api,
             uri: '/api/v0.1/vipsummary',
-            qs: { 
-                's_count': getParams['s_count'],
-                'e_count': getParams['e_count'],
-                'bu': getParams['bu'] ? getParams['bu'] : '',
-                'project': getParams['project'] ? getParams['project'] : '',
-                'env': getParams['env'] ? getParams['env'] : '',
-                'zone': getParams['zone'] ? getParams['zone'] : ''
-            },
+            qs: getParams,
             method: 'GET',
             json: true,
             headers: {
@@ -469,6 +468,37 @@ router.get('/vipstats', (req, res) => {
         console.log(e);
     }
 })
+
+
+// Get my elb stats
+router.get('/lbevents', (req, res) => {
+    try {
+        const getParams = req.query;
+        const options = {
+            baseUrl: process.env.auto_api,
+            uri: '/api/v0.1/lbevents',
+            qs: { 
+                'start_time': getParams['start_time'],
+                'end_time': getParams['end_time'],
+                'domid': getParams['domid']
+            },
+            method: 'GET',
+            json: true,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Email': req.get('X-Email'),
+                'X-Token': req.get('X-Token')
+            }
+        }
+        
+        httpRequestPromise.resolveHTTPRequestPromise(options, req, res);
+
+    } catch(e){
+        console.log(options);
+        console.log(e);
+    }
+})
+
 
 // Get my elb location zones
 router.get('/locations', (req, res) => {

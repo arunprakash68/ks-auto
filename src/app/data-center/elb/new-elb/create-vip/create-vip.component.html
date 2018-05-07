@@ -2,24 +2,22 @@
 <div class="row mg-top-2">
 	<div class="col-xl-4">
 		<label for="domain-name">Enter Domain Name</label>
-		<input (change)="updateFormData()" class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" id="domain-name" name="domain-name" [(ngModel)]="formData.domain_name" placeholder="Domain Name" type="text" ng-reflect-name="domain-name">
+		<input (change)="updateFormData()" 
+		class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" 
+		id="domain-name" name="domain-name" 
+		[(ngModel)]="formData.domain_name" 
+		placeholder="Domain Name" type="text" 
+		ng-reflect-name="domain-name">
 	</div>
-	<!-- snat pool list on https -->
-	<div *ngIf="loading.snatPool" class="col-xl-4">
-		<p  class="col-xl-4 ml-auto mr-auto">
-			<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
-		</p>
-	</div>
-	<div *ngIf="loadingError.snatPool" class="col-xl-4 text-danger">
-		Unable to load snat pools
-		<a href="javascript:void(0)" (click)="getSnatPoolsList()">
-			<fa class="" name="refresh"></fa> Reload</a>
-	</div>
-	<div  class="col-xl-4" *ngIf="!loading.snatPool && !loadingError.snatPool">
-		<label for="snatPool">Select SNAT Pool</label>
-		<select [disabled]="snatpoolsList && snatpoolsList.length == 0" (change)="updateFormData()" [(ngModel)]="formData.snatPool" class="server-filter-form-input form-control" name="snatPool" ngModel>
-			<option *ngFor="let snatpool of snatpoolsList" value="{{ snatpool }}">{{ snatpool }}</option>
-		</select>
+	<!-- waf -->
+	<div class="col-xl-3">
+		<div class="mb-2">Web Application Firewall</div>
+		<mat-slide-toggle
+			class="switch-toggle"
+			[color]="'primary'"
+			[checked]="formData.waf"
+			[(ngModel)]="formData.waf">
+      	</mat-slide-toggle>
 	</div>
 </div>
 
@@ -46,7 +44,7 @@
 			class="server-filter-form-input form-control ng-pristine ng-valid ng-touched" 
 			id="vip-port" name="vip-port" 
 			[(ngModel)]="formData.tcpPort" 
-			[placeholder]="Port" 
+			placeholder="Port" 
 			type="number" min=1 max=65535 
 			ng-reflect-name="vip-port">
 	</div>

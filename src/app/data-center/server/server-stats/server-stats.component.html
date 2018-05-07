@@ -86,10 +86,10 @@
 			</div>
 		</div>
 
-		<div class="row mt-3 pl-4 pr-4">
+		<div class="row mt-3 pl-4 pr-4" *ngIf="graphParams['vmtype'] == 'MYSQL' || graphParams['vmtype'] == 'MariaDB'">
 			<div class="col-xl-12">
 				<div class="pt-0 ml-auto mr-auto box box-default">
-					<div class="box-header graph-title">MYSQL</div>
+					<div class="box-header graph-title">MYSQL Connections</div>
 					<div class="box-body pl-2 pr-0">
 						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLData()" [callResize]="callResize" [loadingError]="loadingError.mysql" [loading]="loading.mysql" [graphData]="serverStats.mysql"></server-stack-line-graph>
 					</div>
@@ -98,12 +98,64 @@
 			</div>
 		</div>
 
-		<div class="row mt-3 pl-4 pr-4">
+		<div class="row mt-3 pl-4 pr-4" *ngIf="graphParams['vmtype'] == 'MYSQL' || graphParams['vmtype'] == 'MariaDB'">
 			<div class="col-xl-12">
 				<div class="pt-0 ml-auto mr-auto box box-default">
-					<div class="box-header graph-title">MYSQL Schema</div>
+					<div class="box-header graph-title">MYSQL ProcessList</div>
 					<div class="box-body pl-2 pr-0">
-						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLSchemaData()" [callResize]="callResize" [loadingError]="loadingError.mysql_info_schema" [loading]="loading.mysql_info_schema" [graphData]="serverStats.mysql_info_schema"></server-stack-line-graph>
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLSchemaData()" [callResize]="callResize" [loadingError]="loadingError.mysql_processlist" [loading]="loading.mysql_processlist" [graphData]="serverStats.mysql_processlist"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- mysql replication -->
+		<div class="row mt-3 pl-4 pr-4" *ngIf="graphParams['vmtype'] == 'MYSQL' || graphParams['vmtype'] == 'MariaDB'">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">MYSQL Replication</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLReplication()" [callResize]="callResize" [loadingError]="loadingError.mysql_replication" [loading]="loading.mysql_replication" [graphData]="serverStats.mysql_replication"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- mysql temporary objects -->
+		<div class="row mt-3 pl-4 pr-4" *ngIf="graphParams['vmtype'] == 'MYSQL' || graphParams['vmtype'] == 'MariaDB'">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">MYSQL Temporary Objects</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLTempObjects()" [callResize]="callResize" [loadingError]="loadingError.mysql_temporaryobjects" [loading]="loading.mysql_temporaryobjects" [graphData]="serverStats.mysql_temporaryobjects"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- mysql query cache -->
+		<div class="row mt-3 pl-4 pr-4" *ngIf="graphParams['vmtype'] == 'MYSQL' || graphParams['vmtype'] == 'MariaDB'">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">MYSQL Query Cache</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLQueryCache()" [callResize]="callResize" [loadingError]="loadingError.mysql_querycache" [loading]="loading.mysql_querycache" [graphData]="serverStats.mysql_querycache"></server-stack-line-graph>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- mysql command counters -->
+		<div class="row mt-3 pl-4 pr-4" *ngIf="graphParams['vmtype'] == 'MYSQL' || graphParams['vmtype'] == 'MariaDB'">
+			<div class="col-xl-12">
+				<div class="pt-0 ml-auto mr-auto box box-default">
+					<div class="box-header graph-title">MYSQL Command Counters</div>
+					<div class="box-body pl-2 pr-0">
+						<server-stack-line-graph [chartOptions]="chartOptions" (reloadGraphData)="getMYSQLCmdCounters()" [callResize]="callResize" [loadingError]="loadingError.mysql_commandcounters" [loading]="loading.mysql_commandcounters" [graphData]="serverStats.mysql_commandcounters"></server-stack-line-graph>
 					</div>
 				</div>
 

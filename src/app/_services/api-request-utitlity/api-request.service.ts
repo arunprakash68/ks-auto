@@ -27,6 +27,10 @@ export class ApiRequestService {
 			return this.makeGetRequest();
 			case 'POST':
 			return this.makePostRequest();
+			case 'DELETE':
+			return this.makeDeleteRequest();
+			case 'PUT':
+			return this.makePutRequest();
 		}
 		throw new Error('Request Type Unknown');
 	}
@@ -52,6 +56,22 @@ export class ApiRequestService {
 	private makePostRequest() {
 		const options = new RequestOptions({ headers: this.options.headers })
 		return this.http.post(this.options.url + this.options.path, this.options.params, options)
+		.map((response: Response) => {
+			return response.json();
+		});
+	}	
+
+	private makePutRequest() {
+		const options = new RequestOptions({ headers: this.options.headers })
+		return this.http.put(this.options.url + this.options.path, this.options.params, options)
+		.map((response: Response) => {
+			return response.json();
+		});
+	}	
+
+	private makeDeleteRequest() {
+		const options = new RequestOptions({ headers: this.options.headers, search: this.options.params })
+		return this.http.delete(this.options.url + this.options.path, options)
 		.map((response: Response) => {
 			return response.json();
 		});
