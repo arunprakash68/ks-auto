@@ -44,27 +44,11 @@ button.icon {
 .mg-top-2{
 	margin-top:2em;
 }
-.mg-left-1{
-	margin-left: 1em;
-}
 .no-pd{
 	padding: 0;
 }
-.no-mg{
-	margin: 0 !important;
-}
 .card-box{
 	padding: 40px;
-}
-.redirect-link{
-	cursor: pointer;
-	color : blue;
-}
-
-.spinner-sm{
-	width: 30px !important;
-	height: 30px !important;
-	display: inline-block !important;
 }
 
 .self-align{
@@ -86,7 +70,7 @@ button.icon {
 		color: #fff;
 		position: absolute;
 		right: -10px;
-		top: -5px;
+		top: -9px;
 		line-height: 8px;
 	}
 }
@@ -97,19 +81,6 @@ button.icon {
     padding: 0 0 6px;
 }
 
-.dropdown-menu{
-	cursor: pointer;
-	.disabled{
-		color:#adadad;
-		cursor: not-allowed;
-	}
-	.dropdown-item{
-		&.active, &:active{
-			color: #fff !important;
-			background-color: #3f51b5;
-		}
-	}
-}
 .txt-center{
 	text-align: center;
 }
@@ -124,48 +95,13 @@ button.icon {
 	}
 }
 .table {
-	span.ui-column-resizer {
-		display: block;
-		position: absolute;
-		top: 0;
-		right: 0;
-		margin: 0;
-		width: 4px;
-		height: 100%;
-		padding: 0;
-		cursor: ew-resize;
-		background:repeating-linear-gradient(
-			45deg,
-			transparent,
-			transparent 2px,
-			rgba(0, 0, 0, 0.08) 2px,
-			rgba(0, 0, 0, 0.08) 4px
-		  );
-	  }
 	td {
 		vertical-align: middle !important;
 		position: relative;
 	}
-	th{
-		position: relative;
-	}
 	&.table-custom {
-		
-		td,th{
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			background: #fff;
-			overflow: hidden;
-			min-width: 56px;
-			padding: 0.6rem 0.75rem;
-			.mat-checkbox{
-				label {
-					margin: 0;
-				}
-			}
-		}
 		th {
-			background:#f1f1f1;
+			background:rgba(0, 0, 0, 0.075);
 		}
 		.nested-tr {
 			& >td{
@@ -202,10 +138,10 @@ button.icon {
 
 .modal-dialog{
 	transform: translate(-50%, -50%) !important;
-    top: 50%;
+	top: 50%;
 	left: 50%;
 	transition : unset !important;
-    margin: 0 !important;
+	margin: 0 !important;
 	&.custom-modal {
 		max-width: 65%;
 		.modal-content{
@@ -223,7 +159,6 @@ button.icon {
 				opacity: 1;
 				font-size: 2em;
 				text-shadow: none;
-				cursor: pointer;
 			}
 			.modal-title{
 				margin: 0;
@@ -311,7 +246,6 @@ button.icon {
 .elb-tab-content {
 	box-shadow: none !important;
 	border-radius: 0 !important;
-	margin-bottom: 0 !important;
 }
 
 //************** CDN Performance tab start ***************
@@ -440,8 +374,8 @@ elb-list .box {
 }
 
 .data-center-server button {
-	background-color: #3f51b5 !important; 
-	border-color: #3f51b5 !important; 
+	// background-color: #3f51b5 !important; 
+	// border-color: #3f51b5 !important; 
 }
 
 .cost-billing button {
@@ -473,7 +407,7 @@ physical-billing-list .box {
 }
 
 .nav-tabs .nav-link.active {
-	// padding: 14px 20px !important;
+	padding: 14px 20px !important;
 	// box-shadow: 0 0 2px rgba(0, 0, 0, 0.15) !important;
 	// box-shadow: none !important;
 	border: 1px solid #e9e9e9;
@@ -484,7 +418,7 @@ physical-billing-list .box {
 }
 
 .nav-tabs .nav-link {
-	// padding: 14px 20px !important;
+	padding: 14px 20px !important;
 	// box-shadow: 0 0 2px rgba(0, 0, 0, 0.15) !important;
 	// box-shadow: none !important;
 	border: 1px solid #e9e9e9;
@@ -589,7 +523,7 @@ app-top10-urls .nav-tabs .nav-link.active {
     border-radius: 0.2rem !important;
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !important;
 }
-#serverStatsButton {
+#serverStatsButton, .serverButton {
 	@extend .stats-alert-button;
 }
 #serverAlertsButton{
@@ -638,17 +572,6 @@ app-top10-urls .nav-tabs .nav-link.active {
 	width: 24px;
 }
 
-.f-icon-elb-list{
-	margin: 0px;
-	padding-top: 2px;
-	font-size: 11px;
-	cursor: pointer;
-}
-
-.f-margin-left{
-	margin-left: 5px;
-}
-
 .f-icon-dyn-tab {
 	margin-right: 5px;
 }
@@ -658,17 +581,6 @@ app-top10-urls .nav-tabs .nav-link.active {
 	width: 20px;
 	margin-right: 10px;
 	margin-left: 30px;
-}
-
-.f-icon-elb-list{
-    margin: 0px;
-    padding-top: 2px;
-	font-size: 11px;
-	cursor: pointer;
-}
-
-.f-margin-left{
-	margin-left: 5px;
 }
 
 .profile {
@@ -999,8 +911,11 @@ datetime-popup > .dropdown .glyphicon.hidden {
 
 //************** Progressbar start ***************
 
-progressbar bar {
-	background: green !important;
+.progress-bar{
+	height: 100%;
+	&.bg-success {
+		background-color: green !important;
+	}
 }
 
 //************** Progressbar end ***************
@@ -1289,7 +1204,7 @@ elb-list {
 		width:100%;
 		table {
 			th {
-				// padding: 0.756rem 0.3rem;
+				padding: 0.756rem 0.3rem;
 			}
 			td{
 				button{
@@ -1299,7 +1214,7 @@ elb-list {
 						padding: 7px 5px;
 					}
 				}
-				// padding: 0.756rem 0.3rem;
+				padding: 0.756rem 0.3rem;
 				&.zone{
 					min-width: 100px;
 				}

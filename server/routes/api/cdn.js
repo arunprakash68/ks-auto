@@ -89,8 +89,7 @@ function resolvePerfGraphAPIs(req, res, uri) {
                 'business': (getParams['business'] ? getParams['business'].toLowerCase() : '')
             },
             method: 'GET',
-            json: true,
-            timeout: 120000
+            json: true
         }
         if (getParams['service_type']) {
             options.qs.service_type = (getParams['service_type']);

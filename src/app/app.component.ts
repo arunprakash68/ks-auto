@@ -1,5 +1,4 @@
 import * as jQuery from 'jquery';
-import 'jqueryui';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, NavigationEnd } from '@angular/router';
@@ -49,9 +48,9 @@ export class AppComponent implements OnInit {
     if(!window.localStorage.user){
       this.router.navigate(['/login']);
     }
-    // if(window.localStorage.user && !JSON.parse(window.localStorage.user).user){
-    //   localStorage.clear();
-    //   this.router.navigate(['/login']);
-    // }
+    if(window.localStorage.user && !JSON.parse(window.localStorage.user).user){
+      localStorage.clear();
+      this.router.navigate(['/login']);
+    }
   }
 }

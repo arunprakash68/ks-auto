@@ -1,5 +1,6 @@
 <section class="app-header">
-  <div class="app-header-inner" [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
+  <div class="app-header-inner"
+     [ngClass]="{'bg-color-light': ['11','12','13','14','15','16','21'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-dark': AppConfig.colorOption === '31',
                  'bg-color-primary': ['22','32'].indexOf(AppConfig.colorOption) >= 0,
                  'bg-color-success': ['23','33'].indexOf(AppConfig.colorOption) >= 0,
@@ -15,11 +16,7 @@
 
 
     <div class="brand d-none d-lg-inline-block d-xl-inline-block">
-        <!-- <img width="20" height="20" style="margin-top: -10px;" src="/assets/images/keystone-temp-logo.png"> -->
-      <h2>
-         
-        <a [routerLink]="['/']">{{AppConfig.brand}}</a>
-      </h2>
+      <h2><a [routerLink]="['/']">{{AppConfig.brand}}</a></h2>
     </div>
 
     <div class="top-nav-left d-none d-lg-inline-block d-xl-inline-block">
@@ -74,31 +71,20 @@
             </ul>
 
             <ul style="list-style-type:none; margin-left:-40px;">
-              <li style="height: 25px !important;" (click)="goToHelpPage()">
-                <a style="color: #000 !important;font-weight:normal;"  target="_blank"  class="dropdown-item" [routerLink]="['/helpsupport']">
-                  <i class="fa fa-life-ring"></i> Help & Support</a>
+              <li style="height: 25px !important;" (click)="accessPage()">
+                <a style="color: #000 !important;font-weight:normal;"   class="dropdown-item" [routerLink]="['/app/access']">
+                  <i class="fa fa-life-ring"></i> Access</a>
               </li>
             </ul>
-
           </ul>
-          <!-- <md-menu #profilemenu="mdMenu" class="profile-menu" x-position="before" y-position="below" overlapTrigger="false">
-            <md-list dense>
-              <md-list-item>
-                <md-icon md-list-avatar><a [routerLink]="['/']"><fa name="sign-out"></fa></a></md-icon>
-                <h4 style="font-size: 16px;" md-line><a [routerLink]="['/']"><fa name="sign-out"></fa> Logout</a></h4>
-              </md-list-item>
-            </md-list>
-          </md-menu> -->
         </li>
         <li>
           <button md-button class="md-button header-btn d-lg-none d-xl-none" myOpenSearchOverlay>
             <i class="material-icons">search</i>
           </button>
         </li>
-        <!-- <li><button md-button class="md-button header-btn"><i class="material-icons">more_vert</i></button></li> -->
-      </ul>
+       </ul>
     </div>
-
   </div>
 </section>
 

@@ -4,6 +4,7 @@ const httpRequestPromise = require('../custom-request-promise');
 const datacenter = require('./api/data-center');
 const cdn = require('./api/cdn');
 const cost = require('./api/cost');
+const access = require('./api/access');
 
 
 router.use('/data-center', datacenter);
@@ -11,6 +12,8 @@ router.use('/data-center', datacenter);
 router.use('/cdn', cdn);
 
 router.use('/cost', cost);
+
+router.use('/access', access);
 
 
 router.get('/business-access-details', (req, res, next) => {

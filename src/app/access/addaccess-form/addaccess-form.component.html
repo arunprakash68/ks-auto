@@ -1,0 +1,86 @@
+<div>
+  <div class="form-group row perf-filter-form card ml-auto mr-auto pb-0" >
+    <div class="col-xl-12">
+      <form #f="ngForm" >
+        <div class="row">
+            <div class="col-md-6">
+                <label for="useremail">User Email</label>
+                <!-- <select  class="form-control" name="useremail" [(ngModel)]="formData[0].id" ngModel>
+                  <option [ngValue]="res.ID" *ngFor="let res of emailList">{{res.EMAIL}}</option>
+                </select> -->
+                <angular2-multiselect [ngModelOptions]="{standalone: true}" [data]="emailList?.result" [(ngModel)]="formData[0].id" 
+                [settings]="dropdownSettings2" 
+                (onSelect)="onItemSelect($event);hidealert()" 
+                (onDeSelect)="OnItemDeSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+                (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+            </div>
+            
+        </div>	
+        <div class="row mt-5" *ngFor="let row of formData; let i = index;" >
+            <div class="col-md-4">
+                <label for="businessunit{{i}}">Business Unit #{{i+1}}</label>
+                <select (focus)="hidealert()" (change)="onBusinessSelected(i)" class="form-control" name="businessunit{{i}}" [(ngModel)]="formData[i].business" ngModel>
+                  <option [ngValue]="business" *ngFor="let business of businessAccessDetails" >{{business}}</option>
+                </select>
+            </div>
+            
+            <div class="col-md-4">
+                <label for="project">Projects</label>
+                <angular2-multiselect [ngModelOptions]="{standalone: true}" [data]="formData[i].dropdownList" [(ngModel)]="formData[i].projects" 
+                [settings]="dropdownSettings" 
+                (onSelect)="onItemSelect($event);hidealert()" 
+                (onDeSelect)="OnItemDeSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+                (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+            </div>
+
+            <div class="col-md-3">
+                <label for="accesstype{{i}}">Access Type</label>
+                <select  (focus)="hidealert()" class="form-control" name="accesstype{{i}}" [(ngModel)]="formData[i].accesstype" ngModel>
+                  <option value="">None</option>
+                  <option value="r">Read Only</option>
+                  <option value="rw">Read &amp; Write</option>
+                </select>
+              
+            </div>
+            <div class="col-md-1">
+                <div class="pull-right">
+                <button *ngIf="row.show" (click)="deleteRow(i)" class="mt-cross fa-times btn-md pointer btn btn-primary fa waves-effect waves-effect aves-effect" type="button" >
+                    <!-- <span class="ml-2">Add Row</span> -->
+                </button>
+              </div>
+            </div>
+        </div>
+        <div class="row mt-5"></div>
+        <div class="row mt-5">
+          <div class="col-xl-2"></div>
+          <div class="col-xl-5">
+              <div *ngIf="loader">
+                  <p id="loaderimg" class="col-2 ml-auto mr-auto">
+                      <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                    </p>
+              </div>
+              <div *ngIf="formSuccessMsg && !loader" class="alert alert-success">
+                  <strong> </strong> {{formSuccessMsg}}
+              </div>
+            <div *ngIf="formErrorMsg && !loader" class="alert alert-danger">
+                <strong> * </strong> &nbsp; {{formErrorMsg}}
+            </div>
+          </div>
+          <div class="col-xl-5">
+            <div class="pull-right">
+                <!-- <button (click)="addRow(true)" class="fa-plus btn-md pointer btn btn-primary fa waves-effect waves-effect aves-effect" type="button" >
+                    <span class="ml-2">Add Row</span>
+                </button> -->
+                <button class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="addRow(true)" >Add Row</button>
+              <button type="submit" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="onSubmit(true)" >Add Access</button>
+              <button id="perf-filter-cancel" type="button" class="ml-1 btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="triggerCollapse()">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5"></div>
+      </form>
+    </div>
+  </div>
+</div>

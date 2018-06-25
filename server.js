@@ -165,6 +165,6 @@ app.set('port', port);
 
 const server = http.createServer(app);
 
-server.timeout = 120000;
+server.timeout = 22000;
 
 server.listen(port, () => console.log(`Running on localhost:${port}`));

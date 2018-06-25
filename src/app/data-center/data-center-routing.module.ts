@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { DataCenterComponent } from './data-center.component';
 
 import { DataCenterServerComponent } from './server/server.component';
-import { VolumesComponent } from './volumes/volumes.component';
 import { NewServerComponent } from './server/new-server/new-server.component';
 import { DataCenterClusterComponent } from './cluster/cluster.component';
 import { DataCenterStorageComponent } from './storage/storage.component';
@@ -17,9 +16,6 @@ import { ClientCertificateComponent } from './elb/ssl/client-certificate/client-
 import { CaCertificateComponent } from './elb/ssl/ca-certificate/ca-certificate.component';
 import { PoolComponent } from './elb/pool/pool.component';
 
-import { ELBOldComponent } from './elb/vip-old/elb.component';
-import { NewVolumeComponent } from './volumes/new-volume/new-volume.component';
-
 export const DataCenterRoutes: Routes = [
 	{
 		path: '',
@@ -27,7 +23,7 @@ export const DataCenterRoutes: Routes = [
 		children: [
 			{ path: '', redirectTo: '/app/my-dashboard', pathMatch: 'full' },
 			// { path: '', redirectTo: '/app/data-center/server', pathMatch: 'full' },
-			{ path: 'elb/vip-old', component: ELBOldComponent },
+			
 			{ path: 'server', component: DataCenterServerComponent },
 			{ path: 'server/new', component: NewServerComponent },
 			{ path: 'assets', component: PhysicalBillingComponent },
@@ -42,8 +38,6 @@ export const DataCenterRoutes: Routes = [
 			{ path: 'storage/new', component: NewServerComponent },
 			{ path: 'elb/pool', component: PoolComponent },
 			{ path: 'elb/pool/new', component: NewELBComponent },
-			{ path: 'volumes', component: VolumesComponent },
-			{ path: 'volume/new', component: NewVolumeComponent },
 			// {path: '**', redirectTo: '/app/data-center/server' }
 
 		]

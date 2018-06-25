@@ -88,7 +88,7 @@ export class AppHeaderComponent implements OnInit{
     this.textStrings = {
 			header : 'Security Alert',
       body : 'Your Session has expired. Please',
-      linktext: 'Reload.',
+      linktext: 'reload.',
       closable: false
     }
     this.check = false;
@@ -166,12 +166,10 @@ export class AppHeaderComponent implements OnInit{
 		}
 		
   }
-
-  goToHelpPage(){
-    localStorage.removeItem('EngineerLocation');
-    localStorage.removeItem('TicketLocation');
-    localStorage.removeItem('EngineerName');
-    localStorage.removeItem('SelectedTab');
+  accessPage(){
     
   }
+		
+		
+	
 }

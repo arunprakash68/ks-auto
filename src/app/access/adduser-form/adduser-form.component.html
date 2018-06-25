@@ -1,0 +1,51 @@
+<div>
+  <div class="form-group row perf-filter-form card ml-auto mr-auto pb-0" >
+    <div class="col-xl-12">
+      <form #f="ngForm" autocomplete="off">
+        <div class="row">
+          <div class="col-md-4">
+            <label for="fullname">User Name</label>
+            <input type="text"  (focus)="hidealert()" class="form-control" [(ngModel)]="formData.fullname" name="fullname" ngModel>
+          </div>
+          <div class="col-md-5">
+              <label for="email">User Email</label>
+              <input type="email" (focus)="hidealert()" class="form-control" [(ngModel)]="formData.email" name="email" ngModel>
+          </div>
+
+          <div class="col-md-3">
+              <label for="superaccess">Super Access</label>
+                <select (focus)="hidealert()" class="form-control" [(ngModel)]="formData.superuser" name="superaccess" ngModel>
+                  <option value="">None</option>
+                  <option value="0">False</option>
+                  <option value="1">True</option>
+                </select>
+            
+          </div>
+        </div>	
+        <div class="row mt-5">
+          <div class="col-xl-4"></div>
+          <div class="col-xl-4">
+              <div *ngIf="loader">
+                  <p id="loaderimg" class="col-2 ml-auto mr-auto">
+                      <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                    </p>
+              </div>
+              <div *ngIf="formSuccessMsg && !loader" class="alert alert-success">
+                  <strong> </strong> {{formSuccessMsg}}
+              </div>
+            <div *ngIf="formErrorMsg && !loader" class="alert alert-danger">
+                <strong> * </strong> &nbsp; {{formErrorMsg}}
+            </div>
+          </div>
+          <div class="col-xl-4">
+            <div class="pull-right">
+              <button type="submit" class="btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="onSubmit(true)" >Add User</button>
+              <button id="perf-filter-cancel" type="button" class="ml-1 btn btn-primary btn-md waves-effect waves-effect waves-effect waves-effect" (click)="triggerCollapse()">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-5"></div>
+      </form>
+    </div>
+  </div>
+</div>

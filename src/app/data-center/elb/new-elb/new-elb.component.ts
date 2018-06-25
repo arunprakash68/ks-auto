@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
 import { CreateNewELBService } from '../../../_services/data-center/elb-new.service';
+import { BusinessAccessDetailsService } from '../../../_services/business-access-details.service';
 import { LocationZoneListService } from '../../../_services/location-zone-list.service';
 import { ErrorHandlerService } from '../../../_services/error-handler.service';
 import { ServicesUtilityService } from '../../../_services/services-utility.service';
@@ -13,7 +14,7 @@ import { ImageTextBoxComponent } from '../../../shared/img-text-box/img-text-box
 @Component({
 	selector: 'new-elb',
 	styles: [],
-	providers: [CreateNewELBService, ServicesUtilityService, ErrorHandlerService, LocationZoneListService],
+	providers: [CreateNewELBService, ServicesUtilityService, ErrorHandlerService, LocationZoneListService,BusinessAccessDetailsService],
 	templateUrl: './new-elb.component.html'
 })
 
@@ -44,6 +45,7 @@ export class NewELBComponent implements OnInit {
 		private errorHandlerService: ErrorHandlerService,
 		private servicesUtilityService: ServicesUtilityService,
 		private router: Router,
+		private businessAccessDetailsService : BusinessAccessDetailsService,
 		private locationZoneListService : LocationZoneListService){
 			
 		this.loading = {};
@@ -87,29 +89,56 @@ export class NewELBComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.getBusinessAccessDetails();
 		this.getLocationZoneList();
 	}
 
-	// bu project component update
-	getBuProData(data){
-		this.businessAccessDetails = data.businessAccessDetails;
-		this.projects = data.projects
+	/*********** get busniess details *********/
+	getBusinessAccessDetails() {
+		this.loading['bu'] = true;
+		this.loadingError['bu'] = false;
+		this.businessAccessDetailsService.getBusinessAccessDetails().subscribe(data => {
+			this.loading['bu'] = false;
+			if(data && data['bu'] && data['status'] != 0) {
+				this.businessAccessDetails = data;
+				this.fillProjectsMap();
+				this.updateDefaultFormData();
+				this.onBusinessChange();
+			} else {
+				this.loadingError['bu'] = true;
+			}
+		}, error => {
+			if (!this.errorHandlerService.validateAuthentication(error)) {
+				this.router.navigate(['/login']);
+			}
+			this.loading['bu'] = false;
+			this.loadingError['bu'] = true;
+		});
 	}
 
-	onBusinessChange(data) {
-		this.formData['bu'] = data.bu;
+	updateDefaultFormData() {
+		if (this.businessAccessDetails['bu'].length > 0) {
+			this.formData['bu'] = this.businessAccessDetails['bu'][0]['bu_name'];
+		}
+	}
 
+	fillProjectsMap() {
+		let bu = this.businessAccessDetails['bu'];
+		for(let i = 0; i < bu.length; i++) {
+			this.projects[bu[i]['bu_name']] = (bu[i]['project']).filter(function(obj){
+				return (obj.access_type).indexOf('w') > -1
+			});
+		}
+	}
+
+	onBusinessChange() {
 		if(this.projects && this.projects[this.formData['bu']].length > 0) {
 			this.formData['project'] = this.projects[this.formData['bu']][0]['project'];
 		}
-		this.onProjectChange(false);
+		this.onProjectChange();
 	}
 
-	onProjectChange(data){
-		if(data){
-			this.formData['bu'] = data.bu;
-			this.formData['project'] = data.project;
-		}
+	onProjectChange(){
 		this.currentBuProject = {
 			bu : this.formData.bu,
 			project : this.formData.project
@@ -119,9 +148,6 @@ export class NewELBComponent implements OnInit {
 	updateFormData(formData : any) {
 		this.formData = formData;
 	}
-
-
-	
 
 	/*********** zone mapping/ get locations *********/
 	getLocationZoneList() {
@@ -169,6 +195,172 @@ export class NewELBComponent implements OnInit {
 		}
 	}
 
+	// create vip
+	createVip(params){
+		let options = {
+			vipname : this.formData.vipname,
+			vipport : this.formData.vipport.map(String),
+			project : this.formData.project,
+			bu : this.formData.bu,
+			env : parseInt(this.formData.monitoringvalue),
+			scheme : this.formData.scheme,
+			lb_method : this.formData.lbmethod,
+			siteshield : (this.formData.scheme == 'internet-facing' && this.formData.loadBalancerType == 'application') ? 
+							(this.formData.siteshield ? 1 : 0) : 0,
+			// snatpool : this.formData.snatPool
+		}
+
+		options = {...options,...params}
+		
+		this.observables.push(this.createNewELBService.createNewELBVip(options))
+	}
+
+	// create pool
+	createPool(params){
+		let data =  this.formData;
+		let options = {
+			project : data.project,
+			bu : data.bu,
+			env : parseInt(data.monitoringvalue),
+			port : [data.port.toString()],
+			vipmembers : data.vipmembers,
+			lb_method : data.lbmethod,
+			lb_type : data.loadBalancerType == "application" ? 'http' : 'tcp'
+		}
+
+		options = {...options,...params}
+
+		this.observables.push(this.createNewELBService.createNewELBPool(options))
+	}
+
+	// create monitor
+	createMonitor(params){
+		let options = {
+			send_string : this.formData.send_string,
+			recv_string : this.formData.recv_string,
+		}
+
+		options = {...options,...params}
+
+		this.observables.push(this.createNewELBService.createNewELBMonitor(options))
+	}
+
+	// attach monitor to pool
+	attachMonitorPool(params){
+		let options = {
+			monitorname : this.newMonitorData.monitorname,
+			poolname : this.newPoolData.servicegroup
+		}
+
+		options = {...options,...params}
+
+		this.observablesAttach.push(this.createNewELBService.attachMonitorPool(options))
+	}
+
+	// attach vip to pool
+	attachPoolVip(vipname,params){
+		let options = {
+			vipname : vipname,
+			poolname : this.newPoolData.servicegroup
+		}
+
+		options = {...options,...params}
+
+		this.observablesAttach.push(this.createNewELBService.attachPoolVip(options))
+	}
+
+	// create ssl to vip
+	attachSslVip(vipname,params){
+		let options = {
+			vipname : vipname,
+			sslcertname : this.formData.sslcert
+		}
+
+		options = {...options,...params}
+		
+		this.createNewELBService.attachSslVip(options).subscribe(data => {
+			this.submitLoading['attachssl'] = false;
+			if(data && data['status'] == 1) {
+				this.attachedData.isSslAttached = true;
+			} else {
+				this.attachedData.isSslAttached = false;
+			}
+
+		}, error => {
+			if (!this.errorHandlerService.validateAuthentication(error)) {
+				this.router.navigate(['/login']);
+			}
+			this.submitError['error'] = true;
+			this.submitError['message'] = 'Something went wrong. Please try after a while.'
+		})
+	}
+
+	// enable redirection from http to https
+	enableRedirection(vipname,params){
+		let options = {
+			vipname : vipname
+		}
+
+		options = {...options,...params}
+		
+		this.createNewELBService.sslRedirect(options).subscribe(data => {
+			this.submitLoading['redirectssl'] = false;
+			if(data && data['status'] == 1) {
+				this.attachedData.isSslRedirect = true;
+			} else {
+				this.attachedData.isSslRedirect = false;
+			}
+
+		}, error => {
+			if (!this.errorHandlerService.validateAuthentication(error)) {
+				this.router.navigate(['/login']);
+			}
+			this.submitError['error'] = true;
+			this.submitError['message'] = 'Something went wrong. Please try after a while.'
+		})
+	}
+
+	// call functions for attaching vip,pool,monitor,ssl, enabling redirection -  fork join
+	callAttach(data){
+		this.newELBData = data[0];
+		this.newPoolData = data[1];
+		this.newMonitorData = data[2];
+
+		let params = {
+			zone : this.formData.zone,
+			location : this.formData.location,
+		}
+
+		// attach pool/ssl and enable redirection
+		let vipnames = this.newELBData.vipnames;
+		for(let idx = 0;idx<vipnames.length; idx++){
+			if(vipnames[idx].indexOf('443') > -1 && this.formData.sslcert){
+				this.attachSslVip(vipnames[idx],params);
+			}
+			if(vipnames[idx].indexOf('80') > -1 && this.formData.redirection){
+				this.enableRedirection(vipnames[idx],params);
+			}
+			this.attachPoolVip(vipnames[idx],params);
+		}
+
+		this.attachMonitorPool(params);
+
+		
+		Observable.forkJoin(this.observablesAttach).subscribe(
+			(result) => {
+				let isCreated = result.every(function(obj){return obj? obj['status'] == 1 : false});
+				// if all returned status 1
+				if(isCreated){
+					this.router.navigate(['/app/data-center/elb/vip']);
+				}
+				else{
+					this.submitError['error'] = true;
+					this.submitError['message'] = 'Something went wrong. Please try after a while.'
+				}
+			}
+		)
+	}
+
 	// check if valid domain name is entered
 	validateDomain(domain){
 		let domainFormat = /^([a-z0-9])(([a-z0-9-]{1,61})?[a-z0-9]{1})?(\.[a-z0-9](([a-z0-9-]{1,61})?[a-z0-9]{1})?)?(\.[a-zA-Z]{2,4})+$/;
@@ -178,7 +370,6 @@ export class NewELBComponent implements OnInit {
 	// alert messages if requred fields are not entered
 	validateFormData(){
 		let data = this.formData;
-		
 		if(!data.domain_name || !data.send_string || !data.recv_string){
 			alert("All input fields are required");
 			return false;
@@ -211,40 +402,31 @@ export class NewELBComponent implements OnInit {
 		}
 		
 		this.spin = true;
-		let data =  this.formData;
+
 		// common params
 		let params = {
-			zone : data.zone,
-			location : data.location,
-			domain_name : data.domain_name,
-			vipport : data.vipport.map(String),
-			project : data.project,
-			bu : data.bu,
-			env : parseInt(data.monitoringvalue),
-			scheme : data.scheme,
-			lb_method : data.lbmethod,
-			siteshield : (data.scheme == 'internet-facing' && data.loadBalancerType == 'application') ? 
-							(data.siteshield ? 1 : 0) : 0,
-			port : [data.port.toString()],
-			vipmembers : data.vipmembers,
-			lb_type : data.loadBalancerType == "application" ? 'http' : 'tcp',
-			send_string : data.send_string,
-			recv_string : data.recv_string,
-			sslcertname : data.sslcert,
-			http_https_redir : data.redirection ? 1 : 0,
-			waf : data.waf ? 1 : 0
+			zone : this.formData.zone,
+			location : this.formData.location,
+			domain_name : this.formData.domain_name,
 		}
 
+		this.createVip(params);
+		this.createPool(params);
+		this.createMonitor(params);
 
-		this.createNewELBService.createNewELB(params).subscribe(data =>{
-			if(data && data.status == 1){
-				this.router.navigate(['/app/data-center/elb/vip']);
+		Observable.forkJoin(this.observables).subscribe(
+			(result) => {
+				let isCreated = result.every(function(obj){return obj? obj['status'] == 1 : false});
+				// if all returned status 1
+				if(isCreated){
+					this.callAttach(result)
+				}
+				else{
+					this.submitError['error'] = true;
+					this.submitError['message'] = 'Something went wrong. Please try after a while.'
+				}
 			}
-			else{
-				this.submitError['error'] = true;
-				this.submitError['message'] = 'Something went wrong. Please try after a while.'
-			}
-		})
+		)
 	}
 
 }

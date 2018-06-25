@@ -12,7 +12,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 export class ConfirmDialog implements OnInit {
 	modalRef: BsModalRef;
 	modalRef2: BsModalRef;
-	textStrings : any; 
+	textStrings : any;
 	confirmValue : any;
 
 	@Output() triggerDelete: EventEmitter<any> = new EventEmitter<any>();

@@ -7,9 +7,11 @@
 	</div>
 	<div class="modal-body">
 		<h5>{{textStrings.confirmText}}</h5>
-		<strong *ngIf="textStrings.isInput">Request Details</strong>
-		<p *ngIf="textStrings.canDelete">{{textStrings.body}}</p>
-		<div class="row" *ngIf="textStrings.isInput">
+		<p>
+			<strong>Request Details</strong>
+			{{textStrings.body}}
+		</p>
+		<div class="row">
 			<div class="col-xl-12">
 				<label for="value">{{textStrings.inputText}}</label>
 				<input 
@@ -21,8 +23,8 @@
 					ng-reflect-name="value">
 			</div>
 		</div>
-		<p *ngIf="textStrings.canDelete" class="note">{{textStrings.note}}</p>
-	  <button *ngIf="textStrings.canDelete" type="button" class="btn btn-primary" (click)="validateValue()">Confirm</button>
+		<p class="note">{{textStrings.note}}</p>
+	  <button type="button" class="btn btn-primary" (click)="validateValue()">Confirm</button>
 	</div>
   </ng-template>
    

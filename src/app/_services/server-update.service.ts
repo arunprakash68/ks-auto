@@ -14,14 +14,13 @@ export class ServerUpdateService extends GenericApiService {
 		super(injector);
 	}
 
-	// updateServerData(params){
-	// 	const options = new RequestOptions({headers: this.servicesUtilityService.getDefaultHeaders()});
-	// 	return this.http.post(APPCONFIG['apiHost'] + '/api/data-center/servers/update', params, options)
-	// 	.map((response: Response) => {
-	// 		let serverUpdateResp = response.json();
-	// 		return serverUpdateResp;
-	// 	});
-	// }
+	deleteServer(params){
+		return this.makePostRequest({
+			path: '/api/data-center/servers/delete',
+			params: params,
+			headers: this.servicesUtilityService.getDefaultHeaders()
+		});
+	}
 
 	updateServerData(params){
 		

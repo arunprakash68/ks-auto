@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '@angular/material';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { TabsModule, ProgressbarModule, ModalModule, BsDropdownModule, TooltipModule, PopoverModule } from 'ngx-bootstrap';
+import { TabsModule, ProgressbarModule, ModalModule } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
-
 
 import { DataCenterRoutingModule } from './data-center-routing.module';
 import { DataCenterComponent } from './data-center.component';
@@ -36,11 +35,6 @@ import { DataCenterStorageComponent } from './storage/storage.component';
 
 import { ELBComponent } from './elb/vip/elb.component';
 import { ELBListComponent } from './elb/vip/elb-list/elb-list.component';
-import { EditDialog } from './elb/vip/edit-dialog/edit-dialog.component';
-import { ELBDetailsComponent } from './elb/vip/elb-list/elb-details/elb-details.component';
-import { DescriptionComponent } from './elb/vip/elb-list/elb-details/description/description.component';
-import { ListenersComponent } from './elb/vip/elb-list/elb-details/listeners/listeners.component';
-
 import { NewELBComponent } from './elb/new-elb/new-elb.component';
 import { CreateVipComponent } from './elb/new-elb/create-vip/create-vip.component';
 import { CreatePoolComponent } from './elb/new-elb/create-pool/create-pool.component';
@@ -60,21 +54,8 @@ import { ClientCertificateListComponent } from './elb/ssl/client-certificate/cli
 import { CaCertificateListComponent } from './elb/ssl/ca-certificate/ca-certificate-list/ca-certificate-list.component';
 import { PoolComponent } from './elb/pool/pool.component';
 import { PoolListComponent } from './elb/pool/pool-list/pool-list.component';
-import { VolumesComponent } from './volumes/volumes.component';
 
-import { ELBOldComponent } from './elb/vip-old/elb.component';
-import { ELBOldListComponent } from './elb/vip-old/elb-list/elb-list.component';
-import { ELBOldFilterFormComponent } from './elb/vip-old/filter-form/filter-form.component';
-import { VolumeFilterFormComponent } from './volumes/volume-filter-form/volume-filter-form.component';
-import { VolumeListComponent } from './volumes/volume-list/volume-list.component';
-import { VolumeDetailsComponent } from './volumes/volume-details/volume-details.component';
 
-import { VolumedescriptionComponent } from './volumes/volume-details/description/volume-description.component';
-import { StatusCheckComponent } from './volumes/volume-details/status-check/status-check.component';
-import { VolumeMonitoringComponent } from './volumes/volume-details/volume-monitoring/volume-monitoring.component';
-import { NewVolumeComponent } from './volumes/new-volume/new-volume.component';
-
-import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -86,19 +67,14 @@ import { ToastrModule } from 'ngx-toastr';
     AngularFontAwesomeModule,
     NgbModule,
     TabsModule,
-    BsDropdownModule,
     ProgressbarModule,
     ModalModule,
-    BsDropdownModule,
-    TooltipModule.forRoot(),
-    PopoverModule.forRoot(),
     CommonModule,
     DataCenterRoutingModule,
     MaterialModule,
     CostModule,
     SharedDirectivesModule,
     AvatarModule,
-    ToastrModule.forRoot(),
   ],
   declarations: [
     DataCenterComponent,
@@ -123,10 +99,6 @@ import { ToastrModule } from 'ngx-toastr';
     DataCenterStorageComponent,
     ELBComponent,
     ELBListComponent,
-    EditDialog,
-    ELBDetailsComponent,
-    DescriptionComponent,
-    ListenersComponent,
     NewELBComponent,
     CreateVipComponent,
     CreatePoolComponent,
@@ -139,18 +111,7 @@ import { ToastrModule } from 'ngx-toastr';
     ClientCertificateListComponent,
     CaCertificateListComponent,
     PoolComponent,
-    PoolListComponent,
-    VolumesComponent,
-    ELBOldComponent,
-    ELBOldListComponent,
-    ELBOldFilterFormComponent,
-    VolumeFilterFormComponent,
-    VolumeListComponent,
-    VolumeDetailsComponent,
-    VolumedescriptionComponent,
-    StatusCheckComponent,
-    VolumeMonitoringComponent,
-    NewVolumeComponent,
+    PoolListComponent
   ]
 })
 

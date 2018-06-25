@@ -1,0 +1,25 @@
+@media only screen and (min-width: 992px)
+{
+    .sidebar-sm .app-page-container .app-content-wrapper .app-footer {
+        left: 0px!important;
+    }
+}
+ 
+.app-footer {
+    left: 0px!important;
+}
+.app-content
+{
+    padding-left: 0px!important;
+}
+.thead {
+    background: rgba(0, 0, 0, 0.075)!important;
+}
+
+th{
+    text-align: center!important;
+}
+td{
+    text-align: center!important;  
+}
+

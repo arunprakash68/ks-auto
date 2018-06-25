@@ -1,0 +1,208 @@
+<section class="container-fluid">
+  <h2 class="article-title"></h2>
+
+  <div class="row">
+    <div class="clearfix col-12">
+      <tabset>
+        <tab heading="User Access" [active]="true" (select)="staticTab.active = true;" (deselect)="staticTab.active = false">
+          <div class="box box-default performance-tab-content">
+            <div role="tabpanel">
+
+              <div class="row pt-4 pb-3">
+                <div class="col-xl-4">
+                  <div *ngIf="issuper">
+                      <p class="pull-left ml-4">
+                        <button [ngClass]="{'fa-plus':!form1,'fa-times-circle':form1}" (click)="activateform('form1')" class="btn-sm pointer btn btn-primary fa waves-effect waves-effect" type="button" >
+                            <span class="ml-2">Add User</span>
+                          </button>
+                      </p>
+                      <p class="pull-left ml-2">
+                          <button [ngClass]="{'fa-plus':!form2,'fa-times-circle':form2}" (click)="activateform('form2')" class="btn-sm pointer btn btn-primary fa waves-effect waves-effect" type="button" >
+                              <span class="ml-2">Add Access</span>
+                            </button>
+                      </p>
+                      
+                  </div>
+                </div>
+                <div class="col-xl-6">
+                    <angular2-multiselect [ngModelOptions]="{standalone: true}" [data]="emailList?.result" [(ngModel)]="searchEmail" 
+                [settings]="dropdownSetting" 
+                (onSelect)="onItemSelect($event)" 
+                (onDeSelect)="OnItemDeSelect($event)"
+                (onSelectAll)="onSelectAll($event)"
+                (onDeSelectAll)="onDeSelectAll($event)"></angular2-multiselect>
+                </div>
+                <div class="col-xl-2">
+                  <!-- <span class="pull-right">
+                    <a href="javascript:;" (click)="openPerfFilter()" [attr.aria-expanded]="!isFilterCollapsed">
+                      <img src="http://keystoneold.timesinternet.in/assets/img/filter.png" class="mr-4 server-filter-icon" height="40" width="40">
+                    </a>
+                  </span> -->
+                  <p class="pull-right mr-4">
+                    <button *ngIf="loading" disabled (click)="refresh(true)" class="fa-retweet btn-sm pointer btn btn-primary fa waves-effect waves-effect" type="button" >
+                        <span class="ml-2">Refresh</span>
+                      </button>
+                      <button *ngIf="!loading" (click)="refresh(true)" class="fa-retweet btn-sm pointer btn btn-primary fa waves-effect waves-effect" type="button" >
+                          <span class="ml-2">Refresh</span>
+                        </button>
+                </p>
+                </div>
+              </div>
+              
+              <!-- <performance-filter-form (businessFiltersOut)="updateBusinessFilters($event)" (businessAccessDetailsOut)="updateBusinessAccessDetails($event)" (triggerFilterCollapse)="triggerFilterCollapse($event)" [updatedSearchOptions]="formOptions" [ngbCollapse]="!isFilterCollapsed" [isCollapsed]="isFilterCollapsed" (showGraphs)="checkShowGraphs($event)" (searchOptions)="updateSearchOptions($event)"></performance-filter-form>    -->
+
+              <div class="row">
+                <p *ngIf="loading" id="loaderimg" class="col-2 ml-auto mr-auto">
+                  <img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+                </p>
+              </div>
+              <div class="row mt-0 pl-4 pr-4">
+                  <div *ngIf="form1" class="col-xl-12" id="form1">
+                    <app-adduser-form (triggeradduserCollapse)="collapseform($event)" (triggerrefresh)="refreshList($event)"></app-adduser-form>
+                  </div>
+                  <div *ngIf="form2" class="col-xl-12" id="form2">
+                    <app-addaccess-form (triggeraddaccessCollapse)="collapseform($event)" (triggerrefresh)="refreshList($event)"></app-addaccess-form>
+                  </div>
+              </div>
+              <div class="row mt-0 pl-4 pr-4">
+                <div class="col-xl-12">
+
+                  <div id="accessContainer" class="pl-0 pr-0 pt-0 pb-0" role="tabpanel" *ngIf="!loading">
+
+                    <div class="row pl-5 pr-5">
+                      <div class="col-xl-6 mt-4" *ngIf="showPagination()">
+                          <span style="font-size: 14px;font-weight: bold;">Showing {{ (pagination.pageItemIndex + 1) | number }}-{{ (pagination.collectionSize < (pagination.page * pagination.pageSize)) ? pagination.collectionSize : (pagination.page * pagination.pageSize) | number }} of {{ pagination.collectionSize | number }}</span>
+                        </div>
+                      <div class="col-xl-6 pr-0">
+                        <div class="mt-1 pull-right" *ngIf="showPagination()">
+                          <!-- <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+                          </ngb-pagination> -->
+                          <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks"></ngb-pagination>
+                        </div>
+                      </div>
+                      <table class="table table-hover table-responsive" *ngIf="!loading">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Super User</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr [ngClass]="{'static-row': !user.dynamicRow, 'dyn-row': user.dynamicRow}" *ngFor=" let user of userList?.result; let i = index; ">
+                            <td *ngIf="!user.dynamicRow">{{ pagination.pageItemIndex + ((i + 2)/2) }}.</td>
+                            <td *ngIf="!user.dynamicRow && !user.form">{{ user.NAME }}</td>
+                            <td *ngIf="!user.dynamicRow && !user.form">{{ user.EMAIL }}</td>
+                            <td *ngIf="!user.dynamicRow && user.SUPER_USER == 0 && !user.form">False </td> 
+                            <td *ngIf="!user.dynamicRow && user.SUPER_USER == 1 && !user.form">True </td> 
+
+                            <td *ngIf="!user.dynamicRow && user.form"><input class="form-control" [(ngModel)]="userList?.result[i].NAME" type="text"/></td>
+                            <td *ngIf="!user.dynamicRow && user.form"><input class="form-control" [(ngModel)]="userList?.result[i].EMAIL" type="text"/></td>
+                            <td *ngIf="!user.dynamicRow && user.form">
+                              <select class="form-control" [(ngModel)]="userList?.result[i].SUPER_USER" >
+                                <option value="1">True</option>
+                                <option value="0">False</option>
+                              </select>
+                            </td>
+
+                            <td *ngIf="!user.dynamicRow"> 
+                              <button *ngIf="issuper && !user.form" (click)="updateUser(false, i)" class="fa-edit btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                <span class="ml-2">Edit</span>
+                              </button>
+                              <button *ngIf="issuper && user.form" (click)="cancelUserUpdate(user.ID, i)" class="fa-times-circle btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                <span class="ml-2">Cancel</span>
+                              </button>
+                              <button *ngIf="issuper && user.form" (click)="updateUser(true, i)" class="fa-save btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                <span class="ml-2">Save</span>
+                              </button>
+                              <button *ngIf="issuper" (click)="deleteUser(i, user.EMAIL)" class="fa-trash btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                <span class="ml-2">Delete</span>
+                              </button>
+                              <button dynAccordion [collapseToggle]="'Details'+(i + 1)" [ngClass]="{'fa-plus':!user.expandDetails,'fa-minus':userList.result[i + 1].expandDetails}" (click)="triggerlog(i + 1, user)" class=" btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                <span class="ml-2">Details</span>
+                              </button>
+                          </td>
+                          
+                          <td *ngIf="user.dynamicRow" style="padding: 0px !important;border: 0 !important;"   colspan="8">
+                              <div style="display: none;" id="Details{{ i }}">
+                                <div class="row pt-0 pb-0">
+                                  <div class="col-xl-12">
+                                    <div class="row">
+                                      <div class="col-xl-12">
+                                        <div class="card row col-xl-12 pr-0 pl-0">
+                                            <table  style="background-color: #fff;font-size: 12px;" class="table table-hover table-responsive">
+                                                <thead>
+                                                <!-- <th>Approver</th> -->
+                                                <th>Business Unit</th>
+                                                <th>Project</th>
+                                                
+                                                <th>Access Type</th>
+                                                <th></th>
+                                                </thead>
+                                                <tr *ngFor=" let useraccess of userList?.result[i-1].rights; let j = index; ">
+                                                  <!-- <td>{{ useraccess.APPROVER }}</td> -->
+                                                  <td>{{ useraccess.COSTCENTER }}</td>
+                                                  <td>{{ useraccess.PROJECT }}</td>
+                                                  
+                                                  <td *ngIf="!useraccess.accessform">{{ useraccess.ACCESS_TYPE }}</td>
+                                                  <td *ngIf="useraccess.accessform">
+                                                    <select class="form-control" [(ngModel)]="userList?.result[i].rights[j].ACCESS_TYPE" >
+                                                      <option value="">None</option>
+                                                      <option value="r">Read Only</option>
+                                                      <option value="rw">Read &amp; Write</option>
+                                                    </select>
+                                                  </td>
+                                                  <td>
+                                                    <button *ngIf="issuper && !useraccess.accessform" (click)="updateAccess(false,i, j)" class="fa-edit btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                                      <span class="ml-2">Edit</span>
+                                                    </button>
+                                                    <button *ngIf="issuper && useraccess.accessform" (click)="cancelAccessUpdate(useraccess.AID,i, j)" class="fa-times-circle btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                                      <span class="ml-2">Cancel</span>
+                                                    </button>
+                                                    <button *ngIf="issuper && useraccess.accessform" (click)="updateAccess(true,i, j)" class="fa-save btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                                      <span class="ml-2">Save</span>
+                                                    </button>
+                                                    <button *ngIf="issuper" (click)="deleteaccess(i-1, j, useraccess.AID)" class="fa-trash btn-sm pointer btn btn-default fa waves-effect waves-effect" type="button" >
+                                                      <span class="ml-2">Delete</span>
+                                                    </button>
+                                                  </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                          </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <!-- <div class="col-xl-12 text-center" *ngIf="showNoLogsMsg()">No logs found</div>
+                      <div class="col-xl-12 text-center text-danger" *ngIf="logsCallError">Something went wrong. Please try again.
+                       &nbsp;<a href="javascript:void(0)" (click)="getUsers()"><fa class="" name="refresh"></fa> Reload</a>
+                      </div> -->
+                       <!-- <div class="col-12 pr-0">
+                        <div class="mt-2 pull-right" *ngIf="showPagination()">
+                          <ngb-pagination (pageChange)="pageChange($event)" [pageSize]="pagination.pageSize" [collectionSize]="pagination.collectionSize" [(page)]="pagination.page" [maxSize]="pagination.maxSize" [rotate]="pagination.rotate" [boundaryLinks]="pagination.boundaryLinks">
+                          </ngb-pagination>
+                        </div>
+                      </div> -->
+                  
+                    </div>
+
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+      </tabset>
+    </div>
+  </div>
+ 
+ </section>

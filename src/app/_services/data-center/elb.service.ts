@@ -19,14 +19,6 @@ export class ELBService extends GenericApiService {
 		});
 	}
 
-	getVolumeList(params) {
-		return this.makeGetRequest({
-			path: '/api/data-center/volume/fetchall',
-			params: params,
-			headers: this.servicesUtilityService.getDefaultHeaders()
-		});
-	}
-
 	getELBStats(params) {
 		return this.makeGetRequest({
 			path: '/api/data-center/vipstats',
@@ -54,30 +46,6 @@ export class ELBService extends GenericApiService {
 	getSnatPools(params) {
 		return this.makeGetRequest({
 			path: '/api/data-center/snatpools',
-			params: params,
-			headers: this.servicesUtilityService.getDefaultHeaders()
-		});
-	}
-
-	getLBEvents(params) {
-		return this.makeGetRequest({
-			path: '/api/data-center/lbevents',
-			params: params,
-			headers: this.servicesUtilityService.getDefaultHeaders()
-		});
-	}
-
-	deleteELB(params){
-		return this.makeDeleteRequest({
-			path: '/api/data-center/elb/delete/hostvip',
-			params: params,
-			headers: this.servicesUtilityService.getDefaultHeaders()
-		});
-	}
-
-	updateELB(params){
-		return this.makePutRequest({
-			path: '/api/data-center/elb/edit/vip',
 			params: params,
 			headers: this.servicesUtilityService.getDefaultHeaders()
 		});

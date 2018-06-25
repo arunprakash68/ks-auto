@@ -13,14 +13,6 @@ export class CreateNewELBService extends GenericApiService {
 		super(injector);
 	}
 
-	createNewELB(params){
-		return this.makePostRequest({
-			path: '/api/data-center/elb/create/hostvip',
-			params: params,
-			headers: this.servicesUtilityService.getDefaultHeaders()
-		});
-	}
-
 	createNewELBVip(params){
 		return this.makePostRequest({
 			path: '/api/data-center/elb/create/elbvip',

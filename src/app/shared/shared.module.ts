@@ -7,8 +7,6 @@ import { StackLineGraphComponent } from './stack-line-graph/stack-line-graph.com
 import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 import { ConfirmDialog } from '../shared/confirm-dialog/confirm-dialog.component';
 import { AlertMessage } from '../shared/alert-message/alert-message.component';
-import { BuProjectComponent } from '../shared/bu-project/bu-project.component';
-import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   imports: [
@@ -21,22 +19,17 @@ import { LoaderComponent } from './loader/loader.component';
     SlimScrollDirective,
     StackLineGraphComponent,
     ConfirmDialog,
-    AlertMessage,
-    BuProjectComponent,
-    LoaderComponent
+    AlertMessage
    ],
   exports: [
     EChartsDirective,
     SlimScrollDirective,
     StackLineGraphComponent,
     ConfirmDialog,
-    AlertMessage,
-    BuProjectComponent,
-    LoaderComponent
+    AlertMessage
   ],
   entryComponents: [
-    AlertMessage,
-    LoaderComponent
+    AlertMessage
 ]
 })
 

@@ -313,8 +313,7 @@ export class PoolListComponent implements OnInit {
 			placeholder : 'IP',
 			value : currentPoolMember.address,
 			extraParams : {summaryIdx:summaryIdx,memberIdx:memberIdx},
-			modal : modal,
-			isInput : true
+			modal : modal
 		}
 
 		modal.showModal(this.textStrings)

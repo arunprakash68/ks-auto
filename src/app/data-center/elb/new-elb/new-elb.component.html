@@ -11,20 +11,33 @@
 						<div class="col-xl-12">
 							<h3><span>Basic Details</span></h3>
 						</div>
-						<bu-project class="col-xl-8 mg-top-2" 
-							[selectionType]="'default'" 
-							[access]="'write'"  
-							[isProject]='true'
-							[formData]="formData" 
-							(updateData)=getBuProData($event)
-							(businessChange)=onBusinessChange($event)
-							(projectChange)=onProjectChange($event)
-							>
-						</bu-project>
+						<div *ngIf="loading.bu" class="col-xl-4 mg-top-2">
+							<p  class="col-xl-4 ml-auto mr-auto">
+								<img src="http://keystoneold.timesinternet.in//assets/img/ajax-loader.gif" class="img-fluid">
+							</p>
+						</div>
+						<div *ngIf="loadingError.bu" class="col-xl-4 text-danger mg-top-2">
+							Unable to load projects. 
+							<a href="javascript:void(0)" (click)="getBusinessAccessDetails()">
+								<fa class="" name="refresh"></fa> Reload</a>
+						</div>
+						<div class="col-xl-4 mg-top-2" *ngIf="!loading.bu && !loadingError.bu">
+							<label for="select-project">Select Business Unit</label>
+					
+							<select  [(ngModel)]="formData.bu" (change)="onBusinessChange()"  class="server-filter-form-input form-control" name="select-business" ngModel>
+								<option value="{{ business.bu_name }}" *ngFor="let business of businessAccessDetails?.bu">{{ business.bu_name }}</option>
+							</select>
+						</div>
+						<div class="col-xl-4 mg-top-2" *ngIf="!loading.bu && !loadingError.bu">
+							<label for="select-project">Select Project</label>
+							<select [disabled]="projects[formData.bu].length == 0" (change)="onProjectChange()"  [(ngModel)]="formData.project" class="server-filter-form-input form-control" name="select-project" ngModel>
+								<option value="{{ project.project }}" *ngFor="let project of projects[formData.bu]">{{ project.project }}</option>
+							</select>
+						</div>
 					</div>
 					
 					<div class="mg-top-2" *ngIf="projects && projects[formData.bu] && projects[formData.bu].length == 0">
-						<p class="text-danger ml-2 mt-3">You do not have write access to <strong>{{formData.bu}}</strong> business!!</p>
+						<p class="text-danger ml-2 mt-3">You do not have  write access to <strong>{{formData.bu}}</strong> business!!</p>
 					</div>
 
 					<div *ngIf="projects && projects[formData.bu] && projects[formData.bu].length != 0">

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { MyDashboardComponent } from '../my-dashboard/my-dashboard.component'
+import { AccessComponent } from './../access/access.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,8 @@ const routes: Routes = [
       // { path: 'dashboard', component: DashboardComponent },
       // { path: 'local-it', loadChildren: '../local-it/local-it.module#LocalItModule' },
       { path: 'my-dashboard', component: MyDashboardComponent  },
+      // { path: 'access', component: AccessComponent  },
+      { path: 'access', loadChildren: '../access/access.module#AccessModule' },
       { path: 'data-center', loadChildren: '../data-center/data-center.module#DataCenterModule' },
       { path: 'cdn', loadChildren: '../cdn/cdn.module#CdnModule' },
       // { path: 'process', loadChildren: '../process/process.module#ProcessModule' },

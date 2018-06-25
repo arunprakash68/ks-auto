@@ -53,7 +53,8 @@
         <th>Location</th>
         <th>Tags</th>
         <th>Status</th>
-        <th>Stats/Alerts</th>
+        <th class="txt-center">Stats/Alerts</th>
+        <th class="txt-center">Delete</th>
         <!-- <th>Edit</th> -->
 
         <!-- <th width="5%">#</th>
@@ -93,11 +94,15 @@
         </td>
         <!-- <td [innerHTML]="config.status['up']"></td> -->
         <td>
-          <progressbar  title="{{server.progress}}%" [value]="server.progress" [max]="100"></progressbar>  
+          <progressbar *ngIf="server.vstat == 1" type="success" title="{{server.progress}}%" [value]="server.progress" [max]="100"></progressbar>  
+          <progressbar *ngIf="server.vstat == 0" type="danger" title="{{100 - server.progress}}%" [value]="100 - server.progress" [max]="100"></progressbar>  
         </td>
-        <td>
+        <td class="txt-center">
           <button id="serverStatsButton" [ngClass]="{'pointer':server.monitor_status != '2'}" [disabled]="server.monitor_status == '2'" (click)="openDynamicStatsTab(server)" type="button" title="" class="btn btn-default fa fa-area-chart waves-effect waves-effect"></button>
           <button type="button" id="serverAlertsButton" [ngClass]="{'pointer':server.monitor_status != '2'}" [disabled]="server.monitor_status == '2'" (click)="openDynamicAlertsTab(server)" class="btn btn-default fa fa-bar-chart waves-effect waves-effect" ></button>
+        </td>
+        <td class="txt-center">
+          <button [disabled]="server.progress < 90 || server.vstat == 0" (click)="deleteServerData(modal, server)" type="button" title="Delete" class="pointer btn btn-default fa fa-trash serverButton"></button>
         </td>
         <!-- <td>
           <button id="serverEditButton" (click)="editServerData(serverUpdateModal, server)" type="button" title="Edit" class="pointer btn btn-default fa fa-pencil waves-effect waves-effect"></button>
@@ -116,3 +121,7 @@
       </div>
     </div>
   </div>
+
+
+  <!-- confirm dialog -->
+	<confirm-dialog #modal (triggerDelete)="confirmDelete(textStrings)"></confirm-dialog>

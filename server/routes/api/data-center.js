@@ -5,11 +5,8 @@ const httpRequestPromise = require('../../custom-request-promise');
 const elb = require('./elb');
 const pool = require('./pool');
 
-const volume = require('./volume');
-
 router.use('/elb',elb);
 router.use('/pool',pool);
-router.use('/volume',volume);
 
 // Get list of Data Centers
 router.get('/', (req, res) => {
@@ -68,22 +65,22 @@ router.post('/servers/new', (req, res) => {
         let zoneApi = '';
         if(dcZone){
             if(dcZone === 'TIL-MUM-Zone') {
-                zoneApi = process.env.til_mum_zone_server_create_api;
+                zoneApi = process.env.til_mum_zone_server_api;
             } else if(dcZone === 'TIL-CHN-Zone' || dcZone === 'TBS-CHN-Zone') {
-                zoneApi = process.env.til_chn_zone_server_create_api;
+                zoneApi = process.env.til_chn_zone_server_api;
             } else if(dcZone === 'MBRSL-CHN-Zone') {
-                zoneApi = process.env.mbrsl_chn_zone_server_create_api;
+                zoneApi = process.env.mbrsl_chn_zone_server_api;
             } else if(dcZone === 'MBRSL-MUM-Zone') {
-                zoneApi = process.env.mbrsl_mum_zone_server_create_api;
+                zoneApi = process.env.mbrsl_mum_zone_server_api;
             } else if(dcZone === 'TIL-MUM-Zone2') {
-                zoneApi = process.env.til_mum_zone2_server_create_api;
+                zoneApi = process.env.til_mum_zone2_server_api;
             } else if(dcZone === 'TBS-MUM-Zone'){
-                zoneApi = process.env.tbs_mum_zone_server_create_api;
+                zoneApi = process.env.tbs_mum_zone_server_api;
             }
         }
         request({
             method: 'POST',
-            url: zoneApi + ':' + process.env.server_create_api_port + '/api/v0.1/createcluster',
+            url: zoneApi + ':' + process.env.server_api_port + '/api/v0.1/createcluster',
             json: {
                 bu: (postParams['bu'] ? postParams['bu'] : null),
                 project: (postParams['project'] ? postParams['project'] : null),
@@ -107,6 +104,63 @@ router.post('/servers/new', (req, res) => {
                 res.status(error.statusCode ? error.statusCode : 500);
                 res.send(null);
             }
+            res.json(body);
+        });
+    } catch(e) {
+        console.log(e);        
+    }
+
+
+})
+
+// Create new server
+router.post('/servers/delete', (req, res) => {
+    
+    try {
+        let postParams = req.body;
+        let dcZone = postParams['zone'];
+        let zoneApi = '';
+        if(dcZone){
+            if(dcZone === 'TIL-MUM-Zone') {
+                zoneApi = process.env.til_mum_zone_server_api;
+            } else if(dcZone === 'TIL-CHN-Zone' || dcZone === 'TBS-CHN-Zone') {
+                zoneApi = process.env.til_chn_zone_server_api;
+            } else if(dcZone === 'MBRSL-CHN-Zone') {
+                zoneApi = process.env.mbrsl_chn_zone_server_api;
+            } else if(dcZone === 'MBRSL-MUM-Zone') {
+                zoneApi = process.env.mbrsl_mum_zone_server_api;
+            } else if(dcZone === 'TIL-MUM-Zone2') {
+                zoneApi = process.env.til_mum_zone2_server_api;
+            } else if(dcZone === 'TBS-MUM-Zone'){
+                zoneApi = process.env.tbs_mum_zone_server_api;
+            }
+        }
+        let url =  zoneApi + ':' + process.env.server_api_port + '/api/v0.1/vmdelete';
+        let json= {
+            ip: (postParams['ip'] ? postParams['ip'] : null),
+            project: (postParams['project'] ? postParams['project'] : null),
+            zone: (postParams['zone'] ? postParams['zone'] : null),
+        }
+        
+        request({
+            method: 'POST',
+            url: zoneApi + ':' + process.env.server_api_port + '/api/v0.1/vmdelete',
+            json: {
+                ip: (postParams['ip'] ? postParams['ip'] : null),
+                project: (postParams['project'] ? postParams['project'] : null),
+                zone: (postParams['zone'] ? postParams['zone'] : null),
+            },
+            headers: {
+                'X-Email': req.get('X-Email'),
+                'X-Token': req.get('X-Token'),
+            }
+        }, (error, response, body) => {
+            if(error) {
+                console.log(error);
+                res.status(error.statusCode ? error.statusCode : 500);
+                res.send(null);
+            }
+            console.log(body)
             res.json(body);
         });
     } catch(e) {
@@ -422,7 +476,14 @@ router.get('/vipsummary', (req, res) => {
         const options = {
             baseUrl: process.env.auto_api,
             uri: '/api/v0.1/vipsummary',
-            qs: getParams,
+            qs: { 
+                's_count': getParams['s_count'],
+                'e_count': getParams['e_count'],
+                'bu': getParams['bu'] ? getParams['bu'] : '',
+                'project': getParams['project'] ? getParams['project'] : '',
+                'env': getParams['env'] ? parseInt(getParams['env']) : '',
+                'zone': getParams['zone'] ? getParams['zone'] : ''
+            },
             method: 'GET',
             json: true,
             headers: {
@@ -468,37 +529,6 @@ router.get('/vipstats', (req, res) => {
         console.log(e);
     }
 })
-
-
-// Get my elb stats
-router.get('/lbevents', (req, res) => {
-    try {
-        const getParams = req.query;
-        const options = {
-            baseUrl: process.env.auto_api,
-            uri: '/api/v0.1/lbevents',
-            qs: { 
-                'start_time': getParams['start_time'],
-                'end_time': getParams['end_time'],
-                'domid': getParams['domid']
-            },
-            method: 'GET',
-            json: true,
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Email': req.get('X-Email'),
-                'X-Token': req.get('X-Token')
-            }
-        }
-        
-        httpRequestPromise.resolveHTTPRequestPromise(options, req, res);
-
-    } catch(e){
-        console.log(options);
-        console.log(e);
-    }
-})
-
 
 // Get my elb location zones
 router.get('/locations', (req, res) => {

@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { IServerData, ServerListService } from '../../../_services/servers-list.service';
+import { ServerUpdateService } from '../../../_services/server-update.service';
 import { ErrorHandlerService } from '../../../_services/error-handler.service';
 import { ServerUpdateFormComponent } from '../server-update-form/server-update-form.component';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
@@ -8,7 +9,7 @@ import { Router, NavigationEnd } from '@angular/router';
 @Component({
 	selector: 'servers-list',
 	styles: [],
-	providers: [ServerListService, ErrorHandlerService],
+	providers: [ServerListService, ErrorHandlerService, ServerUpdateService],
 	templateUrl: './servers-list.component.html'
 })
 
@@ -29,10 +30,12 @@ export class ServerslistComponent {
 	loading: boolean;
 	serverCallError: boolean;
 	serverToEdit: any;
+	textStrings: any;
 
 	constructor(private serverListService: ServerListService, 
 		private errorHandlerService: ErrorHandlerService,
-		private router: Router){
+		private router: Router,
+		private serverUpdateService : ServerUpdateService){
 		this.page = 1;
 		this.pageSize = 16;
 		this.maxSize = 5;
@@ -41,6 +44,7 @@ export class ServerslistComponent {
 		this.pageItemIndex = 0;
 		this.loading = true;
 		this.collectionSize = 0;
+		this.textStrings = {};
 		this.config = {
 			osImagePath: 'http://keystoneold.timesinternet.in/assets/img/os-images/',
 			vmTypeImagePath: 'http://keystoneold.timesinternet.in/assets/img/tepmlate/',
@@ -109,7 +113,6 @@ export class ServerslistComponent {
 		this.serverListService.getMyServers(this.serverSearchParams).subscribe(data => {
 			
 			if (data && data['status'] != 0 && data['vmdata'] && data['vmdata'].length > 0) {
-				console.log(data);
 				this.servers = data;
 				this.updatePaginationParameters();
 			}
@@ -184,6 +187,42 @@ export class ServerslistComponent {
 		console.log(event);
 		console.debug(event);
 		event.target.src = "https://cdn.browshot.com/static/images/not-found.png";
+	}
+
+	deleteServerData(modal,server){
+
+		this.textStrings = {
+			header : 'Confirm Delete',
+			confirmText : 'Are you sure, you want to delete ' + server.ip + ' ?',
+			body :  'IP :' + server.ip + '\nhostname : ' + server.hostname,
+			note : '*This action cannot be undone. Once a server is removed from Group, you will have to add it again to serve requests.',
+			inputText : 'Enter IP to confirm',
+			placeholder : 'IP',
+			value : server.ip,
+			extraParams : server,
+			modal : modal
+		}
+
+		modal.showModal(this.textStrings)
+	}
+
+	confirmDelete(textStrings){
+		console.log(textStrings);
+		let obj = textStrings.extraParams;
+		let params = {
+			zone: obj.zone,
+			project: obj.project,
+			ip : obj.ip
+		}
+
+		textStrings.modal.hideModal();
+
+		this.serverUpdateService.deleteServer(params).subscribe(data => {
+			console.log(data)
+			if(data && data['status'] == 1){
+				this.getMyServers();
+			}
+		})
 	}
 
 }
